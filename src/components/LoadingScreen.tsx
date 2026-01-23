@@ -1,110 +1,133 @@
 // components/LoadingScreen.tsx
-'use client';
-
-import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 interface LoadingScreenProps {
-  onComplete?: () => void;
-  minDuration?: number; // Minimum display time in ms
+  message?: string;
+  subtext?: string;
+  duration?: number;
+  showSparkles?: boolean;
 }
 
-export default function LoadingScreen({ onComplete, minDuration = 2000 }: LoadingScreenProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
+export default function LoadingScreen({
+  message = 'Analyzing your story...',
+  subtext = 'Our AI is evaluating your concept',
+  duration = 3000, // 3 seconds minimum
+  showSparkles = true,
+}: LoadingScreenProps) {
+  const minDuration = duration;
+  const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
     const startTime = Date.now();
+    
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const newElapsed = now - startTime;
+      setElapsed(newElapsed);
+      
+      if (newElapsed >= minDuration) {
+        clearInterval(timer);
+      }
+    }, 100);
 
-    // Simulate loading progress
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + Math.random() * 15;
-      });
-    }, 200);
+    return () => clearInterval(timer);
+  }, [minDuration]);
 
-    // Hide loading screen after min duration
-    const timeout = setTimeout(() => {
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(0, minDuration - elapsed);
-
-      setTimeout(() => {
-        setIsLoading(false);
-        onComplete?.();
-      }, remaining);
-    }, minDuration);
-
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(progressInterval);
-    };
-  }, [minDuration, onComplete]);
+  // Calculate progress percentage
+  const progress = Math.min((elapsed / minDuration) * 100, 100);
 
   return (
-    <AnimatePresence>
-      {isLoading && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-charcoal pointer-events-none"
-        >
-          <div className="flex flex-col items-center gap-8">
-            {/* Logo/Brand */}
+    <div className="fixed inset-0 bg-paper flex items-center justify-center z-50">
+      <div className="max-w-md mx-auto p-8 text-center">
+        {/* Animated Circle Progress */}
+        <div className="relative w-32 h-32 mx-auto mb-8">
+          <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="transparent"
+              className="text-charcoal/10"
+            />
+            <motion.circle
+              cx="50"
+              cy="50"
+              r="45"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="transparent"
+              strokeLinecap="round"
+              className="text-accent-indigo"
+              initial={{ strokeDasharray: "0 314" }}
+              animate={{ 
+                strokeDasharray: [
+                  `0 314`,
+                  `${(progress * 314) / 100} 314`
+                ] 
+              }}
+              transition={{ 
+                duration: duration / 1000,
+                ease: "easeInOut"
+              }}
+              style={{
+                strokeDashoffset: 0,
+              }}
+            />
+          </svg>
+          
+          {showSparkles && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+              className="absolute inset-0 flex items-center justify-center"
+              animate={{ rotate: 360 }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
             >
-              <div className="text-paper font-display text-4xl md:text-6xl font-bold">
-                PITCH DECKS
-              </div>
-
-              {/* Animated underline */}
-              <motion.div
-                className="absolute -bottom-2 left-0 h-0.5 bg-accent-indigo"
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-              />
+              <Sparkles className="text-accent-indigo" size={24} />
             </motion.div>
+          )}
+        </div>
 
-            {/* Progress bar */}
-            <div className="w-64 h-0.5 bg-paper/20 overflow-hidden">
-              <motion.div
-                className="h-full bg-accent-indigo"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
+        {/* Progress Text */}
+        <motion.h3 
+          className="text-2xl font-bold text-charcoal mb-2"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {message}
+        </motion.h3>
+        
+        <motion.p 
+          className="text-charcoal/70"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {subtext}
+        </motion.p>
 
-            {/* Loading lines - Sonar-style */}
-            <div className="flex gap-1">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 h-8 bg-paper/40"
-                  animate={{
-                    scaleY: [1, 1.5, 1],
-                    opacity: [0.4, 1, 0.4],
-                  }}
-                  transition={{
-                    duration: 0.8,
-                    repeat: Infinity,
-                    delay: i * 0.1,
-                  }}
-                />
-              ))}
-            </div>
+        {/* Progress Bar */}
+        <div className="mt-8">
+          <div className="h-1.5 bg-charcoal/10 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-accent-indigo to-accent-gold"
+              initial={{ width: "0%" }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: duration / 1000, ease: "easeOut" }}
+            />
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          <div className="flex justify-between text-sm text-charcoal/50 mt-2">
+            <span>Processing</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

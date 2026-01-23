@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Sparkles } from 'lucide-react';
+import LoadingScreen from '@/components/LoadingScreen';
 
 // Types for form data
 export interface TeaserScore {
@@ -743,5 +744,14 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
         </motion.div>
       </div>
     </div>
+
+    {/* Loading Screen during submission */}
+    {isSubmitting && (
+      <LoadingScreen
+        message="Analyzing your story..."
+        subtext="Our AI is evaluating your concept and generating insights"
+        duration={4000}
+      />
+    )}
   );
 }
