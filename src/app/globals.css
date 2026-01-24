@@ -23,3 +23,15 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Hide Next.js internal portal elements */
+nextjs-portal {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  pointer-events: none !important;
+}
