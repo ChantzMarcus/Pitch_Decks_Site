@@ -49,3 +49,12 @@ temp/
 # Sensitive files
 credentials.json
 config/secrets.*
+
+# Large source files (working copies - not used by website)
+# The actual images used are in public/decks/
+CRUDE/
+Hear Transplant/
+Navy Divers/
+TCG/
+The Counterfeit/
+*.mp4
