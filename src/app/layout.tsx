@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
 import StructuredData from '@/components/StructuredData';
-import ErrorBoundary from '@/components/ErrorBoundary';
 
 const fraunces = Fraunces({ 
   subsets: ['latin'], 
