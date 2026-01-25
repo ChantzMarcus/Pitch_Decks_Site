@@ -4,6 +4,7 @@ import { AnthropicProvider } from './providers/anthropic';
 import { GroqProvider } from './providers/groq';
 import { MistralProvider } from './providers/mistral';
 import { HuggingFaceProvider } from './providers/huggingface';
+import { sanitizeAnalysisRequest, isInputSafe, logSuspiciousInput } from './sanitize';
 
 // Provider configuration with fallback order (fastest & cheapest first)
 const DEFAULT_PROVIDERS: ProviderName[] = ['groq', 'huggingface', 'openai', 'anthropic', 'mistral'];
@@ -40,6 +41,17 @@ class AIService {
    * Falls back to next provider if one fails
    */
   async analyzeStory(request: StoryAnalysisRequest, preferredProvider?: ProviderName): Promise<StoryAnalysisResult> {
+    // Security: Check for suspicious input and log it
+    const inputsToCheck = [request.logline, request.description, request.format].filter(Boolean);
+    for (const input of inputsToCheck) {
+      if (input && !isInputSafe(input)) {
+        logSuspiciousInput(input, 'story-analysis');
+      }
+    }
+
+    // Sanitize all user inputs before sending to AI providers
+    const sanitizedRequest = sanitizeAnalysisRequest(request);
+
     const providersToTry = preferredProvider
       ? [preferredProvider, ...this.providerOrder.filter(p => p !== preferredProvider)]
       : this.providerOrder;
@@ -55,7 +67,7 @@ class AIService {
 
       try {
         console.log(`Attempting analysis with ${provider.name}...`);
-        const result = await provider.analyzeStory(request);
+        const result = await provider.analyzeStory(sanitizedRequest);
         console.log(`✓ Analysis complete with ${provider.name}`);
         return result;
       } catch (error) {
