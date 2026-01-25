@@ -1,18 +1,12 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Inter } from 'next/font/google';
 import StructuredData from '@/components/StructuredData';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  variable: '--font-fraunces',
-  display: 'swap'
-});
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap'
-});
+// Self-hosted fonts via Fontsource (no external network requests)
+import '@fontsource-variable/inter';
+import '@fontsource-variable/fraunces';
+import '@fontsource/jetbrains-mono';
 
 export const metadata: Metadata = {
   title: {
@@ -72,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="en">
       <body>
         <StructuredData type="organization" />
         <StructuredData type="service" />
