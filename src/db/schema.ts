@@ -116,6 +116,7 @@ export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
 export type Deck = {
   id: string;
   title: string;
+  slug: string;
   description: string;
   logline: string;
   genre: string[];
@@ -145,6 +146,7 @@ export function toDeck(drizzleDeck: DrizzleDeck): Deck {
   return {
     id: drizzleDeck.id,
     title: drizzleDeck.title,
+    slug: drizzleDeck.slug,
     description: drizzleDeck.description ?? '',
     logline: drizzleDeck.logline ?? '',
     genre: drizzleDeck.genre ?? [],

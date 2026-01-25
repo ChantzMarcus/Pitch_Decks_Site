@@ -132,6 +132,7 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
   };
 
   return (
+    <>
     <div className="min-h-screen bg-paper py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Progress Bar */}
@@ -753,5 +754,6 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
         duration={4000}
       />
     )}
+    </>
   );
 }

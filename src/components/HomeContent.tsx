@@ -8,6 +8,7 @@ import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import ServicesShowcase from '@/components/ServicesShowcase';
 import VideoShowcase from '@/components/VideoShowcase';
+import StructuredData from '@/components/StructuredData';
 import type { Deck } from '@/db';
 import { ArrowRight, FileText, BarChart3, Sparkles, PenTool, Star, TrendingUp } from 'lucide-react';
 
@@ -31,6 +32,14 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
 
   return (
     <main className="min-h-screen bg-paper">
+      <StructuredData
+        type="webpage"
+        data={{
+          url: '',
+          name: '848 Washington Media | Film Pitch Decks & Creative Development',
+          description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
+        }}
+      />
       {/* Hero Section */}
       <HeroSonarStyle />
 

@@ -5,6 +5,7 @@ import { Deck } from '@/db';
 import DeckGrid from '@/components/DeckGrid';
 import CategoryFilter from '@/components/CategoryFilter';
 import QuickViewModal from '@/components/QuickViewModal';
+import StructuredData from '@/components/StructuredData';
 import { motion } from 'framer-motion';
 
 interface GalleryContentProps {
@@ -46,6 +47,16 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
 
   return (
     <main className="min-h-screen bg-paper py-20">
+      <StructuredData
+        type="collection"
+        data={{
+          items: initialDecks.map((deck) => ({
+            name: deck.title,
+            description: deck.logline || `A ${deck.genre.join(', ')} film`,
+            url: `/gallery/${deck.slug}`,
+          })),
+        }}
+      />
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div

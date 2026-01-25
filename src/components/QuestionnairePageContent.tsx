@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import StoryQuestionnaire, { QuestionnaireData, TeaserScore } from '@/components/StoryQuestionnaire';
+import StructuredData from '@/components/StructuredData';
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle, Sparkles, TrendingUp } from 'lucide-react';
 
@@ -28,6 +29,14 @@ export default function QuestionnairePageContent() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <StructuredData
+        type="webpage"
+        data={{
+          url: '/questionnaire',
+          name: 'Free Story Analysis | 848 Washington Media',
+          description: 'Get a free professional analysis of your film or TV story. Our AI-powered questionnaire evaluates your script\'s commercial potential, marketability, and pitch readiness.',
+        }}
+      />
       {/* Header */}
       <header className="border-b border-charcoal/10 bg-white">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
