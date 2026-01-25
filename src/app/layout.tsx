@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
 import StructuredData from '@/components/StructuredData';
+import AnalyticsProvider from '@/components/AnalyticsProvider';
 
 const fraunces = Fraunces({ 
   subsets: ['latin'], 
@@ -74,9 +75,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
-        <StructuredData type="organization" />
-        <StructuredData type="service" />
-        {children}
+        <AnalyticsProvider>
+          <StructuredData type="organization" />
+          <StructuredData type="service" />
+          {children}
+        </AnalyticsProvider>
       </body>
     </html>
   );

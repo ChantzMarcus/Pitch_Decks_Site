@@ -1,13 +1,11 @@
 'use client';
 
-import { forwardRef, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { useMagneticButton } from '@/hooks/useScrollAnimations';
 
 interface MagneticButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
-  href?: string;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -28,60 +26,62 @@ const sizeStyles = {
   lg: 'px-8 py-4 text-lg',
 };
 
-export const MagneticButton = forwardRef<HTMLButtonElement, MagneticButtonProps>(
-  (
-    {
-      children,
-      onClick,
-      variant = 'primary',
-      size = 'md',
-      className = '',
-      disabled = false,
-      strength = 0.3,
-      ...props
-    },
-    externalRef
-  ) => {
-    const { ref: magneticRef, handleMouseMove, handleMouseLeave } = useMagneticButton(strength);
+export function MagneticButton({
+  children,
+  onClick,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  disabled = false,
+  strength = 0.3,
+  ...props
+}: MagneticButtonProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const setRef = (element: HTMLButtonElement | null) => {
-      if (element) {
-        magneticRef.current = element;
-        if (typeof externalRef === 'function') {
-          externalRef(element);
-        } else if (externalRef) {
-          externalRef.current = element;
-        }
-      }
-    };
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current || disabled) return;
 
-    return (
-      <motion.button
-        ref={setRef}
-        onClick={onClick}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        disabled={disabled}
-        className={`
-          relative inline-flex items-center justify-center gap-2
-          font-medium rounded-lg transition-all duration-300
-          focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2
-          disabled:opacity-50 disabled:cursor-not-allowed
-          ${variantStyles[variant]}
-          ${sizeStyles[size]}
-          ${className}
-        `}
-        whileTap={{ scale: disabled ? 1 : 0.97 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-        {...props}
-      >
-        <span className="relative z-10">{children}</span>
-      </motion.button>
-    );
-  }
-);
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = buttonRef.current.getBoundingClientRect();
 
-MagneticButton.displayName = 'MagneticButton';
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+
+    const deltaX = (clientX - centerX) * strength;
+    const deltaY = (clientY - centerY) * strength;
+
+    (buttonRef.current as any).style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!buttonRef.current) return;
+    (buttonRef.current as any).style.transform = 'translate(0, 0)';
+  };
+
+  return (
+    <motion.button
+      ref={buttonRef}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      disabled={disabled}
+      className={`
+        relative inline-flex items-center justify-center gap-2
+        font-medium rounded-lg transition-all duration-300
+        focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2
+        disabled:opacity-50 disabled:cursor-not-allowed
+        ${variantStyles[variant]}
+        ${sizeStyles[size]}
+        ${className}
+      `}
+      whileTap={{ scale: disabled ? 1 : 0.97 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+      {...props}
+    >
+      <span className="relative z-10">{children}</span>
+    </motion.button>
+  );
+}
 
 // Link variant
 interface MagneticLinkProps {
@@ -93,54 +93,56 @@ interface MagneticLinkProps {
   strength?: number;
 }
 
-export const MagneticLink = forwardRef<HTMLAnchorElement, MagneticLinkProps>(
-  (
-    {
-      children,
-      href,
-      variant = 'primary',
-      size = 'md',
-      className = '',
-      strength = 0.3,
-      ...props
-    },
-    externalRef
-  ) => {
-    const { ref: magneticRef, handleMouseMove, handleMouseLeave } = useMagneticButton(strength);
+export function MagneticLink({
+  children,
+  href,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  strength = 0.3,
+  ...props
+}: MagneticLinkProps) {
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
-    const setRef = (element: HTMLAnchorElement | null) => {
-      if (element) {
-        magneticRef.current = element;
-        if (typeof externalRef === 'function') {
-          externalRef(element);
-        } else if (externalRef) {
-          externalRef.current = element;
-        }
-      }
-    };
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!linkRef.current) return;
 
-    return (
-      <motion.a
-        ref={setRef}
-        href={href}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className={`
-          relative inline-flex items-center justify-center gap-2
-          font-medium rounded-lg transition-all duration-300
-          focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2
-          ${variantStyles[variant]}
-          ${sizeStyles[size]}
-          ${className}
-        `}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-        {...props}
-      >
-        <span className="relative z-10">{children}</span>
-      </motion.a>
-    );
-  }
-);
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = linkRef.current.getBoundingClientRect();
 
-MagneticLink.displayName = 'MagneticLink';
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+
+    const deltaX = (clientX - centerX) * strength;
+    const deltaY = (clientY - centerY) * strength;
+
+    (linkRef.current as any).style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!linkRef.current) return;
+    (linkRef.current as any).style.transform = 'translate(0, 0)';
+  };
+
+  return (
+    <motion.a
+      ref={linkRef}
+      href={href}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`
+        relative inline-flex items-center justify-center gap-2
+        font-medium rounded-lg transition-all duration-300
+        focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2
+        ${variantStyles[variant]}
+        ${sizeStyles[size]}
+        ${className}
+      `}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+      {...props}
+    >
+      <span className="relative z-10">{children}</span>
+    </motion.a>
+  );
+}
