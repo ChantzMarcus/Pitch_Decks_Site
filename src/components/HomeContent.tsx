@@ -36,7 +36,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         type="webpage"
         data={{
           url: '',
-          name: '848 Washington Media | Film Pitch Decks & Creative Development',
+          name: 'FilmDecks | Film Pitch Decks & Creative Development',
           description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
         }}
       />

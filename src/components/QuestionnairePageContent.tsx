@@ -35,7 +35,7 @@ export default function QuestionnairePageContent() {
         type="webpage"
         data={{
           url: '/questionnaire',
-          name: 'Free Story Analysis | 848 Washington Media',
+          name: 'Free Story Analysis | FilmDecks',
           description: 'Get a free professional analysis of your film or TV story. Our AI-powered questionnaire evaluates your script\'s commercial potential, marketability, and pitch readiness.',
         }}
       />
@@ -46,7 +46,7 @@ export default function QuestionnairePageContent() {
             <ArrowLeft size={20} />
             <span className="font-medium">Back to Home</span>
           </Link>
-          <span className="text-sm text-charcoal/50">848 Washington Media</span>
+          <span className="text-sm text-charcoal/50">FilmDecks</span>
         </div>
       </header>
 

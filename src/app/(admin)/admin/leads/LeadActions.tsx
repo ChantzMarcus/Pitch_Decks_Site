@@ -34,7 +34,7 @@ export default function LeadActions({ lead }: LeadActionsProps) {
     <div className="flex items-center gap-2">
       {/* Quick Email */}
       <a
-        href={`mailto:${lead.email}?subject=Your Story Submission - 848 Washington Media&body=Hi ${lead.name?.split(' ')[0]},%0D%0A%0D%0AThank you for submitting your story to us.%0D%0A%0D%0A`}
+        href={`mailto:${lead.email}?subject=Your Story Submission - FilmDecks&body=Hi ${lead.name?.split(' ')[0]},%0D%0A%0D%0AThank you for submitting your story to us.%0D%0A%0D%0A`}
         className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
         title="Send email"
       >

@@ -11,10 +11,10 @@ const schemas = {
   organization: {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '848 Washington Media',
+    name: 'FilmDecks',
     description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
-    url: 'https://848washington.com',
-    logo: 'https://848washington.com/logo.png',
+    url: 'https://filmdecks.biz',
+    logo: 'https://filmdecks.biz/logo.png',
     sameAs: [
       // Add social media links here when available
       // 'https://twitter.com/848washington',
@@ -33,7 +33,7 @@ const schemas = {
     description: 'Professional pitch deck services for film and TV. Expert packaging, financial analysis, and creative development.',
     provider: {
       '@type': 'Organization',
-      name: '848 Washington Media',
+      name: 'FilmDecks',
     },
     areaServed: 'Worldwide',
     category: 'Entertainment Industry',
@@ -41,15 +41,15 @@ const schemas = {
   webpage: (url: string, name: string, description: string) => ({
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    url: `https://848washington.com${url}`,
+    url: `https://filmdecks.biz${url}`,
     name,
     description,
     publisher: {
       '@type': 'Organization',
-      name: '848 Washington Media',
+      name: 'FilmDecks',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://848washington.com/logo.png',
+        url: 'https://filmdecks.biz/logo.png',
       },
     },
   }),
@@ -58,10 +58,10 @@ const schemas = {
     '@type': 'CollectionPage',
     name: 'Pitch Deck Gallery',
     description: 'Browse our collection of award-winning film and TV pitch decks',
-    url: 'https://848washington.com/gallery',
+    url: 'https://filmdecks.biz/gallery',
     publisher: {
       '@type': 'Organization',
-      name: '848 Washington Media',
+      name: 'FilmDecks',
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -72,7 +72,7 @@ const schemas = {
           '@type': 'CreativeWork',
           name: item.name,
           description: item.description,
-          url: `https://848washington.com${item.url}`,
+          url: `https://filmdecks.biz${item.url}`,
         },
       })),
     },

@@ -59,7 +59,7 @@ export async function sendAnalysisReport(props: AnalysisReportProps) {
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E5E7EB;">
             <p style="color: #6B7280; margin: 0;">
               Best regards,<br>
-              The 848 Washington Media Team
+              The FilmDecks Team
             </p>
           </div>
         </div>
