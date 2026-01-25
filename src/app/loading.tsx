@@ -1,4 +1,4 @@
-import DeckCardSkeletonGrid from '@/components/DeckCardSkeleton';
+import { DeckCardSkeletonGrid } from '@/components/DeckCardSkeleton';
 
 export default function Loading() {
   return (
