@@ -45,13 +45,11 @@ export const MagneticButton = forwardRef<HTMLButtonElement, MagneticButtonProps>
     const { ref: magneticRef, handleMouseMove, handleMouseLeave } = useMagneticButton(strength);
 
     const setRef = (element: HTMLButtonElement | null) => {
-      if (element) {
-        magneticRef.current = element;
-        if (typeof externalRef === 'function') {
-          externalRef(element);
-        } else if (externalRef) {
-          externalRef.current = element;
-        }
+      magneticRef.current = element;
+      if (typeof externalRef === 'function') {
+        externalRef(element);
+      } else if (externalRef) {
+        (externalRef as React.MutableRefObject<HTMLButtonElement | null>).current = element;
       }
     };
 
@@ -109,13 +107,11 @@ export const MagneticLink = forwardRef<HTMLAnchorElement, MagneticLinkProps>(
     const { ref: magneticRef, handleMouseMove, handleMouseLeave } = useMagneticButton(strength);
 
     const setRef = (element: HTMLAnchorElement | null) => {
-      if (element) {
-        magneticRef.current = element;
-        if (typeof externalRef === 'function') {
-          externalRef(element);
-        } else if (externalRef) {
-          externalRef.current = element;
-        }
+      magneticRef.current = element;
+      if (typeof externalRef === 'function') {
+        externalRef(element);
+      } else if (externalRef) {
+        (externalRef as React.MutableRefObject<HTMLAnchorElement | null>).current = element;
       }
     };
 
