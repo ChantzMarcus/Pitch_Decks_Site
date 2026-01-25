@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: 'FilmDecks | Professional Pitch Packaging',
     template: '%s | FilmDecks'
   },
-  description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
+  description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'pitch packaging'],
   authors: [{ name: 'FilmDecks' }],
   creator: 'FilmDecks',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     url: 'https://filmdecks.biz',
     siteName: 'FilmDecks',
     title: 'FilmDecks | Professional Pitch Packaging',
-    description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
+    description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
     images: [
       {
         url: '/og-image.png',

@@ -16,7 +16,6 @@ const schemas = {
     name: 'FilmDecks',
     description: 'Professional pitch packaging for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
     url: 'https://filmdecks.biz',
-    logo: 'https://filmdecks.biz/logo.png',
     sameAs: [
       // Add social media links here when available
       // 'https://twitter.com/848washington',
@@ -49,10 +48,6 @@ const schemas = {
     publisher: {
       '@type': 'Organization',
       name: 'FilmDecks',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://filmdecks.biz/logo.png',
-      },
     },
   }),
   collection: (items: Array<{ name: string; description: string; url: string }>) => ({

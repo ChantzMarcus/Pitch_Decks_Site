@@ -152,7 +152,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.9 }}
           className="text-lg md:text-xl text-charcoal/60 max-w-2xl mx-auto mb-10"
         >
-          Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.
+          Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.
         </motion.p>
 
         {/* CTA Buttons with magnetic effect */}

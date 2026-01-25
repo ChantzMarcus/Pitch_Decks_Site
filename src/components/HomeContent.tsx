@@ -41,7 +41,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           data={{
             url: '',
             name: 'FilmDecks | Professional Pitch Packaging',
-            description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
+            description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
           }}
         />
         {/* Hero Section */}
