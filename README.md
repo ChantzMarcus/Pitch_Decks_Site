@@ -1,138 +1,166 @@
-# Pitch Decks Site
+# Film Pitch Deck Showcase
 
-Lead generation platform for film/TV development clients. Captures leads through a qualification questionnaire, scores them based on budget/timeline/readiness, and integrates with external analysis software to provide project feedback.
+A professional showcase website for film and TV pitch decks with cinematic quality presentation and lead generation capabilities.
 
-## Features
+## Overview
 
-- **Lead Qualification Questionnaire**: Multi-step form capturing project details, financial capacity, and timeline
-- **Lead Scoring Engine**: Automatic scoring (0-100) based on budget, timeline, material readiness, and experience
-- **File Uploads**: Accept scripts, treatments, pitch decks (PDF, DOCX, PPTX)
-- **Idea Submissions**: For leads without material ready
-- **Analysis Integration**: Connects to your external analysis software for project evaluation
-- **Email Notifications**: Automated welcome emails and analysis delivery
-- **Lead Management API**: Admin endpoints for tracking and managing leads
+This platform presents professionally crafted film and TV pitch decks through an elegant, user-friendly interface optimized for industry professionals, investors, and collaborators.
 
-## Tech Stack
+### Features
 
-- **Backend**: FastAPI (Python 3.11+)
-- **Database**: PostgreSQL with SQLAlchemy async
-- **File Storage**: Local filesystem or S3
-- **Background Tasks**: Celery with Redis
-- **Email**: FastAPI-Mail (SMTP)
+- **Cinematic Presentation**: Elegant showcase of pitch deck projects
+- **Interactive Gallery**: Filterable and searchable project grid
+- **Quick View**: Preview pitch deck slides without leaving gallery
+- **Detailed View**: Full-screen lightbox for comprehensive slide viewing
+- **Lead Capture**: Form for interested parties to express interest
+- **Responsive Design**: Optimized for all device sizes
+
+## Technology Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animation**: Framer Motion
+- **Forms**: React Hook Form + Zod
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Vercel
 
 ## Project Structure
 
 ```
-Pitch_Decks_Site/
-├── backend/
-│   └── app/
-│       ├── api/              # API route handlers
-│       │   ├── analysis.py   # Analysis endpoints
-│       │   ├── leads.py      # Lead management
-│       │   ├── questionnaire.py  # Form submission
-│       │   └── submissions.py    # File uploads
-│       ├── core/             # Configuration
-│       ├── db/               # Database models & session
-│       ├── schemas/          # Pydantic validation schemas
-│       └── services/         # Business logic
-│           ├── analysis_integration.py  # External software integration
-│           ├── email_service.py         # Email sending
-│           ├── file_handler.py          # Upload handling
-│           └── lead_scoring.py          # Scoring engine
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-└── .env.example
+src/
+├── app/                 # Next.js App Router pages
+│   ├── (public)/        # Public-facing pages
+│   │   ├── page.tsx     # Homepage
+│   │   ├── gallery/     # Gallery page
+│   │   └── deck/[id]/   # Individual deck pages
+│   └── layout.tsx       # Root layout
+├── components/          # React components
+│   ├── ui/              # Base UI components
+│   ├── layout/          # Layout components
+│   ├── gallery/         # Gallery-specific components
+│   ├── deck/            # Deck viewing components
+│   └── forms/           # Form components
+├── lib/                 # Utilities and services
+│   ├── supabase.ts      # Database client and queries
+│   └── utils.ts         # Utility functions
+└── types/               # TypeScript type definitions
 ```
 
-## Quick Start
+## Getting Started
 
-### 1. Clone and Setup Environment
+### Prerequisites
 
+- Node.js 18+
+- npm or pnpm
+
+### Installation
+
+1. Install dependencies:
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+npm install
 ```
 
-### 2. Run with Docker
-
+2. Set up environment variables:
 ```bash
-docker-compose up -d
+cp .env.example .env.local
+# Add your Supabase credentials
 ```
 
-API will be available at `http://localhost:8000`
-
-### 3. Run Locally (Development)
-
+3. Run the development server:
 ```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # or `venv\Scripts\activate` on Windows
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Start PostgreSQL and Redis (or use docker-compose for just those)
-docker-compose up -d db redis
-
-# Run the API
-cd backend
-uvicorn app.main:app --reload
+npm run dev
 ```
 
-## API Endpoints
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
-### Questionnaire
-- `GET /api/questionnaire/options` - Get form dropdown options
-- `POST /api/questionnaire/submit` - Submit questionnaire
+## Environment Variables
 
-### Submissions
-- `POST /api/submissions/upload` - Upload material (script/treatment/deck)
-- `POST /api/submissions/idea` - Submit idea description
-- `GET /api/submissions/{id}/status` - Check submission status
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
 
-### Analysis
-- `POST /api/analysis/trigger` - Trigger analysis for a submission
-- `GET /api/analysis/lead/{lead_id}` - Get all analyses for a lead
-- `GET /api/analysis/{id}` - Get specific analysis result
+## Database Setup
 
-### Leads (Admin)
-- `GET /api/leads/` - List leads with filtering
-- `GET /api/leads/stats` - Dashboard statistics
-- `GET /api/leads/{id}` - Get lead details
-- `GET /api/leads/{id}/full` - Full lead profile with questionnaire/submissions
-- `PATCH /api/leads/{id}/status` - Update lead pipeline status
+Run these SQL commands in your Supabase SQL editor to create the required tables:
 
-## Lead Scoring
+```sql
+-- Create decks table
+CREATE TABLE decks (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  logline TEXT,
+  genre TEXT[],
+  target_audience VARCHAR(255),
+  production_status VARCHAR(100),
+  cover_image_url TEXT,
+  pdf_url TEXT,
+  slide_count INTEGER DEFAULT 0,
+  view_count INTEGER DEFAULT 0,
+  comparable_titles TEXT[],
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
-Leads are scored 0-100 based on:
+-- Create slides table
+CREATE TABLE slides (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  deck_id UUID REFERENCES decks(id) ON DELETE CASCADE,
+  slide_number INTEGER NOT NULL,
+  image_url TEXT NOT NULL,
+  caption TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
-| Factor | Max Points | Description |
-|--------|------------|-------------|
-| Budget | 30 | Financial capacity ($10M+ = 30pts) |
-| Material Readiness | 25 | Development stage + has material |
-| Timeline | 20 | How soon they need services |
-| Project Type | 15 | Feature film/TV series score higher |
-| Experience | 10 | Previous industry credits |
+-- Create leads table
+CREATE TABLE leads (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(50),
+  company VARCHAR(255),
+  project_type TEXT[],
+  user_type VARCHAR(50) NOT NULL,
+  budget_range VARCHAR(20) NOT NULL,
+  timeline VARCHAR(20) NOT NULL,
+  project_description TEXT NOT NULL,
+  lead_score INTEGER DEFAULT 0,
+  status VARCHAR(20) DEFAULT 'new',
+  referral_source VARCHAR(50) DEFAULT 'website',
+  deck_id UUID REFERENCES decks(id) ON DELETE SET NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
-**Tiers:**
-- **Hot** (70+): High priority, ready to engage
-- **Warm** (45-69): Good potential, follow up
-- **Cold** (20-44): Needs nurturing
-- **Unqualified** (<20): Not a fit
+-- Create indexes
+CREATE INDEX idx_decks_created_at ON decks(created_at DESC);
+CREATE INDEX idx_decks_genre ON decks USING GIN(genre);
+CREATE INDEX idx_slides_deck_id ON slides(deck_id);
+CREATE INDEX idx_slides_slide_number ON slides(deck_id, slide_number);
+CREATE INDEX idx_leads_deck_id ON leads(deck_id);
+CREATE INDEX idx_leads_status ON leads(status);
+CREATE INDEX idx_leads_created_at ON leads(created_at DESC);
 
-## Analysis Software Integration
+-- Enable Row Level Security
+ALTER TABLE decks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE slides ENABLE ROW LEVEL SECURITY;
+ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
 
-The platform integrates with your existing analysis software via HTTP API.
+-- Create policies
+CREATE POLICY "Decks are viewable by everyone" ON decks FOR
+  SELECT USING (true);
 
-Configure in `.env`:
+CREATE POLICY "Anyone can submit leads" ON leads FOR
+  INSERT WITH CHECK (true);
 ```
-ANALYSIS_SOFTWARE_URL=http://your-analysis-software/analyze
-ANALYSIS_SOFTWARE_API_KEY=your-api-key
-```
 
-Expected request/response format is documented in `backend/app/services/analysis_integration.py`.
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## License
 
-Proprietary - All rights reserved.
+This project is licensed for internal use.
