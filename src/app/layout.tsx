@@ -16,8 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'FilmDecks | AI-Powered Pitch Deck Analysis',
-    template: '%s | FilmDecks'
+    default: '848 Washington Media | Professional Pitch Deck Services',
+    template: '%s | 848 Washington Media'
   },
   description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals who can help bring your story to life.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'AI story feedback'],
@@ -38,22 +38,22 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://filmdecks.biz',
-    siteName: 'FilmDecks',
-    title: 'FilmDecks | AI-Powered Pitch Deck Analysis',
+    url: 'https://848washington.com',
+    siteName: '848 Washington Media',
+    title: '848 Washington Media | Professional Pitch Deck Services',
     description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FilmDecks - AI-Powered Pitch Deck Analysis',
+        alt: '848 Washington Media - Professional Pitch Deck Services',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FilmDecks | AI-Powered Pitch Deck Analysis',
+    title: '848 Washington Media | Professional Pitch Deck Services',
     description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline.',
     images: ['/twitter-image.png'],
   },
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://filmdecks.biz'),
+  metadataBase: new URL('https://848washington.com'),
 };
 
 export default function RootLayout({

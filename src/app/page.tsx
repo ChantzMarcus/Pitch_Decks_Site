@@ -8,18 +8,18 @@ export default async function Home() {
 
 export const metadata = {
   title: 'Home',
-  description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development. Browse our gallery of successful pitch decks and start your project today.',
-  keywords: ['pitch deck services', 'film financing', 'TV pitch deck', 'screenplay packaging', 'entertainment pitch deck', 'film development'],
+  description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals who can help bring your story to life.',
+  keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'AI story feedback'],
   openGraph: {
-    title: '848 Washington Media | Film Pitch Decks & Creative Development',
-    description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
+    title: '848 Washington Media | Professional Pitch Deck Services',
+    description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
     url: 'https://848washington.com',
     images: [
       {
         url: '/og-home.png',
         width: 1200,
         height: 630,
-        alt: '848 Washington Media - Professional Pitch Deck Services',
+        alt: 'FilmDecks - AI-Powered Pitch Deck Analysis',
       },
     ],
   },

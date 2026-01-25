@@ -25,7 +25,7 @@ const socialLinks = [
   { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
   { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
   { icon: Youtube, href: 'https://youtube.com', label: 'YouTube' },
-  { icon: Mail, href: 'mailto:hello@filmdecks.biz', label: 'Email' },
+  { icon: Mail, href: 'mailto:hello@848washington.com', label: 'Email' },
 ];
 
 function FooterLink({ href, label }: { href: string; label: string }) {
@@ -86,19 +86,19 @@ export function Footer() {
               transition={{ duration: 0.6 }}
             >
               <h3 className="font-display text-2xl font-semibold text-charcoal mb-4">
-                FilmDecks
+                848 Washington Media
               </h3>
               <p className="text-charcoal/60 mb-6 max-w-sm">
-                We help filmmakers craft compelling pitch decks that get their projects noticed.
+                Professional pitch deck services for film and TV. Get your story funded with expert packaging, financial analysis, and creative development.
               </p>
 
               {/* Email CTA */}
               <a
-                href="mailto:hello@filmdecks.biz"
+                href="mailto:hello@848washington.com"
                 className="group inline-flex items-center gap-2 text-accent-indigo hover:gap-3 transition-all"
               >
                 <span className="border-b border-accent-indigo pb-0.5">
-                  hello@filmdecks.biz
+                  hello@848washington.com
                 </span>
                 <ArrowUpRight className="w-4 h-4" />
               </a>
@@ -161,7 +161,7 @@ export function Footer() {
             viewport={{ once: true }}
             className="text-sm text-charcoal/50"
           >
-            © {new Date().getFullYear()} FilmDecks. All rights reserved.
+            © {new Date().getFullYear()} 848 Washington Media. All rights reserved.
           </motion.p>
 
           <motion.div
@@ -204,7 +204,7 @@ export function MinimalFooter() {
     <footer className="bg-paper border-t border-charcoal/10 py-8">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-display text-lg text-charcoal">FilmDecks</p>
+          <p className="font-display text-lg text-charcoal">848 Washington Media</p>
           <p className="text-sm text-charcoal/50">
             © {new Date().getFullYear()} All rights reserved.
           </p>

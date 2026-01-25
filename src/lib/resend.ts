@@ -3,8 +3,8 @@ import { Resend } from 'resend';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Email configuration
-const FROM_EMAIL = process.env.REPLY_TO_EMAIL || 'hello@filmdecks.biz';
-const NOTIFICATION_EMAIL = process.env.LEAD_NOTIFICATION_EMAIL || 'hello@filmdecks.biz';
+const FROM_EMAIL = process.env.REPLY_TO_EMAIL || 'hello@848washington.com';
+const NOTIFICATION_EMAIL = process.env.LEAD_NOTIFICATION_EMAIL || 'hello@848washington.com';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 interface NewLeadNotificationParams {
