@@ -138,7 +138,7 @@ export function useParallax(speed = 0.5) {
 
 // Magnetic button effect hook
 export function useMagneticButton(strength = 0.3) {
-  const ref = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
+  const ref = useRef<HTMLButtonElement | HTMLAnchorElement | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     if (!ref.current) return;
