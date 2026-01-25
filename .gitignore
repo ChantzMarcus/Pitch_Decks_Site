@@ -51,10 +51,15 @@ credentials.json
 config/secrets.*
 
 # Large source files (working copies - not used by website)
-# The actual images used are in public/decks/
+# The actual images used are in public/decks/ (stored in Supabase Storage)
 CRUDE/
 Hear Transplant/
 Navy Divers/
 TCG/
 The Counterfeit/
 *.mp4
+.vercel
+.env*.local
+
+# Image files - stored in Supabase Storage, not in git
+public/decks/
