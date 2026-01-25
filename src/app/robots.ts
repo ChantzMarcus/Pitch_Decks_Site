@@ -25,7 +25,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/',
       },
     ],
-    sitemap: 'https://848washington.com/sitemap.xml',
-    host: 'https://848washington.com',
+    sitemap: 'https://filmdecks.biz/sitemap.xml',
+    host: 'https://filmdecks.biz',
   };
 }

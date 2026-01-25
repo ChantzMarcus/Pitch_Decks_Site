@@ -40,8 +40,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           type="webpage"
           data={{
             url: '',
-            name: 'FilmDecks | AI-Powered Pitch Deck Analysis',
-            description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
+            name: 'FilmDecks | Professional Pitch Packaging',
+            description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
           }}
         />
         {/* Hero Section */}
@@ -61,7 +61,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             </div>
             <div className="flex items-center gap-2">
               <FileText size={18} />
-              <span>100+ Happy Creators</span>
+              <span>100+ Success Stories</span>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
               </div>
               <p className="text-charcoal/70 mb-6">
                 You're a writer, author, or creator with a project that deserves to be on screen.
-                Get a free professional score and see how we can help.
+                Get a free professional score and see how we can help. We help you get everything you need to go to market.
               </p>
               <Link
                 href="/questionnaire"

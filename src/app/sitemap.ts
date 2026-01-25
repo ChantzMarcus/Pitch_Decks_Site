@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getAllDecks } from '@/db';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://848washington.com';
+  const baseUrl = 'https://filmdecks.biz';
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

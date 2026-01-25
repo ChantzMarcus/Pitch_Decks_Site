@@ -16,14 +16,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: '848 Washington Media | Professional Pitch Deck Services',
-    template: '%s | 848 Washington Media'
+    default: 'FilmDecks | Professional Pitch Packaging',
+    template: '%s | FilmDecks'
   },
-  description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals who can help bring your story to life.',
-  keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'AI story feedback'],
-  authors: [{ name: '848 Washington Media' }],
-  creator: '848 Washington Media',
-  publisher: '848 Washington Media',
+  description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
+  keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'pitch packaging'],
+  authors: [{ name: 'FilmDecks' }],
+  creator: 'FilmDecks',
+  publisher: 'FilmDecks',
   robots: {
     index: true,
     follow: true,
@@ -38,23 +38,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://848washington.com',
-    siteName: '848 Washington Media',
-    title: '848 Washington Media | Professional Pitch Deck Services',
-    description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
+    url: 'https://filmdecks.biz',
+    siteName: 'FilmDecks',
+    title: 'FilmDecks | Professional Pitch Packaging',
+    description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry's most trusted evaluation.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: '848 Washington Media - Professional Pitch Deck Services',
+        alt: 'FilmDecks - Professional Pitch Packaging',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '848 Washington Media | Professional Pitch Deck Services',
-    description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline.',
+    title: 'FilmDecks | Professional Pitch Packaging',
+    description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis.',
     images: ['/twitter-image.png'],
   },
   icons: {
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://848washington.com'),
+  metadataBase: new URL('https://filmdecks.biz'),
 };
 
 export default function RootLayout({
