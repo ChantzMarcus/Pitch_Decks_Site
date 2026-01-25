@@ -84,14 +84,14 @@ export default function CalendlyEmbed({
       transition={{ delay: 0.3 }}
       className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-200"
     >
-      <div className="flex items-start gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 mb-4 text-center sm:text-left">
         <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
           <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
         <div>
-          <h3 className="font-display text-xl font-bold text-charcoal mb-1">
+          <h3 className="font-display text-lg sm:text-xl font-bold text-charcoal mb-1">
             You Qualify for a Strategy Call!
           </h3>
           <p className="text-charcoal/70 text-sm">
