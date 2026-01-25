@@ -53,7 +53,7 @@ export function Preloader({ onComplete, duration = 2000 }: PreloaderProps) {
               className="mb-12"
             >
               <h1 className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tight">
-                FilmDecks
+                848 Washington Media
               </h1>
             </motion.div>
 
@@ -117,7 +117,7 @@ export function MinimalPreloader({ onComplete, duration = 1200 }: MinimalPreload
             transition={{ duration: 0.4 }}
             className="font-display text-2xl md:text-3xl text-charcoal"
           >
-            FilmDecks
+            848 Washington Media
           </motion.div>
         </motion.div>
       )}

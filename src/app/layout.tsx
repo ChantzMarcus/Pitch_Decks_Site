@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   },
   description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals who can help bring your story to life.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'AI story feedback'],
-  authors: [{ name: 'FilmDecks' }],
-  creator: 'FilmDecks',
-  publisher: 'FilmDecks',
+  authors: [{ name: '848 Washington Media' }],
+  creator: '848 Washington Media',
+  publisher: '848 Washington Media',
   robots: {
     index: true,
     follow: true,

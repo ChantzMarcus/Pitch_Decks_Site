@@ -3,14 +3,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import HeroSonarStyle from '@/components/HeroSonarStyle';
+import Hero from '@/components/Hero';
 import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import ServicesShowcase from '@/components/ServicesShowcase';
 import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
+import { Preloader } from '@/components/Preloader';
+import { Footer } from '@/components/Footer';
 import type { Deck } from '@/db';
-import { ArrowRight, FileText, BarChart3, Sparkles, PenTool, Star, TrendingUp } from 'lucide-react';
+import { ArrowRight, FileText, BarChart3, Sparkles, Star, TrendingUp } from 'lucide-react';
 
 interface HomeContentProps {
   initialDecks: Deck[];
@@ -19,7 +21,7 @@ interface HomeContentProps {
 export default function HomeContent({ initialDecks }: HomeContentProps) {
   const [selectedDeck, setSelectedDeck] = useState<Deck | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   const handleQuickView = (deck: Deck) => {
     setSelectedDeck(deck);
     setIsModalOpen(true);
@@ -31,17 +33,19 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-paper">
-      <StructuredData
-        type="webpage"
-        data={{
-          url: '',
-          name: '848 Washington Media | Film Pitch Decks & Creative Development',
-          description: 'Professional pitch deck services for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
-        }}
-      />
-      {/* Hero Section */}
-      <HeroSonarStyle />
+    <>
+      <Preloader />
+      <main className="min-h-screen bg-paper">
+        <StructuredData
+          type="webpage"
+          data={{
+            url: '',
+            name: 'FilmDecks | AI-Powered Pitch Deck Analysis',
+            description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
+          }}
+        />
+        {/* Hero Section */}
+        <Hero />
 
       {/* Trust Bar */}
       <section className="py-8 border-y border-charcoal/10 bg-white">
@@ -197,5 +201,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         />
       )}
     </main>
+    <Footer />
+  </>
   );
 }

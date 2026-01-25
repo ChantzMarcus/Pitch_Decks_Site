@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Structured Data (JSON-LD) component for SEO
  * Adds schema.org markup to help search engines understand your content

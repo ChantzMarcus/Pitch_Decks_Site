@@ -1,57 +1,83 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
-import { revealVariants, staggerContainer, scaleRevealVariants, slideLeftVariants, slideRightVariants } from '@/hooks/useScrollAnimations';
-
-type RevealType = 'fade-up' | 'fade-left' | 'fade-right' | 'scale' | 'stagger';
+import { motion, useInView, Transition } from 'framer-motion';
+import { ReactNode, useRef } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
-  className?: string;
   delay?: number;
   duration?: number;
-  type?: RevealType;
-  threshold?: number;
+  direction?: 'up' | 'down' | 'left' | 'right' | 'fade';
+  distance?: number;
+  className?: string;
   once?: boolean;
 }
 
+// Type-safe easing array for Framer Motion v11+
+const easeBezier = [0.25, 0.46, 0.45, 0.94] as const;
+
+/**
+ * Scroll Reveal Component
+ * Reveals content with a smooth animation when it enters the viewport
+ * Part of 2025 scroll-triggered animation trends
+ */
 export function ScrollReveal({
   children,
-  className = '',
   delay = 0,
-  duration = 0.8,
-  type = 'fade-up',
-  threshold = 0.1,
+  duration = 0.6,
+  direction = 'up',
+  distance = 50,
+  className = '',
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: threshold, once });
+  const isInView = useInView(ref, {
+    once,
+    amount: 0.1,
+  });
 
-  const getVariants = () => {
-    switch (type) {
-      case 'fade-left':
-        return slideLeftVariants;
-      case 'fade-right':
-        return slideRightVariants;
-      case 'scale':
-        return scaleRevealVariants;
-      case 'stagger':
-        return staggerContainer;
+  const getInitialPosition = () => {
+    switch (direction) {
+      case 'up':
+        return { y: distance, opacity: 0 };
+      case 'down':
+        return { y: -distance, opacity: 0 };
+      case 'left':
+        return { x: distance, opacity: 0 };
+      case 'right':
+        return { x: -distance, opacity: 0 };
+      case 'fade':
+        return { opacity: 0 };
       default:
-        return revealVariants;
+        return { y: distance, opacity: 0 };
     }
   };
 
-  const variants = getVariants();
+  const getFinalPosition = () => {
+    switch (direction) {
+      case 'up':
+      case 'down':
+        return { y: 0, opacity: 1 };
+      case 'left':
+      case 'right':
+        return { x: 0, opacity: 1 };
+      case 'fade':
+        return { opacity: 1 };
+      default:
+        return { y: 0, opacity: 1 };
+    }
+  };
 
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={variants}
-      transition={{ duration, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={getInitialPosition()}
+      animate={isInView ? getFinalPosition() : getInitialPosition()}
+      transition={{
+        duration,
+        delay,
+        ease: easeBezier,
+      } as Transition}
       className={className}
     >
       {children}
@@ -59,117 +85,64 @@ export function ScrollReveal({
   );
 }
 
-// Text reveal component (animates text word by word)
-interface TextRevealProps {
-  text: string;
-  className?: string;
-  delay?: number;
-  wordDelay?: number;
-}
-
-export function TextReveal({ text, className = '', delay = 0, wordDelay = 0.04 }: TextRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.5, once: true });
-
-  const words = text.split(' ');
-
-  return (
-    <div ref={ref} className={className}>
-      <span className="inline-flex flex-wrap">
-        {words.map((word, i) => (
-          <motion.span
-            key={i}
-            custom={i}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{
-              delay: delay + i * wordDelay,
-              duration: 0.5,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-            className="inline-block mr-1.5"
-          >
-            {word}
-          </motion.span>
-        ))}
-      </span>
-    </div>
-  );
-}
-
-// Parallax image component
-interface ParallaxImageProps {
-  src: string;
-  alt: string;
-  className?: string;
-  speed?: number;
-}
-
-export function ParallaxImage({ src, alt, className = '', speed = 0.3 }: ParallaxImageProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0 });
-
-  return (
-    <div ref={ref} className={`overflow-hidden ${className}`}>
-      <motion.img
-        src={src}
-        alt={alt}
-        initial={{ scale: 1.2 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: '-10%' }}
-        transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="w-full h-full object-cover"
-      />
-    </div>
-  );
-}
-
-// Stagger children wrapper
-interface StaggerRevealProps {
-  children: ReactNode;
-  className?: string;
-  staggerDelay?: number;
-  childDelay?: number;
-}
-
+/**
+ * Stagger Children Reveal
+ * Reveals multiple items with staggered delay
+ */
 export function StaggerReveal({
   children,
-  className = '',
   staggerDelay = 0.1,
-  childDelay = 0,
-}: StaggerRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.1, once: true });
+  className = '',
+}: {
+  children: ReactNode[];
+  staggerDelay?: number;
+  className?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, {
+    once: true,
+    amount: 0.1,
+  });
 
   return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={{
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-            delayChildren: childDelay,
-          },
-        },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div ref={containerRef} className={className}>
+      {children.map((child, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{
+            duration: 0.5,
+            delay: index * staggerDelay,
+            ease: easeBezier,
+          } as Transition}
+        >
+          {child}
+        </motion.div>
+      ))}
+    </div>
   );
 }
 
-// Reveal item for use inside StaggerReveal
+/**
+ * Export types for external use
+ */
+export type { ScrollRevealProps };
+
+/**
+ * Reveal Item Component
+ * For use inside StaggerReveal
+ */
 export function RevealItem({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 30 }}
+      transition={{
+        duration: 0.5,
+        ease: easeBezier,
+      } as Transition}
       className={className}
     >
       {children}

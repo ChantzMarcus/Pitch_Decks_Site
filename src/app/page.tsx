@@ -11,9 +11,9 @@ export const metadata = {
   description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals who can help bring your story to life.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'AI story feedback'],
   openGraph: {
-    title: '848 Washington Media | Professional Pitch Deck Services',
+    title: 'FilmDecks | AI-Powered Pitch Deck Analysis',
     description: 'Transform your film concept into a compelling pitch deck. Get instant AI feedback on your logline and connect with industry professionals.',
-    url: 'https://848washington.com',
+    url: 'https://filmdecks.biz',
     images: [
       {
         url: '/og-home.png',

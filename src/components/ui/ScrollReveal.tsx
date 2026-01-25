@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useInView, UseInViewOptions } from 'framer-motion';
+import { motion, useInView, UseInViewOptions, Transition } from 'framer-motion';
 import { ReactNode, useRef } from 'react';
 
 interface ScrollRevealProps {
@@ -13,6 +13,9 @@ interface ScrollRevealProps {
   viewportMargin?: UseInViewOptions['margin'];
   once?: boolean;
 }
+
+// Custom cubic bezier easing function compatible with Framer Motion v11+
+const easeBezier = [0.25, 0.46, 0.45, 0.94] as const;
 
 /**
  * Scroll Reveal Component
@@ -75,8 +78,8 @@ export default function ScrollReveal({
       transition={{
         duration,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
+        ease: easeBezier,
+      } as Transition}
       className={className}
     >
       {children}
@@ -113,8 +116,8 @@ export function StaggerReveal({
           transition={{
             duration: 0.5,
             delay: index * staggerDelay,
-            ease: [0.25, 0.46, 0.45, 0.94],
-          }}
+            ease: easeBezier,
+          } as Transition}
         >
           {child}
         </motion.div>

@@ -8,15 +8,25 @@ import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Only use scroll hooks on client side to avoid SSR issues
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Parallax effects
+  // Parallax effects - defined at top level
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
+  const blobX = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const blobY = useTransform(scrollYProgress, [0, 1], [0, -80]);
 
   // Mouse tracking for subtle parallax
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -43,30 +53,32 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper">
       {/* Animated gradient blobs */}
-      <motion.div
-        style={{
-          x: useTransform(scrollYProgress, [0, 1], [0, 80]),
-          y: useTransform(scrollYProgress, [0, 1], [0, -80]),
-        }}
-        className="absolute inset-0 opacity-30 pointer-events-none"
-      >
+      {isMounted && (
         <motion.div
-          animate={{
-            x: mousePosition.x * 0.5,
-            y: mousePosition.y * 0.5,
+          style={{
+            x: blobX,
+            y: blobY,
           }}
-          transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-          className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-indigo/30 rounded-full filter blur-3xl"
-        />
-        <motion.div
-          animate={{
-            x: mousePosition.x * -0.3,
-            y: mousePosition.y * -0.3,
-          }}
-          transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-          className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-gold/30 rounded-full filter blur-3xl"
-        />
-      </motion.div>
+          className="absolute inset-0 opacity-30 pointer-events-none"
+        >
+          <motion.div
+            animate={{
+              x: mousePosition.x * 0.5,
+              y: mousePosition.y * 0.5,
+            }}
+            transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+            className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-indigo/30 rounded-full filter blur-3xl"
+          />
+          <motion.div
+            animate={{
+              x: mousePosition.x * -0.3,
+              y: mousePosition.y * -0.3,
+            }}
+            transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+            className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-gold/30 rounded-full filter blur-3xl"
+          />
+        </motion.div>
+      )}
 
       {/* Main content */}
       <motion.div
