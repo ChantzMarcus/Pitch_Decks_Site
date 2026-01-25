@@ -1,11 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import CalendlyEmbed from './CalendlyEmbed';
 
 interface EvaluationResultProps {
   score: number;
   isAIGenerated: boolean;
   userName?: string;
+  userEmail?: string;
 }
 
 /**
@@ -58,9 +60,11 @@ export default function EvaluationResult({
   score,
   isAIGenerated,
   userName,
+  userEmail,
 }: EvaluationResultProps) {
   const { tier, color, bgColor, message, emoji } = getPotentialTier(score);
   const firstName = userName?.split(' ')[0] || 'there';
+  const isQualified = score >= 75;
 
   return (
     <motion.div
@@ -134,11 +138,26 @@ export default function EvaluationResult({
         </div>
       </motion.div>
 
+      {/* Calendly CTA for Qualified Leads */}
+      {isQualified && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-6"
+        >
+          <CalendlyEmbed
+            prefillName={userName}
+            prefillEmail={userEmail}
+          />
+        </motion.div>
+      )}
+
       {/* What's Next Section */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: isQualified ? 0.6 : 0.5 }}
         className="bg-white rounded-2xl border border-charcoal/10 p-6 mb-6"
       >
         <h4 className="font-display text-xl font-bold text-charcoal mb-4">

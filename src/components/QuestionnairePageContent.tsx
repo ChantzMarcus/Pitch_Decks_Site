@@ -89,6 +89,7 @@ export default function QuestionnairePageContent() {
             score={teaserScore?.overall || 70}
             isAIGenerated={!!teaserScore}
             userName={submittedData.name}
+            userEmail={submittedData.email}
           />
 
           {/* AI Analysis Status - show if analysis was limited */}

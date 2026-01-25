@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Sparkles } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
+import { SocialProofBadge } from '@/components/SocialProof';
 
 // Types for form data
 export interface TeaserScore {
@@ -135,6 +136,13 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
     <>
     <div className="min-h-screen bg-paper py-12 px-4">
       <div className="max-w-2xl mx-auto">
+        {/* Social Proof Badge - only show on first step */}
+        {step === 0 && (
+          <div className="mb-6">
+            <SocialProofBadge />
+          </div>
+        )}
+
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
