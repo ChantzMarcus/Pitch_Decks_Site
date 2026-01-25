@@ -160,8 +160,8 @@ export const conversion = {
       category: 'conversion',
       properties: {
         funnel_stage: 'consideration',
-        budget_tier: data.budget,
-        project_format: data.format,
+        ...(data.budget && { budget_tier: data.budget }),
+        ...(data.format && { project_format: data.format }),
       },
     });
   },

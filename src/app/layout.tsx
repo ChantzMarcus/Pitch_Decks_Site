@@ -2,15 +2,14 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
 import StructuredData from '@/components/StructuredData';
-import AnalyticsProvider from '@/components/AnalyticsProvider';
 
-const fraunces = Fraunces({ 
-  subsets: ['latin'], 
+const fraunces = Fraunces({
+  subsets: ['latin'],
   variable: '--font-fraunces',
   display: 'swap'
 });
-const inter = Inter({ 
-  subsets: ['latin'], 
+const inter = Inter({
+  subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap'
 });
@@ -75,11 +74,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
-        <AnalyticsProvider>
-          <StructuredData type="organization" />
-          <StructuredData type="service" />
-          {children}
-        </AnalyticsProvider>
+        <StructuredData type="organization" />
+        <StructuredData type="service" />
+        {children}
       </body>
     </html>
   );
