@@ -7,15 +7,7 @@ const nextConfig = {
   env: {
     BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/questionnaire',
-        permanent: false,
-      },
-    ]
-  },
+  // Removed redirect - homepage is now at / via (public)/page.tsx
 }
 
 module.exports = nextConfig
