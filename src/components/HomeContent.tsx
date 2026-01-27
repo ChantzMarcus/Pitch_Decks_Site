@@ -11,6 +11,8 @@ import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
 import { Preloader } from '@/components/Preloader';
 import { Footer } from '@/components/Footer';
+import SocialProof from '@/components/SocialProof';
+import DualCTA from '@/components/DualCTA';
 import type { Deck } from '@/db';
 import { ArrowRight, FileText, BarChart3, Sparkles, Star, TrendingUp } from 'lucide-react';
 
@@ -66,6 +68,9 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           </div>
         </div>
       </section>
+
+      {/* Social Proof - Upwork Profile */}
+      <SocialProof />
 
       {/* Two Paths CTA */}
       <section className="py-20 bg-paper">
@@ -191,6 +196,9 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         videoSrc="/VF-LOOP-OK-OK.mp4"
         autoPlay={false}
       />
+
+      {/* Dual CTA - Primary Conversion Section */}
+      <DualCTA />
 
       {/* Quick View Modal */}
       {selectedDeck && (
