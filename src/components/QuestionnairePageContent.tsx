@@ -6,27 +6,54 @@ import StoryQuestionnaire, { QuestionnaireData, TeaserScore } from '@/components
 import EvaluationResult from '@/components/EvaluationResult';
 import AIServiceStatus from '@/components/AIServiceStatus';
 import StructuredData from '@/components/StructuredData';
+import ScoreReveal from '@/components/ui/ScoreReveal';
+import BlurredAnalysisPreview from '@/components/ui/BlurredAnalysisPreview';
+import UrgencyCounter from '@/components/ui/UrgencyCounter';
+import AsyncProcessingScreen from '@/components/ui/AsyncProcessingScreen';
 import Link from 'next/link';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Sparkles, Mail, Users, Calendar } from 'lucide-react';
 
-type SubmissionState = 'form' | 'submitting' | 'success' | 'error';
+type SubmissionState = 'form' | 'submitting' | 'processing' | 'revealing' | 'success' | 'error';
 
 export default function QuestionnairePageContent() {
   const [state, setState] = useState<SubmissionState>('form');
   const [submittedData, setSubmittedData] = useState<QuestionnaireData | null>(null);
   const [teaserScore, setTeaserScore] = useState<TeaserScore | null>(null);
+  const [showFullContent, setShowFullContent] = useState(false);
+  const [leadId, setLeadId] = useState<string | null>(null);
 
-  const handleSubmit = async (data: QuestionnaireData, score?: TeaserScore) => {
+  const handleSubmit = async (data: QuestionnaireData, score?: TeaserScore, leadIdParam?: string) => {
     setState('submitting');
 
     try {
       setSubmittedData(data);
       setTeaserScore(score || null);
-      setState('success');
+      if (leadIdParam) setLeadId(leadIdParam);
+      
+      // StakeOS processing takes ~15 minutes, so always show processing screen
+      // If we have a teaser score, show quick reveal first, then processing
+      if (score && score.overall) {
+        // Quick teaser score available - show reveal then processing
+        setState('revealing');
+      } else {
+        // No immediate score - go straight to processing
+        setState('processing');
+      }
     } catch (error) {
       console.error('Submission error:', error);
       setState('error');
     }
+  };
+
+  const handleScoreRevealComplete = () => {
+    // After reveal, show processing screen for full StakeOS analysis
+    setState('processing');
+  };
+
+  const handleLeaveProcessing = () => {
+    // User chooses to leave - they'll get email when ready
+    setShowFullContent(true);
+    setState('success');
   };
 
   return (
@@ -52,7 +79,12 @@ export default function QuestionnairePageContent() {
 
       {/* Main Content */}
       {state === 'form' && (
-        <StoryQuestionnaire onComplete={handleSubmit} />
+        <StoryQuestionnaire 
+          onComplete={(data, score, leadId) => {
+            if (leadId) setLeadId(leadId);
+            handleSubmit(data, score);
+          }} 
+        />
       )}
 
       {state === 'submitting' && (
@@ -75,34 +107,127 @@ export default function QuestionnairePageContent() {
               />
             </div>
             <h2 className="font-display text-2xl font-bold text-charcoal mb-2">
-              Analyzing Your Story...
+              Processing Your Story...
             </h2>
-            <p className="text-charcoal/60">This will just take a moment</p>
+            <p className="text-charcoal/60">Your story concept is being processed through our proprietary system and compared to similar success stories!</p>
           </motion.div>
         </div>
       )}
 
-      {state === 'success' && submittedData && (
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          {/* Main Evaluation Result with sales messaging */}
-          <EvaluationResult
+      {/* Score Reveal Animation */}
+      {state === 'revealing' && submittedData && (
+        <div className="min-h-[80vh] flex items-center justify-center px-6">
+          <ScoreReveal
             score={teaserScore?.overall || 70}
-            isAIGenerated={!!teaserScore}
             userName={submittedData.name}
+            onComplete={handleScoreRevealComplete}
           />
+        </div>
+      )}
 
-          {/* AI Analysis Status - show if analysis was limited */}
-          {!teaserScore && (
-            <div className="mt-6 max-w-2xl mx-auto">
-              <AIServiceStatus status="manual_review" />
+      {state === 'success' && submittedData && showFullContent && (
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          {/* Social Proof - Urgency Counter */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <UrgencyCounter variant="inline" className="justify-center" />
+          </motion.div>
+
+          {/* Main Evaluation Result */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <EvaluationResult
+              score={teaserScore?.overall || 70}
+              isAIGenerated={!!teaserScore}
+              userName={submittedData.name}
+            />
+          </motion.div>
+
+          {/* Blurred Full Analysis Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8"
+          >
+            <BlurredAnalysisPreview
+              overallScore={teaserScore?.overall || 70}
+              userEmail={submittedData.email}
+              userName={submittedData.name}
+            />
+          </motion.div>
+
+          {/* Email Delivery - No Account Needed */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-8 max-w-2xl mx-auto"
+          >
+            <div className="bg-gradient-to-br from-accent-indigo/5 to-accent-gold/5 rounded-2xl border-2 border-accent-indigo/20 p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-accent-indigo/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="text-accent-indigo" size={24} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-charcoal mb-2">No Account Needed - Results Sent to Your Email</h3>
+                  <p className="text-sm text-charcoal/70 mb-3">
+                    Your complete StakeOS analysis will be emailed to <span className="font-medium text-charcoal">{submittedData.email}</span> within 15 minutes. 
+                    You&apos;ll receive a secure link to view your full report - no login required.
+                  </p>
+                  <div className="bg-white rounded-lg p-4 border border-charcoal/10 mb-3">
+                    <p className="text-xs text-charcoal/50 mb-2 font-medium">Your email will include:</p>
+                    <ul className="space-y-1 text-sm text-charcoal/70">
+                      <li className="flex items-center gap-2">
+                        <span className="text-accent-indigo">✓</span>
+                        Complete StakeOS analysis breakdown
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-accent-indigo">✓</span>
+                        Market comparison data
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-accent-indigo">✓</span>
+                        Production feasibility insights
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-accent-indigo">✓</span>
+                        Secure link to view full report (no account needed)
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bg-accent-gold/10 rounded-lg p-3 border border-accent-gold/20">
+                    <p className="text-xs text-charcoal/70">
+                      <strong className="text-charcoal">Within 72 hours:</strong> A human expert from our development team will personally review your story 
+                      and reach out with personalized feedback and next steps.
+                    </p>
+                  </div>
+                  <p className="text-xs text-charcoal/50 mt-3">
+                    Don&apos;t see it? Check your spam folder or{' '}
+                    <Link href="/contact" className="text-accent-indigo hover:underline">
+                      contact us
+                    </Link>
+                    {' '}• Want to track multiple projects?{' '}
+                    <Link href="/signup" className="text-accent-indigo hover:underline">
+                      Create a free account (optional)
+                    </Link>
+                  </p>
+                </div>
+              </div>
             </div>
-          )}
+          </motion.div>
 
           {/* Summary Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
+            transition={{ delay: 0.8 }}
             className="mt-8 max-w-2xl mx-auto"
           >
             <div className="bg-white rounded-2xl shadow-lg p-8 text-left">
@@ -140,22 +265,22 @@ export default function QuestionnairePageContent() {
             </div>
           </motion.div>
 
-          {/* CTAs */}
+          {/* Secondary CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
+            transition={{ delay: 1 }}
             className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link
               href="/"
-              className="px-8 py-4 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo/90 transition-colors text-center"
+              className="px-8 py-4 border-2 border-charcoal/20 text-charcoal font-medium rounded-lg hover:bg-charcoal/5 transition-colors text-center"
             >
               Back to Home
             </Link>
             <Link
               href="/gallery"
-              className="px-8 py-4 border-2 border-charcoal text-charcoal font-medium rounded-lg hover:bg-charcoal hover:text-white transition-colors text-center"
+              className="px-8 py-4 border-2 border-charcoal/20 text-charcoal font-medium rounded-lg hover:bg-charcoal/5 transition-colors text-center"
             >
               View Our Work
             </Link>

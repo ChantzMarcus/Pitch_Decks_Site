@@ -11,6 +11,7 @@ interface DeckCardProps {
   deck: Deck;
   index: number;
   onQuickView?: (deck: Deck) => void;
+  onWalkthrough?: (deck: Deck) => void; // NEW: Callback for walkthrough mode
   horizontalLayout?: boolean;
   videoPreviewUrl?: string; // Optional video preview URL
   successMetrics?: {
@@ -20,10 +21,11 @@ interface DeckCardProps {
   };
 }
 
-export default function DeckCard({ 
-  deck, 
-  index, 
-  onQuickView, 
+export default function DeckCard({
+  deck,
+  index,
+  onQuickView,
+  onWalkthrough,
   horizontalLayout = false,
   videoPreviewUrl,
   successMetrics,
@@ -220,18 +222,33 @@ export default function DeckCard({
               </div>
             </motion.div>
 
-            {/* Quick view button - appears on hover */}
-            <motion.button
-              onClick={() => onQuickView?.(deck)}
-              onKeyDown={handleKeyDown}
-              className="absolute top-4 left-4 z-10 px-4 py-2 bg-accent-indigo/90 backdrop-blur-md rounded-full text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity border border-white/20 flex items-center gap-2 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label={`Quick view ${deck.title}`}
-            >
-              <Play className="w-3.5 h-3.5" />
-              Quick View
-            </motion.button>
+            {/* Action buttons - appear on hover */}
+            <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Quick View button */}
+              <motion.button
+                onClick={() => onQuickView?.(deck)}
+                onKeyDown={handleKeyDown}
+                className="px-4 py-2 bg-accent-indigo/90 backdrop-blur-md rounded-full text-white text-xs font-medium border border-white/20 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label={`Quick view ${deck.title}`}
+              >
+                <Play className="w-3.5 h-3.5" />
+                Quick View
+              </motion.button>
+
+              {/* Watch Walkthrough button */}
+              <motion.button
+                onClick={() => onWalkthrough?.(deck)}
+                className="px-4 py-2 bg-accent-gold/90 backdrop-blur-md rounded-full text-white text-xs font-medium border border-white/20 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-accent-gold focus:ring-offset-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label={`Watch walkthrough of ${deck.title}`}
+              >
+                <Play className="w-3.5 h-3.5" />
+                Watch Deck
+              </motion.button>
+            </div>
 
             {/* Success Metrics Overlay - appears on hover */}
             {successMetrics && (

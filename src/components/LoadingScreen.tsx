@@ -12,7 +12,7 @@ interface LoadingScreenProps {
 
 export default function LoadingScreen({
   message = 'Analyzing your story...',
-  subtext = 'Our AI is evaluating your concept',
+  subtext = 'Your story concept is being processed through our proprietary system and compared to similar success stories!',
   duration = 3000, // 3 seconds minimum
   showSparkles = true,
 }: LoadingScreenProps) {

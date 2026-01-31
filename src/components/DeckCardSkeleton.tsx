@@ -2,48 +2,74 @@
 
 import { motion } from 'framer-motion';
 
+interface DeckCardSkeletonProps {
+  horizontalLayout?: boolean;
+  index?: number;
+}
+
 /**
  * Skeleton loader for DeckCard component
  * Shows a pulsing placeholder while deck data is loading
+ * Matches the dark charcoal theme of the site
  */
-export default function DeckCardSkeleton({ index = 0 }: { index?: number }) {
+export default function DeckCardSkeleton({
+  horizontalLayout = false,
+  index = 0,
+}: DeckCardSkeletonProps) {
+  const cardStyle = horizontalLayout
+    ? 'aspect-[9/16] w-[280px]'
+    : 'aspect-video w-full';
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.05, duration: 0.2 }}
-      className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-      role="status"
-      aria-label="Loading project card"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+      className={`${horizontalLayout ? '' : 'w-full'}`}
     >
-      {/* Thumbnail Skeleton */}
-      <div className="relative aspect-[4/3] bg-gradient-to-br from-charcoal/5 to-charcoal/10 overflow-hidden">
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer" />
-      </div>
+      <div className="group relative">
+        {/* Card skeleton */}
+        <div className={`relative ${cardStyle} rounded-2xl bg-charcoal overflow-hidden`}>
+          {/* Shimmer effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0"
+            animate={{
+              x: ['-100%', '100%'],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          />
 
-      {/* Content Skeleton */}
-      <div className="p-6 space-y-4">
-        {/* Title Skeleton */}
-        <div className="h-6 bg-gradient-to-r from-charcoal/10 to-charcoal/5 rounded-lg animate-pulse" />
-        <div className="h-6 w-3/4 bg-gradient-to-r from-charcoal/10 to-charcoal/5 rounded-lg animate-pulse" style={{ animationDelay: '0.1s' }} />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-        {/* Genre Tags Skeleton */}
-        <div className="flex flex-wrap gap-2 pt-2">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-6 w-16 bg-accent-indigo/10 rounded-full animate-pulse"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
-          ))}
+          {/* Top-right slide count indicator skeleton */}
+          <div className="absolute top-4 right-4 z-10">
+            <div className="w-16 h-6 bg-black/60 backdrop-blur-md rounded-full animate-pulse" />
+          </div>
+
+          {/* Genre tag skeleton */}
+          <div className="absolute bottom-16 left-4 z-10">
+            <div className="w-16 h-6 bg-orange-500/50 rounded-full animate-pulse" />
+          </div>
+
+          {/* Title skeleton at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+            <div className="w-3/4 h-5 bg-white/10 rounded animate-pulse" />
+            <div className="w-1/2 h-4 bg-white/10 rounded animate-pulse" style={{ animationDelay: '0.15s' }} />
+          </div>
         </div>
 
-        {/* Budget Badge Skeleton */}
-        <div className="flex items-center justify-between pt-4 border-t border-charcoal/5">
-          <div className="h-5 w-24 bg-charcoal/5 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
-          <div className="h-8 w-8 bg-accent-indigo/10 rounded-lg animate-pulse" style={{ animationDelay: '0.35s' }} />
-        </div>
+        {/* Project title below card (horizontal layout only) */}
+        {horizontalLayout && (
+          <div className="mt-4 text-center space-y-2">
+            <div className="w-24 h-5 bg-paper/10 rounded mx-auto animate-pulse" />
+            <div className="w-16 h-3 bg-paper/10 rounded mx-auto animate-pulse" style={{ animationDelay: '0.2s' }} />
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -52,11 +78,17 @@ export default function DeckCardSkeleton({ index = 0 }: { index?: number }) {
 /**
  * Grid of skeleton cards - use for loading states
  */
-export function DeckCardSkeletonGrid({ count = 6 }: { count?: number }) {
+export function DeckCardSkeletonGrid({
+  count = 6,
+  horizontalLayout = false,
+}: {
+  count?: number;
+  horizontalLayout?: boolean;
+}) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+    <div className={horizontalLayout ? 'flex gap-4 overflow-x-auto pb-4' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'}>
       {Array.from({ length: count }).map((_, i) => (
-        <DeckCardSkeleton key={i} index={i} />
+        <DeckCardSkeleton key={i} index={i} horizontalLayout={horizontalLayout} />
       ))}
     </div>
   );

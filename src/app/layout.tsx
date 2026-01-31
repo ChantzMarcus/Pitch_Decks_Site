@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import StructuredData from '@/components/StructuredData';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ClerkProvider } from '@clerk/nextjs';
 
 // Self-hosted fonts via Fontsource (no external network requests)
 import '@fontsource-variable/inter';
@@ -67,12 +68,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <StructuredData type="organization" />
-        <StructuredData type="service" />
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <StructuredData type="organization" />
+          <StructuredData type="service" />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

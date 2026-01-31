@@ -2,20 +2,23 @@
 
 import { Deck } from '@/db';
 import DeckCard from './DeckCard';
+import EnhancedDeckCard from './EnhancedDeckCard';
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 
 interface DeckGridProps {
   decks: Deck[];
   onQuickView?: (deck: Deck) => void;
+  onWalkthrough?: (deck: Deck) => void; // NEW: Callback for walkthrough mode
   horizontalScroll?: boolean; // Option to use horizontal scroll layout
   videoPreviewUrls?: Record<string, string>; // Map of deck ID to video URL
   successMetrics?: Record<string, { funding?: string; timeline?: string; status?: string }>; // Map of deck ID to metrics
 }
 
-export default function DeckGrid({ 
-  decks, 
-  onQuickView, 
+export default function DeckGrid({
+  decks,
+  onQuickView,
+  onWalkthrough,
   horizontalScroll = false,
   videoPreviewUrls = {},
   successMetrics = {},
@@ -116,11 +119,12 @@ export default function DeckGrid({
           }}
         >
           {decks.map((deck, index) => (
-            <DeckCard 
-              key={deck.id} 
-              deck={deck} 
-              index={index} 
+            <DeckCard
+              key={deck.id}
+              deck={deck}
+              index={index}
               onQuickView={onQuickView}
+              onWalkthrough={onWalkthrough}
               horizontalLayout={true}
               videoPreviewUrl={videoPreviewUrls[deck.id]}
               successMetrics={successMetrics[deck.id]}
@@ -146,13 +150,11 @@ export default function DeckGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
       {decks.map((deck, index) => (
-        <DeckCard 
-          key={deck.id} 
-          deck={deck} 
-          index={index} 
+        <EnhancedDeckCard
+          key={deck.id}
+          deck={deck}
+          index={index}
           onQuickView={onQuickView}
-          videoPreviewUrl={videoPreviewUrls[deck.id]}
-          successMetrics={successMetrics[deck.id]}
         />
       ))}
     </div>

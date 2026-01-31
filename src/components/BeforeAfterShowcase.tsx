@@ -28,7 +28,8 @@ interface BeforeAfterItem {
 }
 
 interface BeforeAfterShowcaseProps {
-  items: BeforeAfterItem[];
+  items?: BeforeAfterItem[];
+  slides?: string[]; // Array of slide image URLs for slideshow mode
   title?: string;
   subtitle?: string;
   className?: string;
@@ -47,29 +48,42 @@ interface BeforeAfterShowcaseProps {
  * - Full accessibility support
  */
 export default function BeforeAfterShowcase({
-  items,
+  items = [],
+  slides = [],
   title = 'See the Transformation',
   subtitle = 'From concept to production-ready pitch deck',
   className = '',
-  autoAdvanceInterval = 0, // Disabled by default
+  autoAdvanceInterval = 3000, // Default 3 seconds for slideshow
 }: BeforeAfterShowcaseProps) {
+  // Slideshow mode: use slides array if provided
+  const isSlideshowMode = slides.length > 0;
+  const slideItems = isSlideshowMode ? slides : [];
+  const totalItems = isSlideshowMode ? slideItems.length : items.length;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50); // 0-100 for slider position
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Swipe gesture state
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
   const sliderRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement | null>(null);
   const activeItem = items[activeIndex] || items[0];
+  const currentSlide = isSlideshowMode ? slideItems[activeIndex] : null;
 
   // Navigate to next/previous item
   const goToNext = useCallback(() => {
-    setActiveIndex((i) => (i + 1) % items.length);
-  }, [items.length]);
+    if (totalItems === 0) return;
+    setActiveIndex((i) => (i + 1) % totalItems);
+  }, [totalItems]);
 
   const goToPrevious = useCallback(() => {
-    setActiveIndex((i) => (i - 1 + items.length) % items.length);
-  }, [items.length]);
+    if (totalItems === 0) return;
+    setActiveIndex((i) => (i - 1 + totalItems) % totalItems);
+  }, [totalItems]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -106,16 +120,16 @@ export default function BeforeAfterShowcase({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goToNext, goToPrevious, items.length]);
 
-  // Auto-advance with pause on hover
+  // Auto-advance with pause on hover (only for slideshow mode)
   useEffect(() => {
-    if (!autoAdvanceInterval || isPaused || isDragging) return;
+    if (!isSlideshowMode || !autoAdvanceInterval || isPaused || isDragging) return;
 
     const timer = setInterval(() => {
       goToNext();
     }, autoAdvanceInterval);
 
     return () => clearInterval(timer);
-  }, [autoAdvanceInterval, isPaused, isDragging, goToNext]);
+  }, [isSlideshowMode, autoAdvanceInterval, isPaused, isDragging, goToNext]);
 
   // Touch/drag handlers for slider
   const handleSliderMove = (clientX: number) => {
@@ -171,21 +185,62 @@ export default function BeforeAfterShowcase({
     }
   }, [isDragging]);
 
+  // Swipe gesture handlers for mobile (swipe entire card to change items)
+  const minSwipeDistance = 50; // Minimum swipe distance in pixels
+
+  const handleSwipeStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleSwipeMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleSwipeEnd = () => {
+    const swipeDistance = touchStart - touchEnd;
+
+    // Swipe left (next item)
+    if (swipeDistance > minSwipeDistance) {
+      goToNext();
+    }
+    // Swipe right (previous item)
+    else if (swipeDistance < -minSwipeDistance) {
+      goToPrevious();
+    }
+  };
+
+  // Don't render if no content
+  if (totalItems === 0) {
+    return null;
+  }
+
   return (
-    <section 
+    <section
       ref={containerRef}
       className={`py-20 md:py-32 bg-gradient-to-b from-paper to-charcoal/5 ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      aria-label="Before and after transformation showcase"
+      onTouchStart={handleSwipeStart}
+      onTouchMove={handleSwipeMove}
+      onTouchEnd={handleSwipeEnd}
+      aria-label={isSlideshowMode ? "Pitch deck slideshow - swipe left or right to navigate" : "Before and after transformation showcase - swipe left or right to navigate"}
     >
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <ScrollReveal direction="up" className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-indigo/10 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-accent-indigo" />
-            <span className="text-sm font-medium text-accent-indigo">Transformation Showcase</span>
-          </div>
+          {!isSlideshowMode && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-indigo/10 rounded-full mb-6">
+              <Sparkles className="w-4 h-4 text-accent-indigo" />
+              <span className="text-sm font-medium text-accent-indigo">Transformation Showcase</span>
+            </div>
+          )}
+          {isSlideshowMode && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-indigo/10 rounded-full mb-6">
+              <Sparkles className="w-4 h-4 text-accent-indigo" />
+              <span className="text-sm font-medium text-accent-indigo">Pitch Deck Showcase</span>
+            </div>
+          )}
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-6">
             {title}
           </h2>
@@ -194,104 +249,138 @@ export default function BeforeAfterShowcase({
           </p>
         </ScrollReveal>
 
-        {/* Before/After Comparison */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.5 }}
-            className="grid md:grid-cols-2 gap-8 mb-12"
-          >
-            {/* Before Side */}
-            <ScrollReveal direction="left" delay={0.1}>
-              <div className="relative" role="img" aria-label={`Before: ${activeItem.before.title}`}>
-              <div className="absolute -top-4 left-4 z-10">
-                <div className="px-4 py-2 bg-red-500/90 backdrop-blur-sm rounded-lg text-white text-sm font-medium">
-                  Before
+        {/* Slideshow Mode - Show current slide */}
+        {isSlideshowMode ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-5xl mx-auto mb-12"
+            >
+              <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-accent-indigo/30 bg-charcoal shadow-2xl">
+                {currentSlide && (
+                  <Image
+                    src={currentSlide}
+                    alt={`Slide ${activeIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1400px) 100vw"
+                    priority
+                  />
+                )}
+                {/* Slide counter overlay */}
+                <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                  <span className="text-white text-sm font-medium">
+                    {activeIndex + 1} / {totalItems}
+                  </span>
                 </div>
               </div>
-              <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-red-500/30 bg-charcoal">
-                <Image
-                  src={activeItem.before.image}
-                  alt={activeItem.before.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-bold text-xl mb-2">{activeItem.before.title}</h3>
-                  <p className="text-white/80 text-sm mb-4">{activeItem.before.description}</p>
-                  {activeItem.before.issues && (
-                    <ul className="space-y-2">
-                      {activeItem.before.issues.map((issue, i) => (
-                        <li key={i} className="flex items-start gap-2 text-white/70 text-sm">
-                          <span className="text-red-400 mt-1">✗</span>
-                          <span>{issue}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          /* Before/After Comparison Mode */
+          <>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+                className="grid md:grid-cols-2 gap-8 mb-12"
+              >
+                {/* Before Side */}
+                <ScrollReveal direction="left" delay={0.1}>
+                  <div className="relative" role="img" aria-label={`Before: ${activeItem.before.title}`}>
+                  <div className="absolute -top-4 left-4 z-10">
+                    <div className="px-4 py-2 bg-red-500/90 backdrop-blur-sm rounded-lg text-white text-sm font-medium">
+                      Before
+                    </div>
+                  </div>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-red-500/30 bg-charcoal">
+                    <Image
+                      src={activeItem.before.image}
+                      alt={activeItem.before.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-white font-bold text-xl mb-2">{activeItem.before.title}</h3>
+                      <p className="text-white/80 text-sm mb-4">{activeItem.before.description}</p>
+                      {activeItem.before.issues && (
+                        <ul className="space-y-2">
+                          {activeItem.before.issues.map((issue, i) => (
+                            <li key={i} className="flex items-start gap-2 text-white/70 text-sm">
+                              <span className="text-red-400 mt-1">✗</span>
+                              <span>{issue}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </ScrollReveal>
+              </ScrollReveal>
 
-          {/* After Side */}
-          <ScrollReveal direction="right" delay={0.2}>
-            <div className="relative">
-              <div className="absolute -top-4 left-4 z-10">
-                <div className="px-4 py-2 bg-green-500/90 backdrop-blur-sm rounded-lg text-white text-sm font-medium">
-                  After
+              {/* After Side */}
+              <ScrollReveal direction="right" delay={0.2}>
+                <div className="relative">
+                  <div className="absolute -top-4 left-4 z-10">
+                    <div className="px-4 py-2 bg-green-500/90 backdrop-blur-sm rounded-lg text-white text-sm font-medium">
+                      After
+                    </div>
+                  </div>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-green-500/30 bg-charcoal shadow-2xl">
+                    <Image
+                      src={activeItem.after.image}
+                      alt={activeItem.after.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-white font-bold text-xl mb-2">{activeItem.after.title}</h3>
+                      <p className="text-white/80 text-sm mb-4">{activeItem.after.description}</p>
+                      {activeItem.after.improvements && (
+                        <ul className="space-y-2">
+                          {activeItem.after.improvements.map((improvement, i) => (
+                            <li key={i} className="flex items-start gap-2 text-white/70 text-sm">
+                              <span className="text-green-400 mt-1">✓</span>
+                              <span>{improvement}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-green-500/30 bg-charcoal shadow-2xl">
-                <Image
-                  src={activeItem.after.image}
-                  alt={activeItem.after.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-bold text-xl mb-2">{activeItem.after.title}</h3>
-                  <p className="text-white/80 text-sm mb-4">{activeItem.after.description}</p>
-                  {activeItem.after.improvements && (
-                    <ul className="space-y-2">
-                      {activeItem.after.improvements.map((improvement, i) => (
-                        <li key={i} className="flex items-start gap-2 text-white/70 text-sm">
-                          <span className="text-green-400 mt-1">✓</span>
-                          <span>{improvement}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-          </motion.div>
-        </AnimatePresence>
+              </ScrollReveal>
+              </motion.div>
+            </AnimatePresence>
 
-        {/* Interactive Slider Version (Alternative) */}
-        <ScrollReveal direction="up" delay={0.3} className="mb-12">
-          <div 
-            className="relative max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden border-2 border-charcoal/20 bg-charcoal shadow-2xl"
-            role="region"
-            aria-label="Interactive before and after comparison slider"
-          >
-            {/* Before Image */}
-            <div className="absolute inset-0">
-              <Image
-                src={activeItem.before.image}
-                alt="Before"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 80vw"
-              />
+            {/* Interactive Slider Version - Only in before/after mode */}
+            <ScrollReveal direction="up" delay={0.3} className="mb-12">
+              <div
+                className="relative max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden border-2 border-charcoal/20 bg-charcoal shadow-2xl"
+                role="region"
+                aria-label="Interactive before and after comparison slider"
+              >
+                {/* Before Image */}
+                <div className="absolute inset-0">
+                  <Image
+                    src={activeItem.before.image}
+                    alt="Before"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 80vw"
+                  />
+                </div>
             </div>
 
             {/* After Image with clip-path */}
@@ -357,7 +446,7 @@ export default function BeforeAfterShowcase({
         </ScrollReveal>
 
         {/* Success Metrics */}
-        {activeItem.metrics && (
+        {!isSlideshowMode && activeItem?.metrics && (
           <ScrollReveal direction="up" delay={0.4}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {activeItem.metrics.funding && (
@@ -415,8 +504,8 @@ export default function BeforeAfterShowcase({
             </button>
 
             {/* Navigation Dots */}
-            <div className="flex justify-center gap-3" role="tablist" aria-label="Transformation navigation">
-              {items.map((_, index) => (
+            <div className="flex justify-center gap-3" role="tablist" aria-label={isSlideshowMode ? "Slide navigation" : "Transformation navigation"}>
+              {Array.from({ length: totalItems }).map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}

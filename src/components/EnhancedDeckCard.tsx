@@ -4,7 +4,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import { useGSAP } from '@/hooks/useGSAP';
 import Link from 'next/image';
 import { Eye } from 'lucide-react';
 import { Deck } from '@/db';
@@ -19,55 +18,84 @@ export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardP
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   
-  useGSAP(() => {
-    if (!cardRef.current || !isHovered) return;
+  useEffect(() => {
+    if (!cardRef.current) return;
     
-    // Enhanced 3D tilt effect with physics
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!cardRef.current || !imageRef.current) return;
-      
-      const card = cardRef.current;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      const rotateY = ((x - centerX) / centerX) * 10; // Max 10 degrees
-      const rotateX = ((centerY - y) / centerY) * 10; // Max 10 degrees
-      const glowIntensity = Math.min(Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2) / 100, 0.5);
-      
-      gsap.to(card, {
-        rotateY,
-        rotateX,
-        scale: 1.03,
-        duration: 0.3,
-        ease: "power2.out",
-        overwrite: "auto"
-      });
-      
-      // Enhanced image effect
-      if (imageRef.current) {
-        gsap.to(imageRef.current, {
-          scale: 1.1,
+    const card = cardRef.current;
+    
+    if (isHovered) {
+      // Enhanced 3D tilt effect with physics
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!card) return;
+        
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateY = ((x - centerX) / centerX) * 10; // Max 10 degrees
+        const rotateX = ((centerY - y) / centerY) * 10; // Max 10 degrees
+        const glowIntensity = Math.min(Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2) / 100, 0.5);
+        
+        gsap.to(card, {
+          rotateY,
+          rotateX,
+          scale: 1.03,
           duration: 0.3,
-          ease: "power2.out"
+          ease: "power2.out",
+          overwrite: "auto"
         });
-      }
+        
+        // Enhanced image effect
+        if (imageRef.current) {
+          gsap.to(imageRef.current, {
+            scale: 1.1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+        
+        // Add subtle glow effect
+        card.style.transformStyle = 'preserve-3d';
+        card.style.boxShadow = `
+          0 25px 50px -12px rgba(0, 0, 0, 0.25),
+          0 0 0 ${glowIntensity * 20}px rgba(79, 70, 229, 0.1)
+        `;
+      };
       
-      // Add subtle glow effect
-      card.style.boxShadow = `
-        0 25px 50px -12px rgba(0, 0, 0, 0.25),
-        0 0 0 ${glowIntensity * 20}px rgba(79, 70, 229, 0.1)
-      `;
-    };
-    
-    const handleMouseLeave = () => {
-      if (!cardRef.current || !imageRef.current) return;
+      const handleMouseLeave = () => {
+        gsap.to(card, {
+          rotateY: 0,
+          rotateX: 0,
+          scale: 1,
+          duration: 0.5,
+          ease: "elastic.out(1, 0.3)",
+          overwrite: "auto"
+        });
+        
+        if (imageRef.current) {
+          gsap.to(imageRef.current, {
+            scale: 1,
+            duration: 0.5,
+            ease: "elastic.out(1, 0.3)"
+          });
+        }
+        
+        card.style.boxShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.1)";
+      };
       
-      gsap.to(cardRef.current, {
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+      
+      return () => {
+        card.removeEventListener('mousemove', handleMouseMove);
+        card.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    } else {
+      // Reset to default state when not hovered
+      gsap.to(card, {
         rotateY: 0,
         rotateX: 0,
         scale: 1,
@@ -76,26 +104,18 @@ export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardP
         overwrite: "auto"
       });
       
-      gsap.to(imageRef.current, {
-        scale: 1,
-        duration: 0.5,
-        ease: "elastic.out(1, 0.3)"
-      });
+      if (imageRef.current) {
+        gsap.to(imageRef.current, {
+          scale: 1,
+          duration: 0.5,
+          ease: "elastic.out(1, 0.3)"
+        });
+      }
       
-      if (cardRef.current) {
-        cardRef.current.style.boxShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.1)";
+      if (card) {
+        card.style.boxShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.1)";
       }
-    };
-    
-    cardRef.current.addEventListener('mousemove', handleMouseMove);
-    cardRef.current.addEventListener('mouseleave', handleMouseLeave);
-    
-    return () => {
-      if (cardRef.current) {
-        cardRef.current.removeEventListener('mousemove', handleMouseMove);
-        cardRef.current.removeEventListener('mouseleave', handleMouseLeave);
-      }
-    };
+    }
   }, [isHovered]);
 
   const genreTags = deck.genre.slice(0, 2).join(', ');

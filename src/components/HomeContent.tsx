@@ -5,6 +5,8 @@ import Link from 'next/link';
 import HeroVideo from '@/components/HeroVideo';
 import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
+import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
+import FeaturedDeckWalkthrough from '@/components/FeaturedDeckWalkthrough';
 import ServicesShowcase from '@/components/ServicesShowcase';
 import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
@@ -18,6 +20,24 @@ import EducationalVideoShowcase from '@/components/EducationalVideoShowcase';
 import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
 import { MOCK_TESTIMONIAL_VIDEOS } from '@/lib/mock-testimonials';
 import { ScrollReveal } from '@/components/animations';
+import TrustBadges from '@/components/ui/TrustBadges';
+import FAQ from '@/components/ui/FAQ';
+import UrgencyCounter from '@/components/ui/UrgencyCounter';
+import PhysicsStats from '@/components/PhysicsStats';
+import dynamic from 'next/dynamic';
+
+// Dynamically import 3D component to reduce initial bundle size
+const ThreeDPitchDeckShowcase = dynamic(
+  () => import('@/components/ThreeDPitchDeckShowcase'),
+  { 
+    ssr: false, // Disable SSR for Three.js component
+    loading: () => (
+      <div className="h-[600px] flex items-center justify-center">
+        <div className="text-charcoal/50">Loading 3D showcase...</div>
+      </div>
+    )
+  }
+);
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 import { ArrowRightIcon, StoryIcon } from '@/components/icons/FilmIcons';
@@ -103,6 +123,16 @@ interface HomeContentProps {
 export default function HomeContent({ initialDecks }: HomeContentProps) {
   const [selectedDeck, setSelectedDeck] = useState<DeckWithSlides | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [walkthroughDeck, setWalkthroughDeck] = useState<DeckWithSlides | null>(null);
+  const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
+
+  // Create featured deck data from initial decks
+  const featuredDecks = initialDecks.slice(0, 3).map(deck => ({
+    deck,
+    slides: getDeckSlideUrls(deck.id),
+    highlightText: deck.logline,
+    ctaText: 'Watch Full Deck',
+  }));
 
   const handleQuickView = (deck: Deck) => {
     // Attach slides to the deck when opening quick view
@@ -114,9 +144,24 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
     setIsModalOpen(true);
   };
 
+  const handleWalkthrough = (deck: Deck) => {
+    // Attach slides to the deck when opening walkthrough
+    const deckWithSlides: DeckWithSlides = {
+      ...deck,
+      slides: getDeckSlideUrls(deck.id),
+    };
+    setWalkthroughDeck(deckWithSlides);
+    setIsWalkthroughOpen(true);
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedDeck(null), 300);
+  };
+
+  const handleCloseWalkthrough = () => {
+    setIsWalkthroughOpen(false);
+    setTimeout(() => setWalkthroughDeck(null), 300);
   };
 
   return (
@@ -133,25 +178,38 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         {/* Hero Section with Video Background */}
         <HeroVideo />
 
+        {/* Featured Deck Walkthrough - Hero-style showcase */}
+        {featuredDecks.length > 0 && (
+          <FeaturedDeckWalkthrough
+            featuredDecks={featuredDecks}
+            autoRotateInterval={15000}
+            slideInterval={4000}
+            onWatchFullDeck={handleWalkthrough}
+          />
+        )}
+
       {/* Trust Bar */}
-      <section className="py-8 border-y border-paper/10 bg-charcoal-light">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 text-paper-muted text-sm">
-            <div className="flex items-center gap-2">
-              <StarIcon className="fill-current" size={18} />
-              <span>500+ Pitch Decks Delivered</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUpIcon size={18} />
-              <span>$300M+ Funding Secured</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <StoryIcon size={18} />
-              <span>100+ Success Stories</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PhysicsStats
+        title="Our Impact"
+        subtitle="Numbers that speak to our success"
+        stats={[
+          {
+            value: "500+",
+            label: "Pitch Decks Delivered",
+            icon: <StarIcon className="w-8 h-8 text-accent-indigo mx-auto" />
+          },
+          {
+            value: "$300M+",
+            label: "Funding Secured",
+            icon: <TrendingUpIcon className="w-8 h-8 text-accent-gold mx-auto" />
+          },
+          {
+            value: "100+",
+            label: "Success Stories",
+            icon: <StoryIcon className="w-8 h-8 text-accent-teal mx-auto" />
+          }
+        ]}
+      />
 
       {/* Two Paths CTA */}
       <section className="py-20 bg-charcoal">
@@ -187,6 +245,9 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
                   Get Your Story Scored by Experts
                   <ArrowRightIcon size={18} />
                 </Link>
+                
+                {/* Trust Badges */}
+                <TrustBadges variant="inline" className="mt-6" />
               </div>
             </ScrollReveal>
 
@@ -218,70 +279,19 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Before/After Transformation Showcase - Show Results FIRST */}
+      {/* Urgency Counter - Social Proof Numbers */}
+      <section className="py-12 bg-charcoal-light">
+        <div className="max-w-7xl mx-auto px-6">
+          <UrgencyCounter variant="compact" className="justify-center" />
+        </div>
+      </section>
+
+      {/* Pitch Deck Slideshow - Cycles through all slides */}
       <BeforeAfterShowcase
-        items={[
-          {
-            id: '1',
-            before: {
-              title: 'Raw Concept',
-              description: 'Initial story idea without professional packaging',
-              image: '/images/posters/hero-poster.jpg',
-              issues: [
-                'Unclear market positioning',
-                'Missing key visual elements',
-                'No industry-standard structure',
-              ],
-            },
-            after: {
-              title: 'Production-Ready Deck',
-              description: 'Professionally packaged with veteran industry insights',
-              image: '/images/posters/hero-poster.jpg',
-              improvements: [
-                'Clear market positioning',
-                'Compelling visual narrative',
-                'Industry-standard structure',
-                'Veteran feedback integrated',
-              ],
-            },
-            metrics: {
-              funding: '$2.5M',
-              timeline: '3 months',
-              status: 'In Production',
-            },
-          },
-          {
-            id: '2',
-            before: {
-              title: 'Early Draft',
-              description: 'Basic outline without professional refinement',
-              image: '/images/posters/hero-poster.jpg',
-              issues: [
-                'Weak visual storytelling',
-                'Missing competitive analysis',
-                'Unclear value proposition',
-              ],
-            },
-            after: {
-              title: 'Polished Presentation',
-              description: 'Ready for investor meetings and production',
-              image: '/images/posters/hero-poster.jpg',
-              improvements: [
-                'Strong visual narrative',
-                'Comprehensive market analysis',
-                'Clear value proposition',
-                'Investor-ready format',
-              ],
-            },
-            metrics: {
-              funding: '$1.8M',
-              timeline: '2 months',
-              status: 'Funded',
-            },
-          },
-        ]}
-        title="See the Transformation"
-        subtitle="Watch how we transform raw concepts into production-ready pitch decks"
+        slides={getDeckSlideUrls('hear-transplant')}
+        title="Hear Transplant"
+        subtitle="A complete pitch deck showcase - watch it unfold slide by slide"
+        autoAdvanceInterval={3000}
       />
 
       {/* Services Section - After Trust is Built */}
@@ -299,7 +309,20 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             </p>
           </ScrollReveal>
 
-          <DeckGrid decks={initialDecks} onQuickView={handleQuickView} horizontalScroll={true} />
+          <DeckGrid
+            decks={initialDecks}
+            onQuickView={handleQuickView}
+            onWalkthrough={handleWalkthrough}
+            horizontalScroll={true}
+          />
+
+          {/* 3D Pitch Deck Showcase */}
+          <div className="mt-16">
+            <h3 className="font-display text-3xl font-bold text-charcoal mb-8 text-center">
+              Our Portfolio in 3D
+            </h3>
+            <ThreeDPitchDeckShowcase decks={initialDecks} />
+          </div>
 
           <ScrollReveal direction="up" delay={0.3} className="text-center mt-12">
             <Link
@@ -350,6 +373,9 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
 
       {/* Social Proof - Upwork Profile - Lower for Additional Trust */}
       <SocialProof />
+
+      {/* FAQ Section - Address Objections */}
+      <FAQ />
 
       {/* Dual CTA - Primary Conversion Section */}
       <DualCTA />
@@ -430,6 +456,17 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           deck={selectedDeck}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+        />
+      )}
+
+      {/* Walkthrough Modal - Auto-playing slideshow */}
+      {walkthroughDeck && (
+        <DeckWalkthroughModal
+          deck={walkthroughDeck}
+          isOpen={isWalkthroughOpen}
+          onClose={handleCloseWalkthrough}
+          autoPlay={true}
+          autoPlayInterval={4000}
         />
       )}
 

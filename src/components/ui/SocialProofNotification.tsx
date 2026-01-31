@@ -13,11 +13,12 @@ interface Notification {
 }
 
 const mockNotifications: Notification[] = [
-  { id: '1', message: 'Sarah from Los Angeles', location: 'LA', timeAgo: '2 min ago', action: 'got her story scored' },
-  { id: '2', message: 'Michael from New York', location: 'NY', timeAgo: '5 min ago', action: 'submitted their project' },
-  { id: '3', message: 'Emma from London', location: 'UK', timeAgo: '8 min ago', action: 'received expert feedback' },
+  { id: '1', message: 'Sarah from Los Angeles', location: 'LA', timeAgo: '2 min ago', action: 'got her story scored by experts' },
+  { id: '2', message: 'Michael from New York', location: 'NY', timeAgo: '5 min ago', action: 'submitted their project for evaluation' },
+  { id: '3', message: 'Emma from London', location: 'UK', timeAgo: '8 min ago', action: 'received proprietary analysis' },
   { id: '4', message: 'David from Toronto', location: 'CA', timeAgo: '12 min ago', action: 'got their story approved' },
-  { id: '5', message: 'Lisa from Chicago', location: 'IL', timeAgo: '15 min ago', action: 'started their evaluation' },
+  { id: '5', message: 'Lisa from Chicago', location: 'IL', timeAgo: '15 min ago', action: 'started expert evaluation' },
+  { id: '6', message: 'James from Austin', location: 'TX', timeAgo: '18 min ago', action: 'received industry-trusted score' },
 ];
 
 /**

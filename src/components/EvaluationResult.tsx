@@ -150,21 +150,21 @@ export default function EvaluationResult({
               <span className="text-accent-indigo font-bold text-sm">1</span>
             </div>
             <div>
-              <p className="font-medium text-charcoal">Manual Review (Within 72 Hours)</p>
+              <p className="font-medium text-charcoal">Full StakeOS Analysis (Within 15 Minutes)</p>
               <p className="text-sm text-charcoal/60">
-                Our story development team will personally review your submission and provide detailed feedback.
+                Your complete proprietary analysis will be emailed to you. No account needed - access via secure email link.
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-accent-indigo/10 flex items-center justify-center flex-shrink-0">
-              <span className="text-accent-indigo font-bold text-sm">2</span>
+            <div className="w-8 h-8 rounded-full bg-accent-gold/10 flex items-center justify-center flex-shrink-0">
+              <span className="text-accent-gold font-bold text-sm">2</span>
             </div>
             <div>
-              <p className="font-medium text-charcoal">Personalized Analysis Report</p>
+              <p className="font-medium text-charcoal">Expert Team Review (Within 72 Hours)</p>
               <p className="text-sm text-charcoal/60">
-                You&apos;ll receive a comprehensive breakdown of your story&apos;s strengths and opportunities.
+                <strong className="text-charcoal">A human expert from our development team will personally review your story</strong> and reach out with personalized feedback and next steps.
               </p>
             </div>
           </div>
@@ -174,29 +174,76 @@ export default function EvaluationResult({
               <span className="text-accent-indigo font-bold text-sm">3</span>
             </div>
             <div>
-              <p className="font-medium text-charcoal">Strategy Consultation</p>
+              <p className="font-medium text-charcoal">Strategy Consultation Call</p>
               <p className="text-sm text-charcoal/60">
-                If your story qualifies, we&apos;ll schedule a call to discuss next steps for bringing it to market.
+                If your story shows strong potential, we&apos;ll schedule a free consultation call to discuss bringing it to market.
               </p>
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Check Email Reminder */}
+      {/* Email Delivery - Primary Method */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
-        className="bg-accent-indigo/5 rounded-xl p-4 flex items-center gap-3"
+        className="bg-gradient-to-r from-accent-indigo/10 to-accent-gold/10 rounded-xl border border-accent-indigo/20 p-6 mb-6"
       >
-        <svg className="w-6 h-6 text-accent-indigo flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-        <p className="text-sm text-charcoal/80">
-          <span className="font-medium">Check your inbox!</span> We&apos;ve sent a confirmation email with your preliminary results.
-          Be sure to check your spam folder.
-        </p>
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-accent-indigo/20 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg className="w-6 h-6 text-accent-indigo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h5 className="font-semibold text-charcoal mb-2">Your Results Will Be Emailed to You</h5>
+            <p className="text-sm text-charcoal/70 mb-3">
+              <strong>No account needed!</strong> Your complete StakeOS analysis will arrive via email within 15 minutes. 
+              You&apos;ll receive a secure link to view your full report - no login required.
+            </p>
+            <div className="bg-white/60 rounded-lg p-3 text-xs text-charcoal/60">
+              <p className="font-medium text-charcoal mb-1">What you&apos;ll receive:</p>
+              <ul className="space-y-1">
+                <li>• Complete StakeOS analysis breakdown</li>
+                <li>• Market comparison data</li>
+                <li>• Production feasibility insights</li>
+                <li>• Actionable recommendations</li>
+                <li>• Link to view full report (no account needed)</li>
+              </ul>
+            </div>
+            <p className="text-xs text-charcoal/50 mt-3">
+              Don&apos;t see it? Check your spam folder. Results are sent to the email you provided.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* 72-Hour Human Follow-Up - Prominent */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="bg-gradient-to-r from-accent-gold/10 to-accent-indigo/10 rounded-xl border-2 border-accent-gold/30 p-6"
+      >
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-accent-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg className="w-6 h-6 text-accent-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h5 className="font-semibold text-charcoal mb-2 flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-6 h-6 bg-accent-gold text-white rounded-full text-xs font-bold">72</span>
+              Human Expert Will Reach Out Within 72 Hours
+            </h5>
+            <p className="text-sm text-charcoal/70">
+              <strong>Our expert development team will personally review your story</strong> and reach out via email or phone 
+              (if you requested a consultation) with personalized feedback and guidance. This isn&apos;t automated - 
+              you&apos;ll hear from a real industry professional who has greenlit projects at major studios.
+            </p>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );

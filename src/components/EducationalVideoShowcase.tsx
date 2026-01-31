@@ -12,8 +12,14 @@ export interface EducationalVideo {
   category: 'Education' | 'Testimonial' | 'Insight' | string;
   thumbnail?: string;
   videoUrl?: string;
-  tag?: string; // Bottom-left tag
+  tag?: string; // Bottom-left tag (company/studio name)
   extraTag?: string; // Top-left tag with icon
+  // Professional information for industry experts
+  professionalName?: string; // e.g., "Sarah Johnson"
+  professionalTitle?: string; // e.g., "Former Studio Executive"
+  company?: string; // e.g., "Warner Bros", "Netflix"
+  stepNumber?: number; // For packaging steps series (e.g., Step 1, Step 2)
+  isCompleted?: boolean; // Whether user has watched this video
 }
 
 interface EducationalVideoShowcaseProps {
@@ -157,7 +163,16 @@ export default function EducationalVideoShowcase({
                 videoUrl={video.videoUrl}
                 tag={video.tag}
                 extraTag={video.extraTag}
+                professionalName={video.professionalName}
+                professionalTitle={video.professionalTitle}
+                company={video.company}
+                stepNumber={video.stepNumber}
                 index={index}
+                isCompleted={video.isCompleted}
+                onCardClick={() => {
+                  // Handle card click - could navigate to video or open modal
+                  console.log('Card clicked:', video.id);
+                }}
               />
             ))}
           </div>

@@ -1,8 +1,13 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  // Filter out undefined, null, and false values to prevent tailwind-merge errors
+  const filteredInputs = inputs.filter(
+    (input): input is NonNullable<typeof input> =>
+      input !== undefined && input !== null && input !== false
+  )
+  return twMerge(clsx(filteredInputs))
 }
 
 export function getBaseUrl() {

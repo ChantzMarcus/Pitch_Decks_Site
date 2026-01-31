@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Sparkles, Loader2 } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
 import { FileUpload, UploadedFile } from '@/components/FileUpload';
 import { UploadedFileDisplay } from '@/components/FileUpload';
 import { extractTextFromFile, truncateText } from '@/lib/extract-text';
+import MilestoneCelebration from '@/components/ui/MilestoneCelebration';
+import MagneticButton from '@/components/ui/MagneticButton';
 
 // Types for form data
 export interface TeaserScore {
@@ -238,7 +240,7 @@ const QUESTIONS = [
 ];
 
 interface StoryQuestionnaireProps {
-  onComplete?: (data: QuestionnaireData, score?: TeaserScore) => void;
+  onComplete?: (data: QuestionnaireData, score?: TeaserScore, leadId?: string) => void;
 }
 
 export default function StoryQuestionnaire({ onComplete }: StoryQuestionnaireProps) {
@@ -250,6 +252,9 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
   const [extractedText, setExtractedText] = useState('');
   const [isExtracting, setIsExtracting] = useState(false);
   const [inputMode, setInputMode] = useState<'upload' | 'type'>('upload');
+  const [showMilestone, setShowMilestone] = useState(false);
+  const [milestoneMessage, setMilestoneMessage] = useState('');
+  const [previousProgress, setPreviousProgress] = useState(0);
   const [formData, setFormData] = useState<QuestionnaireData>({
     // Default values - no email upfront!
     name: '',
@@ -273,6 +278,25 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
   const totalQuestions = QUESTIONS.reduce((sum, stepQuestions) => sum + stepQuestions.length, 0);
   const currentQuestionNumber = QUESTIONS.slice(0, step).reduce((sum, q) => sum + q.length, 0) + questionIndex + 1;
   const progress = (currentQuestionNumber / totalQuestions) * 100;
+
+  // Check for milestones and trigger celebrations
+  useEffect(() => {
+    const milestones = [25, 50, 75, 100];
+    const currentMilestone = milestones.find(m => progress >= m && previousProgress < m);
+    
+    if (currentMilestone) {
+      const messages = {
+        25: "Great start! You're 25% done",
+        50: "Halfway there! Keep going!",
+        75: "Almost done! You're at 75%",
+        100: "Complete! 🎉"
+      };
+      setMilestoneMessage(messages[currentMilestone as keyof typeof messages]);
+      setShowMilestone(true);
+    }
+    
+    setPreviousProgress(progress);
+  }, [progress, previousProgress]);
 
   const getCurrentQuestion = () => {
     return QUESTIONS[step]?.[questionIndex];
@@ -333,7 +357,8 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
       const result = await response.json();
 
       if (result.success) {
-        onComplete?.(formData, result.teaserScore);
+        // Pass leadId if available for async processing tracking
+        onComplete?.(formData, result.teaserScore, result.leadId);
       } else {
         // Handle validation errors
         console.error('Submission failed:', result);
@@ -410,32 +435,105 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
     <>
     <div className="min-h-screen bg-paper py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        {/* Progress Bar */}
+        {/* Enhanced Progress Bar with Step Indicators */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-4">
             <span className="text-sm font-medium text-charcoal/70">
               Question {currentQuestionNumber} of {totalQuestions}
             </span>
-            <span className="text-sm text-charcoal/50">{Math.round(progress)}%</span>
+            <span className="text-sm text-charcoal/50 font-semibold">{Math.round(progress)}%</span>
           </div>
-          <div className="h-2 bg-charcoal/10 rounded-full overflow-hidden">
+          
+          {/* Step Indicators */}
+          <div className="flex items-center justify-between mb-3">
+            {STEPS.map((stepItem, idx) => {
+              const stepStart = QUESTIONS.slice(0, idx).reduce((sum, q) => sum + q.length, 0);
+              const stepEnd = stepStart + QUESTIONS[idx].length;
+              const stepProgress = idx < step 
+                ? 100 
+                : idx === step 
+                  ? ((questionIndex + 1) / QUESTIONS[idx].length) * 100
+                  : 0;
+              
+              return (
+                <div key={idx} className="flex-1 flex items-center">
+                  <div className="flex-1 flex flex-col items-center">
+                    <motion.div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center border-2 font-semibold text-sm transition-all ${
+                        idx < step
+                          ? 'bg-accent-indigo border-accent-indigo text-white'
+                          : idx === step
+                            ? 'bg-accent-indigo/20 border-accent-indigo text-accent-indigo'
+                            : 'bg-charcoal/10 border-charcoal/20 text-charcoal/40'
+                      }`}
+                      animate={{ 
+                        scale: idx === step ? [1, 1.1, 1] : 1 
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: idx === step ? Infinity : 0
+                      }}
+                    >
+                      {idx < step ? (
+                        <Check size={18} />
+                      ) : (
+                        idx + 1
+                      )}
+                    </motion.div>
+                    <p className={`text-xs mt-2 text-center max-w-[60px] ${
+                      idx === step ? 'text-charcoal font-medium' : 'text-charcoal/40'
+                    }`}>
+                      {stepItem.title.split(' ')[0]}
+                    </p>
+                  </div>
+                  {idx < STEPS.length - 1 && (
+                    <div className="flex-1 h-0.5 mx-2 bg-charcoal/10 relative overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-accent-indigo to-accent-gold"
+                        initial={{ width: 0 }}
+                        animate={{ width: idx < step ? '100%' : '0%' }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Progress Bar */}
+          <div className="h-3 bg-charcoal/10 rounded-full overflow-hidden shadow-inner">
             <motion.div
-              className="h-full bg-gradient-to-r from-accent-indigo to-accent-gold"
+              className="h-full bg-gradient-to-r from-accent-indigo via-accent-gold to-accent-indigo relative overflow-hidden"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5 }}
-            />
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
+              {/* Shimmer effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                animate={{
+                  x: ['-100%', '200%']
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+              />
+            </motion.div>
           </div>
+
           <motion.div
             key={`${step}-${questionIndex}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mt-4"
           >
-            <p className="text-charcoal font-display text-xl">
+            <p className="text-charcoal font-display text-xl font-bold">
               {STEPS[step].title}
             </p>
-            <p className="text-charcoal/60 text-sm">{STEPS[step].subtitle}</p>
+            <p className="text-charcoal/60 text-sm mt-1">{STEPS[step].subtitle}</p>
           </motion.div>
         </div>
 
@@ -481,39 +579,71 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
                           )}
                         </label>
                         {'detailed' in question && question.detailed ? (
-                          <div className="space-y-2">
-                            {question.options.map((option: any) => (
-                              <button
-                                key={option.value}
-                                type="button"
-                                onClick={() => updateFormData(question.id as keyof QuestionnaireData, option.value)}
-                                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                                  formData[question.id as keyof QuestionnaireData] === option.value
-                                    ? 'border-accent-indigo bg-accent-indigo/10'
-                                    : 'border-charcoal/20 hover:border-charcoal/40'
-                                }`}
-                              >
-                                <div className="flex items-start gap-3">
-                                  <div
-                                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                                      formData[question.id as keyof QuestionnaireData] === option.value
-                                        ? 'border-accent-indigo bg-accent-indigo'
-                                        : 'border-charcoal/30'
-                                    }`}
-                                  >
-                                    {formData[question.id as keyof QuestionnaireData] === option.value && (
-                                      <Check size={14} className="text-white" />
-                                    )}
+                          <div className="space-y-3">
+                            {question.options.map((option: any) => {
+                              const isSelected = formData[question.id as keyof QuestionnaireData] === option.value;
+                              return (
+                                <motion.button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => updateFormData(question.id as keyof QuestionnaireData, option.value)}
+                                  whileHover={{ scale: 1.01, x: 4 }}
+                                  whileTap={{ scale: 0.99 }}
+                                  animate={{
+                                    scale: isSelected ? 1.02 : 1,
+                                    boxShadow: isSelected 
+                                      ? '0 8px 24px rgba(99, 102, 241, 0.25)' 
+                                      : '0 2px 8px rgba(0, 0, 0, 0.08)'
+                                  }}
+                                  transition={{ duration: 0.2 }}
+                                  className={`relative w-full text-left px-5 py-4 rounded-xl border-2 transition-all ${
+                                    isSelected
+                                      ? 'border-accent-indigo bg-gradient-to-r from-accent-indigo/15 to-accent-indigo/5'
+                                      : 'border-charcoal/20 bg-white hover:border-accent-indigo/40 hover:bg-charcoal/5'
+                                  }`}
+                                >
+                                  {isSelected && (
+                                    <motion.div
+                                      layoutId="detailedCardGlow"
+                                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent-indigo/10 via-accent-gold/10 to-accent-indigo/10"
+                                      initial={false}
+                                      transition={{ duration: 0.3 }}
+                                    />
+                                  )}
+                                  <div className="flex items-start gap-4 relative z-10">
+                                    <motion.div
+                                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                                        isSelected
+                                          ? 'border-accent-indigo bg-accent-indigo'
+                                          : 'border-charcoal/30 bg-white'
+                                      }`}
+                                      animate={{
+                                        scale: isSelected ? [1, 1.2, 1] : 1
+                                      }}
+                                      transition={{ duration: 0.3 }}
+                                    >
+                                      {isSelected && (
+                                        <motion.div
+                                          initial={{ scale: 0, rotate: -180 }}
+                                          animate={{ scale: 1, rotate: 0 }}
+                                          transition={{ delay: 0.1 }}
+                                        >
+                                          <Check size={14} className="text-white" />
+                                        </motion.div>
+                                      )}
+                                    </motion.div>
+                                    <div>
+                                      <span className={`text-sm font-medium block ${isSelected ? 'text-accent-indigo' : 'text-charcoal'}`}>
+                                        {option.label}
+                                      </span>
+                                      {option.desc && (
+                                        <span className="text-xs text-charcoal/50 block mt-1">{option.desc}</span>
+                                      )}
+                                    </div>
                                   </div>
-                                  <div>
-                                    <span className="text-sm font-medium block">{option.label}</span>
-                                    {option.desc && (
-                                      <span className="text-xs text-charcoal/50 block">{option.desc}</span>
-                                    )}
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
+                                </motion.button>
+                              );
+                            })}
                           </div>
                         ) : 'grid' in question && question.grid ? (
                           <div className="grid grid-cols-2 gap-2">
@@ -533,35 +663,67 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
                             ))}
                           </div>
                         ) : (
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             {Array.isArray(question.options) && question.options.every((opt: any) => typeof opt === 'string') && 
-                              (question.options as string[]).map((option: string) => (
-                              <button
-                                key={option}
-                                type="button"
-                                onClick={() => updateFormData(question.id as keyof QuestionnaireData, option)}
-                                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                                  formData[question.id as keyof QuestionnaireData] === option
-                                    ? 'border-accent-indigo bg-accent-indigo/10'
-                                    : 'border-charcoal/20 hover:border-charcoal/40'
-                                }`}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div
-                                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                      formData[question.id as keyof QuestionnaireData] === option
-                                        ? 'border-accent-indigo bg-accent-indigo'
-                                        : 'border-charcoal/30'
+                              (question.options as string[]).map((option: string) => {
+                                const isSelected = formData[question.id as keyof QuestionnaireData] === option;
+                                return (
+                                  <motion.button
+                                    key={option}
+                                    type="button"
+                                    onClick={() => updateFormData(question.id as keyof QuestionnaireData, option)}
+                                    whileHover={{ scale: 1.01, x: 4 }}
+                                    whileTap={{ scale: 0.99 }}
+                                    animate={{
+                                      scale: isSelected ? 1.02 : 1,
+                                      boxShadow: isSelected 
+                                        ? '0 8px 24px rgba(99, 102, 241, 0.25)' 
+                                        : '0 2px 8px rgba(0, 0, 0, 0.08)'
+                                    }}
+                                    transition={{ duration: 0.2 }}
+                                    className={`relative w-full text-left px-5 py-4 rounded-xl border-2 transition-all ${
+                                      isSelected
+                                        ? 'border-accent-indigo bg-gradient-to-r from-accent-indigo/15 to-accent-indigo/5'
+                                        : 'border-charcoal/20 bg-white hover:border-accent-indigo/40 hover:bg-charcoal/5'
                                     }`}
                                   >
-                                    {formData[question.id as keyof QuestionnaireData] === option && (
-                                      <Check size={14} className="text-white" />
+                                    {isSelected && (
+                                      <motion.div
+                                        layoutId="standardCardGlow"
+                                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent-indigo/10 via-accent-gold/10 to-accent-indigo/10"
+                                        initial={false}
+                                        transition={{ duration: 0.3 }}
+                                      />
                                     )}
-                                  </div>
-                                  <span className="text-sm">{option}</span>
-                                </div>
-                              </button>
-                            ))}
+                                    <div className="flex items-center gap-4 relative z-10">
+                                      <motion.div
+                                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                                          isSelected
+                                            ? 'border-accent-indigo bg-accent-indigo'
+                                            : 'border-charcoal/30 bg-white'
+                                        }`}
+                                        animate={{
+                                          scale: isSelected ? [1, 1.2, 1] : 1
+                                        }}
+                                        transition={{ duration: 0.3 }}
+                                      >
+                                        {isSelected && (
+                                          <motion.div
+                                            initial={{ scale: 0, rotate: -180 }}
+                                            animate={{ scale: 1, rotate: 0 }}
+                                            transition={{ delay: 0.1 }}
+                                          >
+                                            <Check size={14} className="text-white" />
+                                          </motion.div>
+                                        )}
+                                      </motion.div>
+                                      <span className={`text-sm font-medium ${isSelected ? 'text-accent-indigo' : 'text-charcoal'}`}>
+                                        {option}
+                                      </span>
+                                    </div>
+                                  </motion.button>
+                                );
+                              })}
                           </div>
                         )}
                       </div>
@@ -906,38 +1068,35 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
           {/* Navigation Buttons */}
           <div className="flex gap-4 mt-8 pt-6 border-t border-charcoal/10">
             {(step > 0 || questionIndex > 0) && (
-              <button
-                type="button"
+              <MagneticButton
                 onClick={handlePrev}
                 className="flex items-center gap-2 px-6 py-3 border-2 border-charcoal/20 text-charcoal rounded-lg hover:border-charcoal/40 transition-colors"
               >
                 <ArrowLeft size={18} />
                 Back
-              </button>
+              </MagneticButton>
             )}
 
             <div className="flex-1" />
 
             {step < STEPS.length - 1 || questionIndex < QUESTIONS[step].length - 1 ? (
-              <button
-                type="button"
+              <MagneticButton
                 onClick={handleNext}
                 disabled={!canGoNext()}
-                className="flex items-center gap-2 px-6 py-3 bg-accent-indigo text-white rounded-lg hover:bg-accent-indigo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-6 py-3 bg-accent-indigo text-white rounded-lg hover:bg-accent-indigo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-accent-indigo/30"
               >
                 Continue
                 <ArrowRight size={18} />
-              </button>
+              </MagneticButton>
             ) : (
-              <button
-                type="button"
+              <MagneticButton
                 onClick={handleSubmit}
                 disabled={isSubmitting || !formData.name || !formData.email || (!formData.logline && !uploadedFile && !extractedText)}
-                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-accent-indigo to-accent-gold text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-accent-indigo to-accent-gold text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-accent-indigo/30"
               >
                 {isSubmitting ? 'Analyzing...' : 'Get My Free Story Score'}
                 <Sparkles size={18} />
-              </button>
+              </MagneticButton>
             )}
           </div>
         </div>
@@ -954,11 +1113,18 @@ export default function StoryQuestionnaire({ onComplete }: StoryQuestionnairePro
       </div>
     </div>
 
+    {/* Milestone Celebration */}
+    <MilestoneCelebration
+      show={showMilestone}
+      message={milestoneMessage}
+      onComplete={() => setShowMilestone(false)}
+    />
+
     {/* Loading Screen during submission */}
     {isSubmitting && (
       <LoadingScreen
-        message="Analyzing your story..."
-        subtext="Our AI is evaluating your concept and generating insights"
+        message="Processing Your Story..."
+        subtext="Your story concept is being processed through our proprietary system and compared to similar success stories!"
         duration={4000}
       />
     )}

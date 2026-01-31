@@ -135,59 +135,62 @@ export async function POST(req: NextRequest) {
     // Insert into database
     const [newLead] = await db.insert(leads).values(leadData).returning();
 
-    // Call AI Story Scorer API for full analysis
-    let aiAnalysis = null;
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-      const aiResponse = await fetch(`${baseUrl}/api/ai-analysis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          logline: validatedData.logline,
-          description: validatedData.description || '',
-          format: validatedData.format,
-          budget: validatedData.budget,
-        }),
-      });
-
-      if (aiResponse.ok) {
-        const aiResult = await aiResponse.json();
-
-        if (aiResult.success && aiResult.analysis) {
-          aiAnalysis = aiResult.analysis;
-          const { breakdown } = aiResult.analysis;
-
-          // Update the lead record with AI analysis scores
-          await db
-            .update(leads)
-            .set({
-              overallScore: aiResult.analysis.overallScore,
-              originalityScore: breakdown.originality,
-              emotionalScore: breakdown.emotionalImpact,
-              commercialScore: breakdown.commercialPotential,
-              formatScore: breakdown.formatReadiness,
-              clarityScore: breakdown.clarityOfVision,
-            })
-            .where(eq(leads.id, newLead.id));
-        }
-      }
-    } catch (aiError) {
-      console.error('AI Analysis Error:', aiError);
-      // Don't fail the submission if AI analysis fails
-    }
-
-    // Send analysis report email to the user (non-blocking)
-    if (aiAnalysis) {
-      // Send email asynchronously, don't wait for it
-      sendAnalysisReport({
-        to: validatedData.email,
-        name: validatedData.name,
+    // Trigger StakeOS processing asynchronously (takes ~15 minutes)
+    // Don't wait for it - return immediately with teaser score
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    
+    // Start StakeOS processing in background (fire and forget)
+    fetch(`${baseUrl}/api/ai-analysis`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         logline: validatedData.logline,
-        analysis: aiAnalysis,
-      }).catch(err => console.error('Analysis report email send failed:', err));
-    }
+        description: validatedData.description || '',
+        format: validatedData.format,
+        budget: validatedData.budget,
+        contactInfo: {
+          name: validatedData.name,
+          email: validatedData.email,
+        },
+        leadId: newLead.id, // Pass leadId so we can update the record when done
+      }),
+    })
+      .then(async (aiResponse) => {
+        if (aiResponse.ok) {
+          const aiResult = await aiResponse.json();
+          
+          if (aiResult.success && aiResult.analysis) {
+            const { breakdown } = aiResult.analysis;
+
+            // Update the lead record with StakeOS analysis scores
+            await db
+              .update(leads)
+              .set({
+                overallScore: aiResult.analysis.overallScore,
+                originalityScore: breakdown.originality,
+                emotionalScore: breakdown.emotionalImpact,
+                commercialScore: breakdown.commercialPotential,
+                formatScore: breakdown.formatReadiness,
+                clarityScore: breakdown.clarityOfVision,
+              })
+              .where(eq(leads.id, newLead.id));
+
+            // Send full StakeOS analysis report email
+            sendAnalysisReport({
+              to: validatedData.email,
+              name: validatedData.name,
+              logline: validatedData.logline,
+              analysis: aiResult.analysis,
+            }).catch(err => console.error('Analysis report email send failed:', err));
+          }
+        }
+      })
+      .catch((aiError) => {
+        console.error('StakeOS Processing Error:', aiError);
+        // Don't fail - processing continues in background
+      });
 
     // Send notification email to admin team (non-blocking)
     try {

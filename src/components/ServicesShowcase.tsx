@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, BarChart3, FileText, Sparkles, PenTool } from 'lucide-react';
 import Link from 'next/link';
+import GlassCard from './GlassCard';
 
 interface Service {
   title: string;
@@ -86,35 +87,40 @@ export default function ServicesShowcase({
                 href={service.href as any}
                 className="block group h-full"
               >
-                <div className="relative h-full bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-charcoal/5 hover:border-accent-indigo/30">
-                  {/* Badge */}
-                  {service.badge && (
-                    <span className="absolute -top-3 right-6 px-4 py-1 bg-accent-indigo text-white text-xs font-medium rounded-full">
-                      {service.badge}
+                <GlassCard
+                  index={index}
+                >
+                  {/* Content container to maintain proper spacing */}
+                  <div className="relative">
+                    {/* Badge */}
+                    {service.badge && (
+                      <span className="absolute -top-3 right-0 px-4 py-1 bg-accent-indigo text-white text-xs font-medium rounded-full">
+                        {service.badge}
+                      </span>
+                    )}
+
+                    {/* Icon */}
+                    <div className="w-16 h-16 bg-accent-indigo/10 rounded-2xl flex items-center justify-center text-accent-indigo mb-6 group-hover:bg-accent-indigo group-hover:text-white transition-colors">
+                      {service.icon}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-display text-2xl font-bold text-charcoal mb-3 group-hover:text-accent-indigo transition-colors">
+                      {service.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-charcoal/70 leading-relaxed mb-6">
+                      {service.description}
+                    </p>
+
+                    {/* CTA */}
+                    <span className="inline-flex items-center gap-2 text-accent-indigo font-medium group-hover:gap-3 transition-all">
+                      {service.cta}
+                      <ArrowRight size={18} />
                     </span>
-                  )}
-
-                  {/* Icon */}
-                  <div className="w-16 h-16 bg-accent-indigo/10 rounded-2xl flex items-center justify-center text-accent-indigo mb-6 group-hover:bg-accent-indigo group-hover:text-white transition-colors">
-                    {service.icon}
                   </div>
-
-                  {/* Title */}
-                  <h3 className="font-display text-2xl font-bold text-charcoal mb-3 group-hover:text-accent-indigo transition-colors">
-                    {service.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-charcoal/70 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-
-                  {/* CTA */}
-                  <span className="inline-flex items-center gap-2 text-accent-indigo font-medium group-hover:gap-3 transition-all">
-                    {service.cta}
-                    <ArrowRight size={18} />
-                  </span>
-                </div>
+                </GlassCard>
               </Link>
             </motion.div>
           ))}
