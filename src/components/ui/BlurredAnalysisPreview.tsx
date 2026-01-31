@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Lock, Calendar, Mail, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { getConsultationUrl } from '@/lib/constants';
 
 interface AnalysisSection {
   title: string;

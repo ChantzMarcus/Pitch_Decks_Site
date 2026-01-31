@@ -1,8 +1,9 @@
-import { getMockDecks } from '@/lib/mock-decks';
+// src/app/page.tsx
+import { getAllDecks } from '@/db';
 import HomeContent from '@/components/HomeContent';
 
 export default async function Home() {
-  const decks = await getMockDecks();
+  const decks = await getAllDecks();
   return <HomeContent initialDecks={decks} />;
 }
 
