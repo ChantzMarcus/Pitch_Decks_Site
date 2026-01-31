@@ -1,8 +1,23 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, Calendar, FileText } from 'lucide-react';
 import Link from 'next/link';
+import { StoryIcon, CalendarIcon } from '@/components/icons/FilmIcons';
+
+// Custom Sparkles icon
+function SparklesIcon({ className = '', size = 16 }: { className?: string; size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z" />
+    </svg>
+  );
+}
 
 /**
  * Dual Call-to-Action Component
@@ -29,34 +44,72 @@ export default function DualCTA() {
           </p>
         </motion.div>
 
-        {/* Dual CTAs */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {/* Option A: Free Assessment */}
+        {/* Triple CTAs */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {/* Option A: Getting Started */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-colors"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-14 h-14 bg-accent-indigo rounded-xl flex items-center justify-center">
-                <FileText size={28} className="text-white" />
+                <SparklesIcon size={28} className="text-white" />
+              </div>
+              <h3 className="font-display text-2xl font-bold">Just Starting Out?</h3>
+            </div>
+            <p className="text-white/70 mb-6">
+              Get foundational resources and guidance to begin your pitch deck journey.
+              Perfect for creators taking their first steps.
+            </p>
+            <ul className="text-left space-y-3 mb-8">
+              {[
+                'Educational resources',
+                'Template guides',
+                'Best practices',
+                'Community support',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2 text-white/80">
+                  <SparklesIcon className="text-accent-gold flex-shrink-0 mt-0.5" size={16} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/getting-started"
+              className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo/90 transition-colors"
+            >
+              Get Started
+            </Link>
+          </motion.div>
+
+          {/* Option B: Free Assessment */}
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-colors"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-14 h-14 bg-accent-indigo rounded-xl flex items-center justify-center">
+                <StoryIcon size={28} className="text-white" />
               </div>
               <h3 className="font-display text-2xl font-bold">Free Project Assessment</h3>
             </div>
             <p className="text-white/70 mb-6">
-              Get your story evaluated by our AI + expert review system. Receive a detailed
-              analysis of your project's commercial potential and pitch readiness.
+              See if your story is approved by our expert team. Get your story scored using the same proprietary system trusted by top-tier producers and executives.
             </p>
             <ul className="text-left space-y-3 mb-8">
               {[
-                'Commercial potential score',
-                'Market viability analysis',
-                'Pitch readiness assessment',
-                'Actionable recommendations',
+                'Expert team evaluation',
+                'Proprietary scoring system',
+                'Industry-trusted methodology',
+                'See if your story is approved',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2 text-white/80">
-                  <Sparkles className="text-accent-gold flex-shrink-0 mt-0.5" size={16} />
+                  <SparklesIcon className="text-accent-gold flex-shrink-0 mt-0.5" size={16} />
                   <span>{item}</span>
                 </li>
               ))}
@@ -65,21 +118,21 @@ export default function DualCTA() {
               href="/questionnaire"
               className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo/90 transition-colors"
             >
-              Get Free Assessment
+              Get Your Story Scored by Experts
             </Link>
           </motion.div>
 
-          {/* Option B: Book a Meeting */}
+          {/* Option C: Book a Meeting */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.2 }}
             className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-colors"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-14 h-14 bg-accent-gold rounded-xl flex items-center justify-center">
-                <Calendar size={28} className="text-white" />
+                <CalendarIcon size={28} className="text-white" />
               </div>
               <h3 className="font-display text-2xl font-bold">Book a Strategy Call</h3>
             </div>
@@ -95,7 +148,7 @@ export default function DualCTA() {
                 'Next steps defined',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2 text-white/80">
-                  <Sparkles className="text-accent-gold flex-shrink-0 mt-0.5" size={16} />
+                  <SparklesIcon className="text-accent-gold flex-shrink-0 mt-0.5" size={16} />
                   <span>{item}</span>
                 </li>
               ))}

@@ -1,41 +1,21 @@
 // middleware.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export function middleware(request: NextRequest) {
-  // Only protect admin routes
-  if (!request.nextUrl.pathname.startsWith('/admin')) {
-    return NextResponse.next();
+const isProtectedRoute = createRouteMatcher([
+  '/secure-analytics(.*)', // Protect the secure analytics dashboard and any subroutes
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) {
+    await auth.protect(); // Require authentication for protected routes
   }
+});
 
-  const authHeader = request.headers.get('authorization');
-  const adminCookie = request.cookies.get('admin_password');
-
-  // Check for basic auth
-  if (authHeader?.startsWith('Basic ')) {
-    const base64Credentials = authHeader.split(' ')[1];
-    const credentials = atob(base64Credentials);
-    const [username, password] = credentials.split(':');
-
-    if (username === 'admin' && password === process.env.ADMIN_PASSWORD) {
-      return NextResponse.next();
-    }
-  }
-
-  // Check for cookie-based auth
-  if (adminCookie?.value === process.env.ADMIN_PASSWORD) {
-    return NextResponse.next();
-  }
-
-  // Return 401 for admin routes without auth
-  return new NextResponse('Authentication required', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="Admin Dashboard"',
-    },
-  });
-}
-
-// Only match admin routes explicitly
 export const config = {
-  matcher: '/admin/:path*',
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

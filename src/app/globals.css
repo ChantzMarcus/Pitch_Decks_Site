@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
+  /* Light mode - your current design uses light backgrounds */
+  --foreground-rgb: 10, 10, 10;      /* Charcoal text */
+  --background-start-rgb: 245, 245, 245;  /* Paper color (light background) */
+  --background-end-rgb: 245, 245, 245;
 }
 
 body {

@@ -2,6 +2,9 @@
 
 import ProgressBar from '@/components/ui/ProgressBar';
 import BackToTop from '@/components/ui/BackToTop';
+import StickyCTA from '@/components/ui/StickyCTA';
+import ExitIntentPopup from '@/components/ui/ExitIntentPopup';
+import SocialProofNotification from '@/components/ui/SocialProofNotification';
 import { ToastProvider } from '@/components/ui/Toast';
 
 /**
@@ -13,6 +16,9 @@ export default function ClientUI({ children }: { children: React.ReactNode }) {
     <ToastProvider>
       <ProgressBar />
       <BackToTop />
+      <StickyCTA />
+      <ExitIntentPopup />
+      <SocialProofNotification />
       {children}
     </ToastProvider>
   );

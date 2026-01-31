@@ -41,17 +41,17 @@ export default function ScrollReveal({
   const getInitialPosition = () => {
     switch (direction) {
       case 'up':
-        return { y: distance, opacity: 0 };
+        return { y: 0, opacity: 1 };
       case 'down':
-        return { y: -distance, opacity: 0 };
+        return { y: 0, opacity: 1 };
       case 'left':
-        return { x: distance, opacity: 0 };
+        return { x: 0, opacity: 1 };
       case 'right':
-        return { x: -distance, opacity: 0 };
+        return { x: 0, opacity: 1 };
       case 'fade':
-        return { opacity: 0 };
+        return { opacity: 1 };
       default:
-        return { y: distance, opacity: 0 };
+        return { y: 0, opacity: 1 };
     }
   };
 
@@ -111,8 +111,8 @@ export function StaggerReveal({
       {children.map((child, index) => (
         <motion.div
           key={index}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          initial={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
           transition={{
             duration: 0.5,
             delay: index * staggerDelay,

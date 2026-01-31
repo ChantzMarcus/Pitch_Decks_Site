@@ -8,9 +8,9 @@ import VideoPlayer from './VideoPlayer';
 interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  videoId: string;
+  videoId: string; // Video URL or ID
   title?: string;
-  type?: 'youtube' | 'vimeo';
+  type?: 'youtube' | 'vimeo' | 'cloudinary';
 }
 
 export default function VideoModal({
@@ -18,7 +18,7 @@ export default function VideoModal({
   onClose,
   videoId,
   title,
-  type = 'youtube',
+  type = 'cloudinary',
 }: VideoModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -113,7 +113,13 @@ export default function VideoModal({
               {/* Video player */}
               <div className="aspect-video bg-black rounded-lg overflow-hidden shadow-2xl">
                 <VideoPlayer
-                  src={type === 'youtube' ? `https://www.youtube.com/watch?v=${videoId}` : videoId}
+                  src={
+                    type === 'youtube'
+                      ? `https://www.youtube.com/watch?v=${videoId}`
+                      : type === 'vimeo'
+                      ? `https://vimeo.com/${videoId}`
+                      : videoId // Cloudinary or direct video URL
+                  }
                   autoPlay
                   controls
                   className="w-full h-full"

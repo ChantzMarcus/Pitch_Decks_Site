@@ -7,17 +7,57 @@ import MarqueeBackground from './MarqueeBackground';
 
 export default function HeroSonarStyle() {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+
+  // Enhanced parallax effects with multiple layers
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
+  const ySlow = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const yFast = useTransform(scrollYProgress, [0, 1], ['0%', '60%']);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const blur = useTransform(scrollYProgress, [0, 0.3], [0, 4]);
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-charcoal">
-      {/* Marquee background animation */}
-      <MarqueeBackground speed={100} direction="left" />
+      {/* Marquee background animation with parallax */}
+      <motion.div style={{ y: ySlow }} className="absolute inset-0">
+        <MarqueeBackground speed={100} direction="left" />
+      </motion.div>
+
+      {/* Floating particles for depth */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => {
+          const size = Math.random() * 200 + 100;
+          const xPos = Math.random() * 100;
+          const yPos = Math.random() * 100;
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-accent-indigo/10"
+              style={{
+                width: size,
+                height: size,
+                left: `${xPos}%`,
+                top: `${yPos}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                x: [0, Math.random() * 20 - 10, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: Math.random() * 5 + 5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
+      </div>
 
       {/* Hero content */}
       <motion.div
-        style={{ y, opacity }}
+        style={{ y, scale, opacity, filter }}
         className="relative z-10 max-w-7xl mx-auto px-6 text-center"
       >
         {/* Pre-label */}
