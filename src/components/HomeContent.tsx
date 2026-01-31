@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import HeroVideo from '@/components/HeroVideo';
 import DeckGrid from '@/components/DeckGrid';
@@ -126,13 +126,18 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
   const [walkthroughDeck, setWalkthroughDeck] = useState<DeckWithSlides | null>(null);
   const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
 
-  // Create featured deck data from initial decks
-  const featuredDecks = initialDecks.slice(0, 3).map(deck => ({
-    deck,
-    slides: getDeckSlideUrls(deck.id),
-    highlightText: deck.logline,
-    ctaText: 'Watch Full Deck',
-  }));
+  // Create featured deck data from initial decks (sorted by view count for best decks first)
+  const featuredDecks = useMemo(() => {
+    const sorted = [...initialDecks]
+      .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
+      .slice(0, 3);
+    return sorted.map(deck => ({
+      deck,
+      slides: getDeckSlideUrls(deck.id),
+      highlightText: deck.logline,
+      ctaText: 'Watch Full Deck',
+    }));
+  }, [initialDecks]);
 
   const handleQuickView = (deck: Deck) => {
     // Attach slides to the deck when opening quick view

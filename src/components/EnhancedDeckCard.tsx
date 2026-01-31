@@ -4,7 +4,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import Link from 'next/image';
+import Image from 'next/image';
 import { Eye } from 'lucide-react';
 import { Deck } from '@/db';
 
@@ -139,7 +139,7 @@ export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardP
         <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-charcoal/10 shadow-lg transition-all duration-300">
           {/* Image Container with GSAP-controlled effects */}
           <div ref={imageRef} className="w-full h-full">
-            <Link
+            <Image
               src={deck.cover_image_url}
               alt={`${deck.title} cover image`}
               fill

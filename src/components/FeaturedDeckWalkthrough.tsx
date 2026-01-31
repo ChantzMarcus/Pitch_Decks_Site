@@ -7,6 +7,10 @@ import { Play, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 
+// Constants for timing
+const DEFAULT_AUTO_ROTATE_INTERVAL = 15000; // 15 seconds per featured deck
+const DEFAULT_SLIDE_INTERVAL = 4000; // 4 seconds per slide
+
 interface FeaturedDeck {
   deck: Deck;
   slides: string[];
@@ -33,8 +37,8 @@ interface FeaturedDeckWalkthroughProps {
  */
 export default function FeaturedDeckWalkthrough({
   featuredDecks,
-  autoRotateInterval = 15000, // 15 seconds per featured deck
-  slideInterval = 4000, // 4 seconds per slide
+  autoRotateInterval = DEFAULT_AUTO_ROTATE_INTERVAL,
+  slideInterval = DEFAULT_SLIDE_INTERVAL,
   onWatchFullDeck,
 }: FeaturedDeckWalkthroughProps) {
   const [activeDeckIndex, setActiveDeckIndex] = useState(0);
@@ -46,24 +50,30 @@ export default function FeaturedDeckWalkthrough({
 
   // Auto-rotate through featured decks
   useEffect(() => {
-    if (isPaused || !activeDeck) return;
+    if (isPaused || featuredDecks.length === 0) return;
 
-    // First, cycle through slides of current deck
+    // Cycle through slides of current deck, then move to next deck
     const slideTimer = setInterval(() => {
-      setActiveSlideIndex((prev) => {
-        const nextSlide = prev + 1;
-        // If we've gone through all slides of current deck
-        if (nextSlide >= activeDeck.slides.length) {
-          // Move to next featured deck
-          setActiveDeckIndex((deckIdx) => (deckIdx + 1) % featuredDecks.length);
+      setActiveSlideIndex((prevSlide) => {
+        const currentDeck = featuredDecks[activeDeckIndex];
+        if (!currentDeck?.slides || currentDeck.slides.length === 0) {
+          return prevSlide;
+        }
+        
+        const nextSlide = prevSlide + 1;
+        
+        // If we've gone through all slides, move to next deck
+        if (nextSlide >= currentDeck.slides.length) {
+          setActiveDeckIndex((prevDeck) => (prevDeck + 1) % featuredDecks.length);
           return 0; // Reset to first slide of next deck
         }
+        
         return nextSlide;
       });
     }, slideInterval);
 
     return () => clearInterval(slideTimer);
-  }, [activeDeck, activeSlideIndex, featuredDecks.length, isPaused, slideInterval]);
+  }, [activeDeckIndex, featuredDecks, isPaused, slideInterval]);
 
   // Manual navigation for featured decks
   const goToNextDeck = () => {
@@ -81,6 +91,10 @@ export default function FeaturedDeckWalkthrough({
   };
 
   if (!activeDeck) return null;
+
+  // Check for reduced motion preference
+  const prefersReducedMotion = typeof window !== 'undefined' && 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <section
@@ -142,10 +156,10 @@ export default function FeaturedDeckWalkthrough({
                   {currentSlide && (
                     <motion.div
                       key={currentSlide}
-                      initial={{ opacity: 0 }}
+                      initial={prefersReducedMotion ? undefined : { opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
+                      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                      transition={prefersReducedMotion ? {} : { duration: 0.5 }}
                       className="absolute inset-0"
                     >
                       <Image

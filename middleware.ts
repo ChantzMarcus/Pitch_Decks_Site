@@ -3,6 +3,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
   '/secure-analytics(.*)', // Protect the secure analytics dashboard and any subroutes
+  '/admin(.*)',            // Protect all admin routes
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
