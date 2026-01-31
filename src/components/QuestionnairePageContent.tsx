@@ -12,6 +12,7 @@ import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import AsyncProcessingScreen from '@/components/ui/AsyncProcessingScreen';
 import Link from 'next/link';
 import { ArrowLeft, Sparkles, Mail, Users, Calendar } from 'lucide-react';
+import { getConsultationUrl } from '@/lib/constants';
 
 type SubmissionState = 'form' | 'submitting' | 'processing' | 'revealing' | 'success' | 'error';
 
@@ -203,10 +204,19 @@ export default function QuestionnairePageContent() {
                     </ul>
                   </div>
                   <div className="bg-accent-gold/10 rounded-lg p-3 border border-accent-gold/20">
-                    <p className="text-xs text-charcoal/70">
-                      <strong className="text-charcoal">Within 72 hours:</strong> A human expert from our development team will personally review your story 
+                    <p className="text-xs text-charcoal/70 mb-2">
+                      <strong className="text-charcoal">Within 72 hours:</strong> An expert from our development team will personally review your story 
                       and reach out with personalized feedback and next steps.
                     </p>
+                    <a
+                      href={getConsultationUrl('questionnaire', 'email_preview')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-accent-gold hover:text-accent-gold/80 font-medium underline"
+                    >
+                      <Calendar size={12} />
+                      Or book a consultation call now
+                    </a>
                   </div>
                   <p className="text-xs text-charcoal/50 mt-3">
                     Don&apos;t see it? Check your spam folder or{' '}

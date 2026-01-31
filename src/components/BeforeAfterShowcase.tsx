@@ -381,7 +381,6 @@ export default function BeforeAfterShowcase({
                     sizes="(max-width: 768px) 100vw, 80vw"
                   />
                 </div>
-            </div>
 
             {/* After Image with clip-path */}
             <div
@@ -443,62 +442,65 @@ export default function BeforeAfterShowcase({
               </div>
             </div>
           </div>
-        </ScrollReveal>
+            </ScrollReveal>
 
-        {/* Success Metrics */}
-        {!isSlideshowMode && activeItem?.metrics && (
-          <ScrollReveal direction="up" delay={0.4}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {activeItem.metrics.funding && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-br from-accent-indigo/20 to-accent-indigo/5 p-6 rounded-2xl border border-accent-indigo/20"
-                >
-                  <div className="text-3xl font-bold text-accent-indigo mb-2">
-                    {activeItem.metrics.funding}
-                  </div>
-                  <div className="text-sm text-charcoal/70">Funding Secured</div>
-                </motion.div>
-              )}
-              {activeItem.metrics.timeline && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="bg-gradient-to-br from-accent-gold/20 to-accent-gold/5 p-6 rounded-2xl border border-accent-gold/20"
-                >
-                  <div className="text-3xl font-bold text-accent-gold mb-2">
-                    {activeItem.metrics.timeline}
-                  </div>
-                  <div className="text-sm text-charcoal/70">Timeline</div>
-                </motion.div>
-              )}
-              {activeItem.metrics.status && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="bg-gradient-to-br from-green-500/20 to-green-500/5 p-6 rounded-2xl border border-green-500/20"
-                >
-                  <div className="text-3xl font-bold text-green-600 mb-2">
-                    {activeItem.metrics.status}
-                  </div>
-                  <div className="text-sm text-charcoal/70">Status</div>
-                </motion.div>
-              )}
-            </div>
-          </ScrollReveal>
+            {/* Success Metrics */}
+            {activeItem?.metrics && (
+              <ScrollReveal direction="up" delay={0.4}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  {activeItem.metrics.funding && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gradient-to-br from-accent-indigo/20 to-accent-indigo/5 p-6 rounded-2xl border border-accent-indigo/20"
+                    >
+                      <div className="text-3xl font-bold text-accent-indigo mb-2">
+                        {activeItem.metrics.funding}
+                      </div>
+                      <div className="text-sm text-charcoal/70">Funding Secured</div>
+                    </motion.div>
+                  )}
+                  {activeItem.metrics.timeline && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="bg-gradient-to-br from-accent-gold/20 to-accent-gold/5 p-6 rounded-2xl border border-accent-gold/20"
+                    >
+                      <div className="text-3xl font-bold text-accent-gold mb-2">
+                        {activeItem.metrics.timeline}
+                      </div>
+                      <div className="text-sm text-charcoal/70">Timeline</div>
+                    </motion.div>
+                  )}
+                  {activeItem.metrics.status && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="bg-gradient-to-br from-green-500/20 to-green-500/5 p-6 rounded-2xl border border-green-500/20"
+                    >
+                      <div className="text-3xl font-bold text-green-600 mb-2">
+                        {activeItem.metrics.status}
+                      </div>
+                      <div className="text-sm text-charcoal/70">Status</div>
+                    </motion.div>
+                  )}
+                </div>
+              </ScrollReveal>
+            )}
+
+          </>
         )}
 
-        {/* Navigation Controls */}
-        {items.length > 1 && (
+        {/* Navigation Controls - Common to both modes */}
+        {totalItems > 1 && (
           <div className="flex items-center justify-center gap-4 mt-12">
             {/* Previous Button */}
             <button
               onClick={goToPrevious}
               className="p-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2 hover:bg-charcoal/20 active:scale-95"
-              aria-label="Previous transformation"
+              aria-label={isSlideshowMode ? "Previous slide" : "Previous transformation"}
             >
               <ChevronLeft className="w-6 h-6 text-charcoal" />
             </button>
@@ -511,7 +513,7 @@ export default function BeforeAfterShowcase({
                   onClick={() => setActiveIndex(index)}
                   role="tab"
                   aria-selected={index === activeIndex}
-                  aria-label={`View transformation ${index + 1} of ${items.length}`}
+                  aria-label={`View ${isSlideshowMode ? 'slide' : 'transformation'} ${index + 1} of ${totalItems}`}
                   tabIndex={index === activeIndex ? 0 : -1}
                   className={`rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2 ${
                     index === activeIndex
@@ -526,7 +528,7 @@ export default function BeforeAfterShowcase({
             <button
               onClick={goToNext}
               className="p-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2 hover:bg-charcoal/20 active:scale-95"
-              aria-label="Next transformation"
+              aria-label={isSlideshowMode ? "Next slide" : "Next transformation"}
             >
               <ChevronRight className="w-6 h-6 text-charcoal" />
             </button>

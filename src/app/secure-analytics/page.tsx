@@ -40,7 +40,7 @@ export default async function SecureAnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-paper to-charcoal/5 py-20">
-      <SalesDashboard userRole={user?.publicMetadata?.role || 'sales-rep'} />
+      <SalesDashboard userRole={(user?.publicMetadata?.role as string) || 'sales-rep'} />
     </div>
   );
 }

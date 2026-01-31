@@ -156,13 +156,15 @@ export default function BlurredAnalysisPreview({
           >
             View Full Analysis (Email Link)
           </Link>
-          <Link
-            href="/questionnaire?bookCall=true"
+          <a
+            href={getConsultationUrl('analysis_preview', 'cta_button')}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex-1 px-6 py-4 border-2 border-accent-indigo text-accent-indigo font-semibold rounded-lg hover:bg-accent-indigo hover:text-white transition-colors text-center flex items-center justify-center gap-2"
           >
             <Calendar size={18} />
             Book Free Consultation
-          </Link>
+          </a>
         </div>
         <p className="text-xs text-charcoal/50 text-center mt-3">
           Full report includes: Detailed breakdowns, market comparisons, production insights, and actionable recommendations

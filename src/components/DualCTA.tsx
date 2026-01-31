@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { StoryIcon, CalendarIcon } from '@/components/icons/FilmIcons';
+import { getConsultationUrl } from '@/lib/constants';
 
 // Custom Sparkles icon
 function SparklesIcon({ className = '', size = 16 }: { className?: string; size?: number }) {
@@ -154,7 +155,7 @@ export default function DualCTA() {
               ))}
             </ul>
             <a
-              href="https://cal.com/screenwriterhannah/pitch-deck-consultation"
+              href={getConsultationUrl('dual_cta', 'strategy_call')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent-gold text-white font-medium rounded-lg hover:bg-accent-gold/90 transition-colors"

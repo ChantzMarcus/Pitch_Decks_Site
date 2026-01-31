@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Calendar } from 'lucide-react';
+import { getConsultationUrl } from '@/lib/constants';
 
 interface EvaluationResultProps {
   score: number;
@@ -164,7 +166,7 @@ export default function EvaluationResult({
             <div>
               <p className="font-medium text-charcoal">Expert Team Review (Within 72 Hours)</p>
               <p className="text-sm text-charcoal/60">
-                <strong className="text-charcoal">A human expert from our development team will personally review your story</strong> and reach out with personalized feedback and next steps.
+                <strong className="text-charcoal">An expert from our development team will personally review your story</strong> and reach out with personalized feedback and next steps.
               </p>
             </div>
           </div>
@@ -219,7 +221,7 @@ export default function EvaluationResult({
         </div>
       </motion.div>
 
-      {/* 72-Hour Human Follow-Up - Prominent */}
+      {/* 72-Hour Expert Follow-Up - Prominent */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -235,13 +237,21 @@ export default function EvaluationResult({
           <div className="flex-1">
             <h5 className="font-semibold text-charcoal mb-2 flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-6 h-6 bg-accent-gold text-white rounded-full text-xs font-bold">72</span>
-              Human Expert Will Reach Out Within 72 Hours
+              Expert Will Reach Out Within 72 Hours
             </h5>
-            <p className="text-sm text-charcoal/70">
-              <strong>Our expert development team will personally review your story</strong> and reach out via email or phone 
-              (if you requested a consultation) with personalized feedback and guidance. This isn&apos;t automated - 
-              you&apos;ll hear from a real industry professional who has greenlit projects at major studios.
+            <p className="text-sm text-charcoal/70 mb-3">
+              <strong>An expert from our development team will personally review your story</strong> and reach out via email or phone 
+              with personalized feedback and guidance. You&apos;ll hear from an industry professional who has greenlit projects at major studios.
             </p>
+            <a
+              href={getConsultationUrl('evaluation_result', '72_hour_section')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-accent-gold text-white text-sm font-medium rounded-lg hover:bg-accent-gold/90 transition-colors"
+            >
+              <Calendar size={16} />
+              Book a Consultation Call
+            </a>
           </div>
         </div>
       </motion.div>

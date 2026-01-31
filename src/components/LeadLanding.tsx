@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import LeadCaptureForm from '@/components/LeadCaptureForm';
+import { getConsultationUrl } from '@/lib/constants';
 
 /**
  * Standalone Landing Page for Outbound Campaigns
@@ -53,7 +54,7 @@ export default function LeadLanding({
               Free Story Analysis
             </Link>
             <a
-              href="https://cal.com/screenwriterhannah/pitch-deck-consultation"
+              href={getConsultationUrl('lead_landing', 'hero_cta')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-accent-gold text-accent-gold font-medium rounded-lg hover:bg-accent-gold hover:text-white transition-colors"
@@ -112,7 +113,7 @@ export default function LeadLanding({
             Skip the form. Book a strategy call directly with our team.
           </p>
           <a
-            href="https://cal.com/screenwriterhannah/pitch-deck-consultation"
+            href={getConsultationUrl('lead_landing', 'footer_cta')}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo/90 transition-colors"
