@@ -63,3 +63,4 @@ The Counterfeit/
 
 # Image files - stored in Supabase Storage, not in git
 public/decks/
+.env.local.bak
