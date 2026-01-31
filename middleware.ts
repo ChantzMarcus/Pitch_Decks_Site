@@ -7,17 +7,6 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Check if we're in maintenance mode
-  const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true';
-  const isPublicRoute = req.nextUrl.pathname === '/' || req.nextUrl.pathname === '/api/health';
-  
-  // If in maintenance mode and not a public route, redirect to maintenance page
-  if (isMaintenanceMode && !isPublicRoute && !req.nextUrl.pathname.startsWith('/api')) {
-    const maintenanceUrl = req.nextUrl.clone();
-    maintenanceUrl.pathname = '/maintenance';
-    return Response.redirect(maintenanceUrl);
-  }
-  
   if (isProtectedRoute(req)) {
     await auth.protect(); // Require authentication for protected routes
   }
@@ -30,4 +19,5 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],
+};
 };
