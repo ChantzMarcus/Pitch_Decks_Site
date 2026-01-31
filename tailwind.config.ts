@@ -13,11 +13,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        charcoal: '#2B2B2B',
-        paper: '#F8F8F6',
-        'accent-indigo': '#4F46E5',
-        'accent-red': '#DC2626',
-        'accent-gold': '#F59E0B',
+        // Cinematic dark background palette (2025 film industry standard)
+        'charcoal': '#0A0A0A',       // Deep black (main background)
+        'charcoal-light': '#141414', // Slightly lighter (cards, sections)
+        'charcoal-medium': '#1E1E1E', // Medium dark (elevated elements)
+        'paper': '#F5F5F5',          // Light text (high contrast for readability)
+        'paper-muted': '#A0A0A0',    // Muted text (secondary, captions)
+        'accent-indigo': '#6366F1',  // Brighter indigo for visibility on dark
+        'accent-indigo-glow': '#818CF8',
+        'accent-red': '#EF4444',     // Bright red for CTAs
+        'accent-gold': '#F59E0B',    // Gold (unchanged, works well on dark)
+        'accent-teal': '#14B8A6',    // New: cinematic teal accent
       },
       fontFamily: {
         display: ['Fraunces', 'serif'],

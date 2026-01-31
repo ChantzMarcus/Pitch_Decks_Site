@@ -69,4 +69,15 @@ export const DECK_METADATA: DeckMetadata[] = [
     comparable_titles: ['Comparable Film 1', 'Comparable Film 2'],
     source_folder: 'The Counterfeit',
   },
+  {
+    id: 'saving-earth-twice',
+    title: 'Saving Earth Twice',
+    logline: 'Edit this logline for Saving Earth Twice project',
+    description: 'Add full description of Saving Earth Twice project here.',
+    genre: ['Sci-Fi', 'Action'],
+    target_audience: 'Adults 18-49',
+    production_status: 'Development',
+    comparable_titles: ['Comparable Film 1', 'Comparable Film 2'],
+    source_folder: 'SAVING EARTH TWICE',
+  },
 ];

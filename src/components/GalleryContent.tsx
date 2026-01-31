@@ -6,14 +6,16 @@ import DeckGrid from '@/components/DeckGrid';
 import CategoryFilter from '@/components/CategoryFilter';
 import QuickViewModal from '@/components/QuickViewModal';
 import StructuredData from '@/components/StructuredData';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollReveal } from '@/components/animations';
+import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 
 interface GalleryContentProps {
   initialDecks: Deck[];
 }
 
 export default function GalleryContent({ initialDecks }: GalleryContentProps) {
-  const [selectedDeck, setSelectedDeck] = useState<Deck | null>(null);
+  const [selectedDeck, setSelectedDeck] = useState<DeckWithSlides | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
 
@@ -35,7 +37,11 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
   }, [initialDecks, activeCategory]);
 
   const handleQuickView = (deck: Deck) => {
-    setSelectedDeck(deck);
+    const deckWithSlides: DeckWithSlides = {
+      ...deck,
+      slides: getDeckSlideUrls(deck.id),
+    };
+    setSelectedDeck(deckWithSlides);
     setIsModalOpen(true);
   };
 
@@ -59,18 +65,14 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
       />
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
+        <ScrollReveal direction="fade" className="text-center mb-16">
           <h1 className="font-display text-5xl md:text-6xl font-bold text-charcoal mb-6">
             Our Projects
           </h1>
           <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">
             Explore our portfolio of compelling stories ready for production
           </p>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Category Filter */}
         <CategoryFilter

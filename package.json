@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "@clerk/nextjs": "^6.37.1",
     "@fontsource-variable/fraunces": "^5.2.9",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
@@ -33,8 +34,10 @@
     "groq-sdk": "^0.37.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.294.0",
+    "mammoth": "^1.11.0",
     "next": "^16.1.4",
     "openai": "^6.16.0",
+    "pdfjs-dist": "^5.4.530",
     "plyr": "^3.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

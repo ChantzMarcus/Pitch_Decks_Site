@@ -1,7 +1,7 @@
 // components/Hero.tsx
 'use client';
 
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useEffect, useState } from 'react';
 import { ArrowRight, Play } from 'lucide-react';
@@ -20,23 +20,24 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  // Parallax effects - defined at top level
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
+  // Enhanced parallax effects with more sophisticated movements
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '2deg']);
 
-  const blobX = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const blobY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const blobX = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const blobY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  // Mouse tracking for subtle parallax
+  // Mouse tracking for sophisticated parallax
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       setMousePosition({
-        x: (e.clientX / innerWidth - 0.5) * 15,
-        y: (e.clientY / innerHeight - 0.5) * 15,
+        x: (e.clientX / innerWidth - 0.5) * 20,
+        y: (e.clientY / innerHeight - 0.5) * 20,
       });
     };
 
@@ -44,7 +45,7 @@ export default function Hero() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Split text for word-by-word animation
+  // Split text for enhanced word-by-word animation
   const heading = "Pitch Decks That";
   const subHeading = "Get Noticed";
   const words1 = heading.split(' ');
@@ -52,75 +53,103 @@ export default function Hero() {
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper">
-      {/* Animated gradient blobs */}
+      {/* Enhanced animated gradient blobs with more sophisticated movement */}
       {isMounted && (
         <motion.div
           style={{
             x: blobX,
             y: blobY,
           }}
-          className="absolute inset-0 opacity-30 pointer-events-none"
+          className="absolute inset-0 opacity-40 pointer-events-none"
         >
           <motion.div
             animate={{
-              x: mousePosition.x * 0.5,
-              y: mousePosition.y * 0.5,
+              x: mousePosition.x * 0.8,
+              y: mousePosition.y * 0.8,
+              scale: [1, 1.05, 1],
             }}
-            transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-            className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-indigo/30 rounded-full filter blur-3xl"
+            transition={{
+              type: 'spring',
+              stiffness: 100,
+              damping: 15,
+              scale: { duration: 4, repeat: Infinity, repeatType: "reverse" }
+            }}
+            className="absolute top-1/4 -left-40 w-[32rem] h-[32rem] bg-accent-indigo/20 rounded-full filter blur-[100px]"
           />
           <motion.div
             animate={{
-              x: mousePosition.x * -0.3,
-              y: mousePosition.y * -0.3,
+              x: mousePosition.x * -0.5,
+              y: mousePosition.y * -0.5,
+              scale: [1, 1.1, 1],
             }}
-            transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-            className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-gold/30 rounded-full filter blur-3xl"
+            transition={{
+              type: 'spring',
+              stiffness: 80,
+              damping: 12,
+              scale: { duration: 5, repeat: Infinity, repeatType: "reverse" }
+            }}
+            className="absolute bottom-1/4 -right-40 w-[32rem] h-[32rem] bg-accent-gold/20 rounded-full filter blur-[100px]"
           />
         </motion.div>
       )}
 
-      {/* Main content */}
+      {/* Enhanced main content with more sophisticated animations */}
       <motion.div
-        style={{ y, opacity, scale }}
+        style={{
+          y,
+          opacity,
+          scale,
+          rotate,
+          transformStyle: 'preserve-3d',
+        }}
         className="relative z-10 max-w-6xl mx-auto px-6 text-center"
       >
-        {/* Badge */}
+        {/* Enhanced badge with 3D effect */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: -20, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-indigo/10 border border-accent-indigo/20 mb-8"
+          className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/80 backdrop-blur-xl border border-charcoal/20 shadow-lg mb-10"
+          style={{ transform: 'translateZ(20px)' }}
         >
           <motion.span
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-2 h-2 rounded-full bg-accent-indigo"
+            animate={{
+              scale: [1, 1.4, 1],
+              rotate: [0, 10, -10, 0]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "loop"
+            }}
+            className="w-3 h-3 rounded-full bg-accent-indigo shadow-lg"
           />
-          <span className="text-sm font-medium text-accent-indigo">
+          <span className="text-sm font-medium text-charcoal">
             Industry's Most Trusted Analysis
           </span>
         </motion.div>
 
-        {/* Main heading with word-by-word reveal */}
+        {/* Enhanced main heading with sophisticated reveal */}
         <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold text-charcoal leading-tight mb-6"
+          style={{ transformStyle: 'preserve-3d' }}
         >
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             {words1.map((word, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, rotateX: -90 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{
                   duration: 0.7,
-                  delay: 0.2 + i * 0.08,
+                  delay: 0.2 + i * 0.1,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
-                className="inline-block"
+                className="inline-block origin-bottom"
+                style={{ transformStyle: 'preserve-3d' }}
               >
                 {word}
               </motion.span>
@@ -130,14 +159,15 @@ export default function Hero() {
             {words2.map((word, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, rotateX: -90 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{
                   duration: 0.7,
-                  delay: 0.5 + i * 0.08,
+                  delay: 0.5 + i * 0.1,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
-                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-accent-indigo to-accent-gold"
+                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-accent-indigo to-accent-gold origin-bottom"
+                style={{ transformStyle: 'preserve-3d' }}
               >
                 {word}
               </motion.span>
@@ -145,52 +175,66 @@ export default function Hero() {
           </div>
         </motion.h1>
 
-        {/* Subheading */}
+        {/* Enhanced subheading with depth */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="text-lg md:text-xl text-charcoal/60 max-w-2xl mx-auto mb-10"
+          className="text-lg md:text-xl text-charcoal/70 max-w-2xl mx-auto mb-12"
+          style={{ transform: 'translateZ(10px)' }}
         >
           Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.
         </motion.p>
 
-        {/* CTA Buttons with magnetic effect */}
+        {/* Enhanced CTA Buttons with sophisticated hover effects */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+          style={{ transform: 'translateZ(15px)' }}
         >
-          <Link
-            href="/questionnaire"
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-charcoal text-white rounded-full overflow-hidden"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative"
           >
-            <span className="relative z-10 font-medium">Get Your Free Score</span>
-            <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-accent-indigo to-accent-gold"
-              initial={{ x: '100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-          </Link>
+            <Link
+              href="/questionnaire"
+              className="group relative inline-flex items-center gap-4 px-10 py-5 bg-charcoal text-white rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <span className="relative z-10 font-medium text-lg">Get Your Free Score</span>
+              <ArrowRight className="relative z-10 w-6 h-6 group-hover:translate-x-1.5 transition-transform" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-accent-indigo to-accent-gold"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              />
+            </Link>
+          </motion.div>
 
-          <Link
-            href="/gallery"
-            className="inline-flex items-center gap-3 px-8 py-4 border-2 border-charcoal/20 text-charcoal rounded-full hover:border-charcoal/40 hover:bg-charcoal/5 transition-all group"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            <span>View Examples</span>
-          </Link>
+            <Link
+              href="/gallery"
+              className="inline-flex items-center gap-4 px-10 py-5 border-2 border-charcoal/30 text-charcoal rounded-2xl hover:border-charcoal/50 hover:bg-charcoal/5 transition-all group shadow-lg"
+            >
+              <Play className="w-6 h-6 group-hover:scale-125 transition-transform" />
+              <span className="text-lg">View Examples</span>
+            </Link>
+          </motion.div>
         </motion.div>
 
-        {/* Stats */}
+        {/* Enhanced stats section with 3D cards */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.3 }}
-          className="grid grid-cols-3 gap-8 max-w-lg mx-auto mt-16 pt-16 border-t border-charcoal/10"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto mt-8"
+          style={{ transform: 'translateZ(5px)' }}
         >
           {[
             { value: '500+', label: 'Decks Created' },
@@ -199,32 +243,66 @@ export default function Hero() {
           ].map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 1.4 + i * 0.1 }}
+              initial={{ opacity: 0, y: 20, rotateX: -15 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: 1.4 + i * 0.15,
+                ease: "easeOut"
+              }}
+              whileHover={{ y: -10, rotateX: 5 }}
+              className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-charcoal/10 shadow-lg"
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className="font-display text-3xl md:text-4xl font-semibold text-charcoal">
+              <motion.div
+                className="font-display text-4xl md:text-5xl font-bold text-charcoal mb-2"
+                animate={{
+                  textShadow: [
+                    "0 0 0px rgba(0,0,0,0)",
+                    "0 5px 10px rgba(0,0,0,0.1)",
+                    "0 0 0px rgba(0,0,0,0)"
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "loop"
+                }}
+              >
                 {stat.value}
-              </div>
-              <div className="text-sm text-charcoal/50 mt-1">{stat.label}</div>
+              </motion.div>
+              <div className="text-base text-charcoal/60">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Enhanced scroll indicator with 3D effect */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.8 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
+        style={{ transform: 'translateZ(30px)' }}
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-6 h-10 border-2 border-charcoal/20 rounded-full flex justify-center pt-2"
+          animate={{
+            y: [0, 15, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            scale: { duration: 1.5, repeat: Infinity }
+          }}
+          className="w-8 h-14 border-2 border-charcoal/30 rounded-full flex justify-center pt-3 bg-white/20 backdrop-blur-sm shadow-lg"
         >
-          <motion.div className="w-1 h-2 bg-charcoal/40 rounded-full" />
+          <motion.div
+            className="w-1.5 h-3 bg-charcoal/60 rounded-full"
+            animate={{ scaleY: [1, 1.5, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
         </motion.div>
       </motion.div>
     </section>

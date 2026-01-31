@@ -1,0 +1,492 @@
+[
+  {
+    "deckId": "tcg",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821740/pitch-decks/pitch-decks/tcg/cover.png",
+    "slideCount": 18,
+    "slides": [
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821041/pitch-decks/pitch-decks/tcg/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821045/pitch-decks/pitch-decks/tcg/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821048/pitch-decks/pitch-decks/tcg/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821051/pitch-decks/pitch-decks/tcg/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821054/pitch-decks/pitch-decks/tcg/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821057/pitch-decks/pitch-decks/tcg/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821059/pitch-decks/pitch-decks/tcg/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821062/pitch-decks/pitch-decks/tcg/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821064/pitch-decks/pitch-decks/tcg/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821066/pitch-decks/pitch-decks/tcg/slide-11.jpg"
+      },
+      {
+        "number": 12,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821068/pitch-decks/pitch-decks/tcg/slide-12.jpg"
+      },
+      {
+        "number": 13,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821070/pitch-decks/pitch-decks/tcg/slide-13.jpg"
+      },
+      {
+        "number": 14,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821073/pitch-decks/pitch-decks/tcg/slide-14.jpg"
+      },
+      {
+        "number": 15,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821076/pitch-decks/pitch-decks/tcg/slide-15.jpg"
+      },
+      {
+        "number": 16,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821079/pitch-decks/pitch-decks/tcg/slide-16.jpg"
+      },
+      {
+        "number": 17,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821082/pitch-decks/pitch-decks/tcg/slide-17.jpg"
+      },
+      {
+        "number": 18,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821084/pitch-decks/pitch-decks/tcg/slide-18.jpg"
+      },
+      {
+        "number": 19,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821086/pitch-decks/pitch-decks/tcg/slide-19.jpg"
+      }
+    ]
+  },
+  {
+    "deckId": "hear-transplant",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821095/pitch-decks/pitch-decks/hear-transplant/cover.jpg",
+    "slideCount": 23,
+    "slides": [
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821100/pitch-decks/pitch-decks/hear-transplant/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821104/pitch-decks/pitch-decks/hear-transplant/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821108/pitch-decks/pitch-decks/hear-transplant/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821113/pitch-decks/pitch-decks/hear-transplant/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821117/pitch-decks/pitch-decks/hear-transplant/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821121/pitch-decks/pitch-decks/hear-transplant/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821126/pitch-decks/pitch-decks/hear-transplant/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821131/pitch-decks/pitch-decks/hear-transplant/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821135/pitch-decks/pitch-decks/hear-transplant/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821140/pitch-decks/pitch-decks/hear-transplant/slide-11.jpg"
+      },
+      {
+        "number": 12,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821146/pitch-decks/pitch-decks/hear-transplant/slide-12.jpg"
+      },
+      {
+        "number": 13,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821151/pitch-decks/pitch-decks/hear-transplant/slide-13.jpg"
+      },
+      {
+        "number": 14,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821156/pitch-decks/pitch-decks/hear-transplant/slide-14.jpg"
+      },
+      {
+        "number": 15,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821160/pitch-decks/pitch-decks/hear-transplant/slide-15.jpg"
+      },
+      {
+        "number": 16,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821164/pitch-decks/pitch-decks/hear-transplant/slide-16.jpg"
+      },
+      {
+        "number": 17,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821169/pitch-decks/pitch-decks/hear-transplant/slide-17.jpg"
+      },
+      {
+        "number": 18,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821173/pitch-decks/pitch-decks/hear-transplant/slide-18.jpg"
+      },
+      {
+        "number": 19,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821178/pitch-decks/pitch-decks/hear-transplant/slide-19.jpg"
+      },
+      {
+        "number": 20,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821182/pitch-decks/pitch-decks/hear-transplant/slide-20.jpg"
+      },
+      {
+        "number": 21,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821187/pitch-decks/pitch-decks/hear-transplant/slide-21.jpg"
+      },
+      {
+        "number": 22,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821192/pitch-decks/pitch-decks/hear-transplant/slide-22.jpg"
+      },
+      {
+        "number": 23,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821196/pitch-decks/pitch-decks/hear-transplant/slide-23.jpg"
+      },
+      {
+        "number": 24,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821199/pitch-decks/pitch-decks/hear-transplant/slide-24.jpg"
+      }
+    ]
+  },
+  {
+    "deckId": "navy-divers",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821200/pitch-decks/pitch-decks/navy-divers/cover.jpg",
+    "slideCount": 17,
+    "slides": [
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821203/pitch-decks/pitch-decks/navy-divers/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821205/pitch-decks/pitch-decks/navy-divers/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821206/pitch-decks/pitch-decks/navy-divers/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821208/pitch-decks/pitch-decks/navy-divers/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821210/pitch-decks/pitch-decks/navy-divers/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821212/pitch-decks/pitch-decks/navy-divers/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821215/pitch-decks/pitch-decks/navy-divers/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821217/pitch-decks/pitch-decks/navy-divers/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821219/pitch-decks/pitch-decks/navy-divers/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821221/pitch-decks/pitch-decks/navy-divers/slide-11.jpg"
+      },
+      {
+        "number": 12,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821222/pitch-decks/pitch-decks/navy-divers/slide-12.jpg"
+      },
+      {
+        "number": 13,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821224/pitch-decks/pitch-decks/navy-divers/slide-13.jpg"
+      },
+      {
+        "number": 14,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821226/pitch-decks/pitch-decks/navy-divers/slide-14.jpg"
+      },
+      {
+        "number": 15,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821229/pitch-decks/pitch-decks/navy-divers/slide-15.jpg"
+      },
+      {
+        "number": 16,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821231/pitch-decks/pitch-decks/navy-divers/slide-16.jpg"
+      },
+      {
+        "number": 17,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821233/pitch-decks/pitch-decks/navy-divers/slide-17.jpg"
+      },
+      {
+        "number": 18,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821236/pitch-decks/pitch-decks/navy-divers/slide-18.jpg"
+      }
+    ]
+  },
+  {
+    "deckId": "crude",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821241/pitch-decks/pitch-decks/crude/cover.jpg",
+    "slideCount": 12,
+    "slides": [
+      {
+        "number": 1,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821244/pitch-decks/pitch-decks/crude/slide-01.jpg"
+      },
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821248/pitch-decks/pitch-decks/crude/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821252/pitch-decks/pitch-decks/crude/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821256/pitch-decks/pitch-decks/crude/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821531/pitch-decks/pitch-decks/crude/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821535/pitch-decks/pitch-decks/crude/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821540/pitch-decks/pitch-decks/crude/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821544/pitch-decks/pitch-decks/crude/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821549/pitch-decks/pitch-decks/crude/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821555/pitch-decks/pitch-decks/crude/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821559/pitch-decks/pitch-decks/crude/slide-11.jpg"
+      },
+      {
+        "number": 22,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821563/pitch-decks/pitch-decks/crude/slide-22.jpg"
+      }
+    ]
+  },
+  {
+    "deckId": "the-counterfeit",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821567/pitch-decks/pitch-decks/the-counterfeit/cover.jpg",
+    "slideCount": 22,
+    "slides": [
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821571/pitch-decks/pitch-decks/the-counterfeit/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821575/pitch-decks/pitch-decks/the-counterfeit/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821579/pitch-decks/pitch-decks/the-counterfeit/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821582/pitch-decks/pitch-decks/the-counterfeit/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821584/pitch-decks/pitch-decks/the-counterfeit/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821586/pitch-decks/pitch-decks/the-counterfeit/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821591/pitch-decks/pitch-decks/the-counterfeit/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821594/pitch-decks/pitch-decks/the-counterfeit/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821598/pitch-decks/pitch-decks/the-counterfeit/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821600/pitch-decks/pitch-decks/the-counterfeit/slide-11.jpg"
+      },
+      {
+        "number": 12,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821604/pitch-decks/pitch-decks/the-counterfeit/slide-12.jpg"
+      },
+      {
+        "number": 13,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821607/pitch-decks/pitch-decks/the-counterfeit/slide-13.jpg"
+      },
+      {
+        "number": 14,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821610/pitch-decks/pitch-decks/the-counterfeit/slide-14.jpg"
+      },
+      {
+        "number": 15,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821612/pitch-decks/pitch-decks/the-counterfeit/slide-15.jpg"
+      },
+      {
+        "number": 16,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821616/pitch-decks/pitch-decks/the-counterfeit/slide-16.jpg"
+      },
+      {
+        "number": 17,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821619/pitch-decks/pitch-decks/the-counterfeit/slide-17.jpg"
+      },
+      {
+        "number": 18,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821622/pitch-decks/pitch-decks/the-counterfeit/slide-18.jpg"
+      },
+      {
+        "number": 19,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821633/pitch-decks/pitch-decks/the-counterfeit/slide-19.jpg"
+      },
+      {
+        "number": 20,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821646/pitch-decks/pitch-decks/the-counterfeit/slide-20.jpg"
+      },
+      {
+        "number": 21,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821649/pitch-decks/pitch-decks/the-counterfeit/slide-21.jpg"
+      },
+      {
+        "number": 22,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821655/pitch-decks/pitch-decks/the-counterfeit/slide-22.jpg"
+      },
+      {
+        "number": 23,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821659/pitch-decks/pitch-decks/the-counterfeit/slide-23.jpg"
+      }
+    ]
+  },
+  {
+    "deckId": "saving-earth-twice",
+    "coverUrl": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821668/pitch-decks/pitch-decks/saving-earth-twice/cover.jpg",
+    "slideCount": 20,
+    "slides": [
+      {
+        "number": 2,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821671/pitch-decks/pitch-decks/saving-earth-twice/slide-02.jpg"
+      },
+      {
+        "number": 3,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821680/pitch-decks/pitch-decks/saving-earth-twice/slide-03.jpg"
+      },
+      {
+        "number": 4,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821695/pitch-decks/pitch-decks/saving-earth-twice/slide-04.jpg"
+      },
+      {
+        "number": 5,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821709/pitch-decks/pitch-decks/saving-earth-twice/slide-05.jpg"
+      },
+      {
+        "number": 6,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821714/pitch-decks/pitch-decks/saving-earth-twice/slide-06.jpg"
+      },
+      {
+        "number": 7,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821722/pitch-decks/pitch-decks/saving-earth-twice/slide-07.jpg"
+      },
+      {
+        "number": 8,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821727/pitch-decks/pitch-decks/saving-earth-twice/slide-08.jpg"
+      },
+      {
+        "number": 9,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821733/pitch-decks/pitch-decks/saving-earth-twice/slide-09.jpg"
+      },
+      {
+        "number": 10,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821738/pitch-decks/pitch-decks/saving-earth-twice/slide-10.jpg"
+      },
+      {
+        "number": 11,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821741/pitch-decks/pitch-decks/saving-earth-twice/slide-11.jpg"
+      },
+      {
+        "number": 12,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821747/pitch-decks/pitch-decks/saving-earth-twice/slide-12.jpg"
+      },
+      {
+        "number": 13,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821753/pitch-decks/pitch-decks/saving-earth-twice/slide-13.jpg"
+      },
+      {
+        "number": 14,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821756/pitch-decks/pitch-decks/saving-earth-twice/slide-14.jpg"
+      },
+      {
+        "number": 15,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821763/pitch-decks/pitch-decks/saving-earth-twice/slide-15.jpg"
+      },
+      {
+        "number": 16,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821768/pitch-decks/pitch-decks/saving-earth-twice/slide-16.jpg"
+      },
+      {
+        "number": 18,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821773/pitch-decks/pitch-decks/saving-earth-twice/slide-18.jpg"
+      },
+      {
+        "number": 19,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821782/pitch-decks/pitch-decks/saving-earth-twice/slide-19.jpg"
+      },
+      {
+        "number": 20,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769822108/pitch-decks/pitch-decks/saving-earth-twice/slide-20.jpg"
+      },
+      {
+        "number": 20,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769822112/pitch-decks/pitch-decks/saving-earth-twice/slide-20.jpg"
+      },
+      {
+        "number": 21,
+        "url": "https://res.cloudinary.com/dkhtswt1m/image/upload/v1769821801/pitch-decks/pitch-decks/saving-earth-twice/slide-21.jpg"
+      }
+    ]
+  }
+]

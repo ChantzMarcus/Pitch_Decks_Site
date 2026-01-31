@@ -5,6 +5,9 @@ export interface StoryAnalysisRequest {
   description?: string;
   format?: string;
   budget?: string;
+  // File upload support
+  uploadedFileText?: string; // Extracted text from uploaded file
+  uploadedFileName?: string; // Original file name
 }
 
 export interface StoryAnalysisResult {
