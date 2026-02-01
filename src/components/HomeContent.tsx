@@ -2,24 +2,20 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import HeroVideo from '@/components/HeroVideo';
+import Hero from '@/components/Hero';
 import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
 import FeaturedDeckWalkthrough from '@/components/FeaturedDeckWalkthrough';
 import ServicesShowcase from '@/components/ServicesShowcase';
-import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
-import { Preloader } from '@/components/Preloader';
 import { Footer } from '@/components/Footer';
 import SocialProof from '@/components/SocialProof';
 import DualCTA from '@/components/DualCTA';
 import TestimonialReviews from '@/components/TestimonialReviews';
-import TestimonialVideoShowcase from '@/components/TestimonialVideoShowcase';
 import EducationalVideoShowcase from '@/components/EducationalVideoShowcase';
 import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
-import { MOCK_TESTIMONIAL_VIDEOS } from '@/lib/mock-testimonials';
-import { ScrollReveal } from '@/components/animations';
+import { ScrollReveal, ParallaxSection } from '@/components/animations';
 import TrustBadges from '@/components/ui/TrustBadges';
 import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
@@ -180,8 +176,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
           }}
         />
-        {/* Hero Section with Video Background */}
-        <HeroVideo />
+        {/* Hero Section with Sophisticated Animations (848 Animation) */}
+        <Hero />
 
         {/* Featured Deck Walkthrough - Hero-style showcase */}
         {featuredDecks.length > 0 && (
@@ -291,13 +287,15 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Pitch Deck Slideshow - Cycles through all slides */}
-      <BeforeAfterShowcase
-        slides={getDeckSlideUrls('hear-transplant')}
-        title="Hear Transplant"
-        subtitle="A complete pitch deck showcase - watch it unfold slide by slide"
-        autoAdvanceInterval={3000}
-      />
+      {/* Pitch Deck Slideshow - Cycles through all slides with parallax effect */}
+      <ParallaxSection speed={0.3}>
+        <BeforeAfterShowcase
+          slides={getDeckSlideUrls('hear-transplant')}
+          title="Hear Transplant"
+          subtitle="A complete pitch deck showcase - watch it unfold slide by slide"
+          autoAdvanceInterval={3000}
+        />
+      </ParallaxSection>
 
       {/* Services Section - After Trust is Built */}
       <ServicesShowcase />
@@ -422,38 +420,40 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Layered Images Showcase - Apple Style */}
-      <LayeredImagesShowcase
-        images={[
-          {
-            src: '/images/posters/hero-poster.jpg',
-            alt: 'Pitch deck slide 1',
-            zIndex: 3,
-            offsetX: 0,
-            offsetY: -5,
-            scale: 0.95,
-          },
-          {
-            src: '/images/posters/hero-poster.jpg',
-            alt: 'Pitch deck slide 2',
-            zIndex: 2,
-            offsetX: -3,
-            offsetY: 0,
-            scale: 0.9,
-          },
-          {
-            src: '/images/posters/hero-poster.jpg',
-            alt: 'Pitch deck slide 3',
-            zIndex: 1,
-            offsetX: 3,
-            offsetY: 5,
-            scale: 0.85,
-          },
-        ]}
-        title="Professional Pitch Decks"
-        description="Multiple layers of expertise come together to create compelling, production-ready pitch decks that stand out in the industry."
-        deviceFrame="macbook"
-      />
+      {/* Layered Images Showcase - Apple Style with Parallax */}
+      <ParallaxSection speed={0.2}>
+        <LayeredImagesShowcase
+          images={[
+            {
+              src: '/images/posters/hero-poster.jpg',
+              alt: 'Pitch deck slide 1',
+              zIndex: 3,
+              offsetX: 0,
+              offsetY: -5,
+              scale: 0.95,
+            },
+            {
+              src: '/images/posters/hero-poster.jpg',
+              alt: 'Pitch deck slide 2',
+              zIndex: 2,
+              offsetX: -3,
+              offsetY: 0,
+              scale: 0.9,
+            },
+            {
+              src: '/images/posters/hero-poster.jpg',
+              alt: 'Pitch deck slide 3',
+              zIndex: 1,
+              offsetX: 3,
+              offsetY: 5,
+              scale: 0.85,
+            },
+          ]}
+          title="Professional Pitch Decks"
+          description="Multiple layers of expertise come together to create compelling, production-ready pitch decks that stand out in the industry."
+          deviceFrame="macbook"
+        />
+      </ParallaxSection>
 
       {/* Quick View Modal */}
       {selectedDeck && (
