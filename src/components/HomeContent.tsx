@@ -321,13 +321,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             horizontalScroll={true}
           />
 
-          {/* 3D Pitch Deck Showcase */}
-          <div className="mt-16">
+          {/* 3D Pitch Deck Showcase - Temporarily disabled due to React Three Fiber compatibility issues */}
+          {/* <div className="mt-16">
             <h3 className="font-display text-3xl font-bold text-charcoal mb-8 text-center">
               Our Portfolio in 3D
             </h3>
             <ThreeDPitchDeckShowcase decks={initialDecks} />
-          </div>
+          </div> */}
 
           <ScrollReveal direction="up" delay={0.3} className="text-center mt-12">
             <Link
