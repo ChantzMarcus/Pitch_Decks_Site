@@ -57,7 +57,12 @@ Hear Transplant/
 Navy Divers/
 TCG/
 The Counterfeit/
-*.mp4
+# Allow hero video files to be committed (needed for deployment)
+# *.mp4
+# But ignore other large video files
+public/**/*.mp4
+!public/VF-LOOP-OK-OK.mp4
+!public/new-mobile-okok.mp4
 .vercel
 .env*.local
 

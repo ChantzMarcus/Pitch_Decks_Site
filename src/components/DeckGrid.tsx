@@ -111,7 +111,7 @@ export default function DeckGrid({
         <div
           ref={containerRef}
           onScroll={checkScrollButtons}
-          className="flex gap-0 overflow-x-auto scrollbar-hide pb-4"
+          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -119,16 +119,13 @@ export default function DeckGrid({
           }}
         >
           {decks.map((deck, index) => (
-            <DeckCard
-              key={deck.id}
-              deck={deck}
-              index={index}
-              onQuickView={onQuickView}
-              onWalkthrough={onWalkthrough}
-              horizontalLayout={true}
-              videoPreviewUrl={videoPreviewUrls[deck.id]}
-              successMetrics={successMetrics[deck.id]}
-            />
+            <div key={deck.id} className="flex-shrink-0 w-[320px]">
+              <EnhancedDeckCard
+                deck={deck}
+                index={index}
+                onQuickView={onQuickView}
+              />
+            </div>
           ))}
         </div>
 

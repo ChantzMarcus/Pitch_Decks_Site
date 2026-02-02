@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Hero from '@/components/Hero';
+import HeroVideo from '@/components/HeroVideo';
 import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
@@ -17,6 +17,7 @@ import EducationalVideoShowcase from '@/components/EducationalVideoShowcase';
 import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
 import { ScrollReveal, ParallaxSection } from '@/components/animations';
 import TrustBadges from '@/components/ui/TrustBadges';
+import TrustedBrands from '@/components/TrustedBrands';
 import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import PhysicsStats from '@/components/PhysicsStats';
@@ -176,8 +177,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
           }}
         />
-        {/* Hero Section with Sophisticated Animations (848 Animation) */}
-        <Hero />
+        {/* Hero Section with Video Background and Sophisticated Animations */}
+        <HeroVideo />
 
         {/* Featured Deck Walkthrough - Hero-style showcase */}
         {featuredDecks.length > 0 && (
@@ -189,7 +190,14 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           />
         )}
 
-      {/* Trust Bar */}
+      {/* Trust Bar with Logos */}
+      <TrustedBrands 
+        title="Trusted by Industry Leaders"
+        subtitle="Our work has been featured at major studios and streaming platforms"
+        variant="dark"
+      />
+
+      {/* Stats Bar */}
       <PhysicsStats
         title="Our Impact"
         subtitle="Numbers that speak to our success"
@@ -398,19 +406,19 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           <AppleStyleVideoGallery
             videos={[
               {
-                videoSrc: '/VF-LOOP-OK-OK.mp4',
+                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4',
                 thumbnail: '/images/posters/hero-poster.jpg',
                 title: 'Our Process',
                 description: 'From concept to production-ready deck',
               },
               {
-                videoSrc: '/new-mobile-okok.mp4',
+                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_MOBILE || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/new-mobile-okok.mp4',
                 thumbnail: '/images/posters/hero-poster-mobile.jpg',
                 title: 'Client Success Stories',
                 description: 'Real results from real creators',
               },
               {
-                videoSrc: '/VF-LOOP-OK-OK.mp4',
+                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4',
                 thumbnail: '/images/posters/hero-poster.jpg',
                 title: 'Industry Insights',
                 description: 'Veteran feedback and analysis',

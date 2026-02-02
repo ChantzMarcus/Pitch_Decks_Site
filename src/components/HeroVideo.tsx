@@ -32,8 +32,8 @@ interface HeroVideoProps {
 }
 
 export default function HeroVideo({
-  videoSrc = '/VF-LOOP-OK-OK.mp4', // Desktop video
-  mobileVideoSrc = '/new-mobile-okok.mp4', // Mobile video
+  videoSrc = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4', // Desktop video from Cloudinary
+  mobileVideoSrc = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_MOBILE || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/new-mobile-okok.mp4', // Mobile video from Cloudinary
   posterSrc = '/images/posters/hero-poster.jpg',
   mobilePosterSrc = '/images/posters/hero-poster-mobile.jpg',
   companyLogos = DEFAULT_COMPANY_LOGOS,
