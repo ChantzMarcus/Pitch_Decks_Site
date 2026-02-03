@@ -32,6 +32,7 @@
     "cloudinary": "^2.9.0",
     "clsx": "^2.0.0",
     "cohere-ai": "^7.20.0",
+    "dotenv": "^17.2.3",
     "drizzle-orm": "^0.29.3",
     "framer-motion": "^12.29.0",
     "groq-sdk": "^0.37.0",

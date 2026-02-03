@@ -25,8 +25,7 @@ import TrustedBrands, { TrustedBrandsMarquee } from '@/components/TrustedBrands'
 import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import PhysicsStats from '@/components/PhysicsStats';
-import StickyCTA, { FloatingStickyCTA } from '@/components/StickyCTA';
-import StickyHeroButton from '@/components/StickyHeroButton';
+import { FloatingStickyCTA } from '@/components/StickyCTA';
 import { Preloader } from '@/components/Preloader';
 import TestimonialReviews from '@/components/TestimonialReviews';
 import dynamic from 'next/dynamic';
@@ -212,50 +211,54 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         <Hero />
 
         {/* Scroll to Unlock - Featured Decks Section with Engagement */}
-        {featuredDecks.length > 0 && (
-          <ScrollUnlock
-            lockedContent={
-              <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center"
-                >
-                  <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-                    Featured Projects
-                  </h2>
-                  <p className="text-xl text-paper/80 max-w-2xl mx-auto mb-12">
-                    Explore our portfolio of compelling stories ready for production
-                  </p>
-                  <div className="text-paper/60 text-sm flex items-center gap-2 justify-center">
-                    <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7 7" />
-                    </svg>
-                    Scroll to explore
-                  </div>
-                </motion.div>
-              </div>
-            }
-            unlockedContent={
+        <ScrollUnlock
+          lockedContent={
+            <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center"
+              >
+                <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
+                  Featured Projects
+                </h2>
+                <p className="text-xl text-paper/80 max-w-2xl mx-auto mb-12">
+                  Explore our portfolio of compelling stories ready for production
+                </p>
+                <div className="text-paper/60 text-sm flex items-center gap-2 justify-center">
+                  <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7 7" />
+                  </svg>
+                  Scroll to explore
+                </div>
+              </motion.div>
+            </div>
+          }
+          unlockedContent={
+            featuredDecks.length > 0 ? (
               <FeaturedDeckWalkthrough
                 featuredDecks={featuredDecks}
                 autoRotateInterval={15000}
                 slideInterval={4000}
                 onWatchFullDeck={handleWalkthrough}
               />
-            }
-            unlockDistance={500}
-            unlockMessage="Scroll to explore featured projects"
-            onUnlock={() => console.log('Featured decks unlocked')}
-          />
-        )}
-
-      {/* Trust Bar with Animated Marquee Logos */}
-      <TrustedBrandsMarquee 
-        title="Trusted by Industry Leaders"
-        subtitle="Our work has been featured at major studios and streaming platforms"
-        variant="dark"
-      />
+            ) : (
+              <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
+                <div className="text-center">
+                  <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
+                    Featured Projects
+                  </h2>
+                  <p className="text-xl text-paper/80 max-w-2xl mx-auto">
+                    Coming soon - explore our portfolio of compelling stories ready for production
+                  </p>
+                </div>
+              </div>
+            )
+          }
+          unlockDistance={500}
+          unlockMessage="Scroll to explore featured projects"
+          onUnlock={() => console.log('Featured decks unlocked')}
+        />
 
       {/* Stats Bar */}
       <PhysicsStats
@@ -564,29 +567,10 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         />
       )}
 
-      {/* Sticky CTA - Appears after scrolling */}
-      <StickyCTA
-        title="Ready to Transform Your Story?"
-        description="See if your story qualifies for our professional pitch packaging"
-        ctaText="Get Your Story Scored"
-        ctaHref="/questionnaire"
-        showAfterScroll={500}
-        dismissible={true}
-        position="bottom"
-        variant="primary"
-      />
-
-      {/* Floating CTA - Always visible in corner */}
+      {/* Floating CTA - Colored gradient button (only CTA) */}
       <FloatingStickyCTA
-        ctaText="Get Started"
-        ctaHref="/questionnaire"
-      />
-
-      {/* Sticky Hero Button - Follows you as you scroll */}
-      <StickyHeroButton
         ctaText="Get Your Free Score"
         ctaHref="/questionnaire"
-        showAfterScroll={600}
       />
 
     </main>

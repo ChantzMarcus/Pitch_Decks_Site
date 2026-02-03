@@ -1,7 +1,7 @@
 // src/components/ThreeDPitchDeckShowcase.tsx - ENHANCED VERSION
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Environment, ContactShadows, Float } from '@react-three/drei';
 // import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
@@ -62,7 +62,8 @@ const DeckCard3D = ({
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 14px Arial';
       ctx.textAlign = 'center';
-      const words = deck.title.split(' ');
+      const title = deck.title || 'Untitled';
+      const words = title.split(' ');
       let y = 40;
       words.forEach(word => {
         ctx.fillText(word.substring(0, 15), canvas.width / 2, y);
@@ -72,7 +73,10 @@ const DeckCard3D = ({
       // Genre tags
       ctx.fillStyle = '#6366F1';
       ctx.font = '11px Arial';
-      const genreText = deck.genre.slice(0, 2).join(' • ');
+      const genreArray = Array.isArray(deck.genre) ? deck.genre : [];
+      const genreText = genreArray.length > 0 
+        ? genreArray.slice(0, 2).join(' • ')
+        : 'Pitch Deck';
       ctx.fillText(genreText, canvas.width / 2, canvas.height - 20);
 
       const texture = new THREE.CanvasTexture(canvas);
@@ -132,16 +136,37 @@ const Scene = ({
   decks: Deck[];
   layout: LayoutType;
 }) => {
+  // Normalize decks: ensure genre is always an array and filter out invalid decks
+  const normalizedDecks = decks
+    .filter(deck => deck && deck.id && deck.title)
+    .map(deck => ({
+      ...deck,
+      genre: Array.isArray(deck.genre) ? deck.genre : [],
+    }));
+
   // Get card positions based on selected layout
   let cardPositions: any[] = [];
 
-  if (layout === 'film-reel') {
-    cardPositions = useFilmReelLayout({ decks });
+  if (normalizedDecks.length === 0) {
+    // Fallback: create a single placeholder card if no decks
+    cardPositions = [{
+      deck: {
+        id: 'placeholder',
+        title: 'No decks available',
+        cover_image_url: '',
+        genre: [],
+      },
+      position: [0, 0, 0] as [number, number, number],
+      rotation: [0, 0, 0] as [number, number, number],
+      index: 0,
+    }];
+  } else if (layout === 'film-reel') {
+    cardPositions = useFilmReelLayout({ decks: normalizedDecks });
   } else if (layout === 'story-arc') {
-    cardPositions = useStoryArcLayout({ decks });
+    cardPositions = useStoryArcLayout({ decks: normalizedDecks });
   } else {
     // Circular layout (original)
-    cardPositions = decks.slice(0, 6).map((deck, index) => {
+    cardPositions = normalizedDecks.slice(0, 6).map((deck, index) => {
       const angle = (index / 6) * Math.PI * 2;
       const radius = 3;
       const x = Math.cos(angle) * radius;
@@ -179,15 +204,23 @@ const Scene = ({
       <pointLight position={[0, 5, 0]} intensity={0.3} color="#f59e0b" />
 
       {/* Floating 3D cards */}
-      {cardPositions.map(({ deck, position, rotation, index }) => (
-        <DeckCard3D
-          key={deck.id}
-          deck={deck}
-          position={position}
-          rotation={rotation}
-          index={index}
-        />
-      ))}
+      {cardPositions.length > 0 ? (
+        cardPositions.map(({ deck, position, rotation, index }) => (
+          <DeckCard3D
+            key={deck.id}
+            deck={deck}
+            position={position}
+            rotation={rotation}
+            index={index}
+          />
+        ))
+      ) : (
+        // Fallback: show a simple mesh if no cards
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[2, 2, 0.1]} />
+          <meshStandardMaterial color="#6366F1" />
+        </mesh>
+      )}
 
       {/* Central glow element */}
       <mesh position={[0, 0, 0]}>
@@ -232,13 +265,32 @@ export default function ThreeDPitchDeckShowcase({
   layout = 'film-reel',
   enablePostProcessing = false,
 }: ThreeDPitchDeckShowcaseProps) {
+  // Early return if no decks provided
+  if (!decks || decks.length === 0) {
+    return (
+      <div className="w-full h-96 md:h-[500px] bg-gradient-to-b from-charcoal/10 to-charcoal/5 rounded-2xl overflow-hidden shadow-xl flex items-center justify-center">
+        <div className="text-paper/50 text-center">
+          <p className="text-lg mb-2">No decks to display</p>
+          <p className="text-sm">3D showcase will appear here when decks are available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-96 md:h-[500px] bg-gradient-to-b from-charcoal/10 to-charcoal/5 rounded-2xl overflow-hidden shadow-xl">
+    <div className="w-full h-96 md:h-[500px] bg-gradient-to-b from-charcoal/10 to-charcoal/5 rounded-2xl overflow-hidden shadow-xl relative">
       <Canvas
         camera={{ position: [0, 0, 10], fov: 50 }}
         shadows
         className="bg-transparent"
-        gl={{ antialias: true, alpha: true }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: "high-performance",
+          preserveDrawingBuffer: false,
+        }}
+        dpr={[1, 2]}
+        frameloop="always"
       >
         {/* Post-processing effects temporarily disabled due to React 19 compatibility */}
         {/* {enablePostProcessing ? (
@@ -257,7 +309,9 @@ export default function ThreeDPitchDeckShowcase({
           </EffectComposer>
         ) : null} */}
 
-        <Scene decks={decks} layout={layout} />
+        <Suspense fallback={null}>
+          <Scene decks={decks} layout={layout} />
+        </Suspense>
       </Canvas>
 
       {/* Layout indicator */}

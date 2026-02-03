@@ -34,7 +34,7 @@ export default function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-indigo/20 rounded-full text-accent-indigo font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-accent-teal/20 to-accent-gold/20 rounded-full text-accent-gold font-medium mb-6 border border-accent-gold/30">
             <AwardIcon size={18} />
             <span>Top-Rated on Upwork</span>
           </div>
@@ -120,7 +120,7 @@ export default function SocialProof() {
                 href="https://www.upwork.com/freelancers/screenwriterhannahl"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo/90 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-accent-teal to-accent-gold text-white font-medium rounded-lg hover:from-accent-teal/90 hover:to-accent-gold/90 transition-all border border-accent-gold/30"
               >
                 <span>View Upwork Profile</span>
                 <ExternalLinkIcon size={18} />

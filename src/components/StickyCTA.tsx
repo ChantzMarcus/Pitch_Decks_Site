@@ -124,10 +124,10 @@ export function FloatingStickyCTA({
     >
       <Link
         href={ctaHref}
-        className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-accent-indigo to-accent-gold text-white rounded-2xl shadow-2xl shadow-accent-indigo/30 hover:shadow-accent-indigo/50 transition-all group"
+        className="flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-accent-indigo to-accent-gold text-white rounded-2xl shadow-2xl shadow-accent-indigo/30 hover:shadow-accent-indigo/50 transition-all group text-lg font-semibold"
       >
-        <span className="font-medium">{ctaText}</span>
-        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        <span>{ctaText}</span>
+        <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
       </Link>
     </motion.div>
   );
