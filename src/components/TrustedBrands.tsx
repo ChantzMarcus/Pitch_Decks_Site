@@ -30,6 +30,34 @@ interface TrustedBrandsProps {
   variant?: 'light' | 'dark';
 }
 
+// Logo component for marquee (with useState)
+function MarqueeLogo({ brand }: { brand: Brand }) {
+  const [imageError, setImageError] = useState(false);
+  const isImagePath = brand.logo.startsWith('/');
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      className="flex-shrink-0 flex items-center justify-center w-32 h-16 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
+    >
+      {isImagePath && !imageError ? (
+        <Image
+          src={brand.logo}
+          alt={brand.alt}
+          width={100}
+          height={40}
+          className="opacity-60 group-hover:opacity-100 transition-opacity object-contain"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <span className="font-display text-lg font-bold tracking-wider text-paper/40 group-hover:text-paper/80 transition-colors">
+          {brand.name}
+        </span>
+      )}
+    </motion.div>
+  );
+}
+
 function BrandLogo({ brand, index }: { brand: Brand; index: number }) {
   const [imageError, setImageError] = useState(false);
 
@@ -199,33 +227,9 @@ export function TrustedBrandsMarquee({
             className="flex gap-12 items-center"
           >
             {/* Duplicate brands 3x for seamless loop */}
-            {[...brands, ...brands, ...brands].map((brand, index) => {
-              const [imageError, setImageError] = useState(false);
-              const isImagePath = brand.logo.startsWith('/');
-
-              return (
-                <motion.div
-                  key={`${brand.id}-${index}`}
-                  whileHover={{ scale: 1.1 }}
-                  className="flex-shrink-0 flex items-center justify-center w-32 h-16 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
-                >
-                  {isImagePath && !imageError ? (
-                    <Image
-                      src={brand.logo}
-                      alt={brand.alt}
-                      width={100}
-                      height={40}
-                      className="opacity-60 group-hover:opacity-100 transition-opacity object-contain"
-                      onError={() => setImageError(true)}
-                    />
-                  ) : (
-                    <span className="font-display text-lg font-bold tracking-wider text-paper/40 group-hover:text-paper/80 transition-colors">
-                      {brand.name}
-                    </span>
-                  )}
-                </motion.div>
-              );
-            })}
+            {[...brands, ...brands, ...brands].map((brand, index) => (
+              <MarqueeLogo key={`${brand.id}-${index}`} brand={brand} />
+            ))}
           </motion.div>
         </div>
       </div>
