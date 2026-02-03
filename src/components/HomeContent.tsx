@@ -2,25 +2,32 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import HeroVideo from '@/components/HeroVideo';
+import Hero from '@/components/Hero';
+import HeroSonarStyle from '@/components/HeroSonarStyle';
 import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
+import ImmersiveDeckGallery from '@/components/ImmersiveDeckGallery';
 import FeaturedDeckWalkthrough from '@/components/FeaturedDeckWalkthrough';
 import ServicesShowcase from '@/components/ServicesShowcase';
+import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
 import { Footer } from '@/components/Footer';
 import SocialProof from '@/components/SocialProof';
+import SideNavigation from '@/components/navigation/SideNavigation';
 import DualCTA from '@/components/DualCTA';
-import TestimonialReviews from '@/components/TestimonialReviews';
 import EducationalVideoShowcase from '@/components/EducationalVideoShowcase';
 import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
-import { ScrollReveal, ParallaxSection } from '@/components/animations';
+import { ScrollReveal, ParallaxSection, ScrollUnlock } from '@/components/animations';
+import { motion } from 'framer-motion';
 import TrustBadges from '@/components/ui/TrustBadges';
 import TrustedBrands from '@/components/TrustedBrands';
 import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import PhysicsStats from '@/components/PhysicsStats';
+import StickyCTA, { FloatingStickyCTA } from '@/components/StickyCTA';
+import { Preloader } from '@/components/Preloader';
+import TestimonialReviews from '@/components/TestimonialReviews';
 import dynamic from 'next/dynamic';
 
 // Dynamically import 3D component to reduce initial bundle size
@@ -122,6 +129,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [walkthroughDeck, setWalkthroughDeck] = useState<DeckWithSlides | null>(null);
   const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
+  const [immersiveDeck, setImmersiveDeck] = useState<DeckWithSlides | null>(null);
+  const [isImmersiveOpen, setIsImmersiveOpen] = useState(false);
 
   // Create featured deck data from initial decks (sorted by view count for best decks first)
   const featuredDecks = useMemo(() => {
@@ -166,8 +175,28 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
     setTimeout(() => setWalkthroughDeck(null), 300);
   };
 
+  const handleImmersiveView = (deck: Deck) => {
+    const deckWithSlides: DeckWithSlides = {
+      ...deck,
+      slides: getDeckSlideUrls(deck.id),
+    };
+    setImmersiveDeck(deckWithSlides);
+    setIsImmersiveOpen(true);
+  };
+
+  const handleCloseImmersive = () => {
+    setIsImmersiveOpen(false);
+    setTimeout(() => setImmersiveDeck(null), 300);
+  };
+
   return (
     <>
+      {/* Preloader - N64 Mario Kart-style animation */}
+      <Preloader duration={3500} />
+
+      {/* Side Navigation */}
+      <SideNavigation decks={initialDecks} />
+
       <main className="min-h-screen bg-charcoal">
         <StructuredData
           type="webpage"
@@ -177,16 +206,45 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
           }}
         />
-        {/* Hero Section with Video Background and Sophisticated Animations */}
-        <HeroVideo />
+        {/* Hero Section - Sonar Music Style with Marquee Background & Parallax */}
+        <HeroSonarStyle />
 
-        {/* Featured Deck Walkthrough - Hero-style showcase */}
+        {/* Scroll to Unlock - Featured Decks Section with Engagement */}
         {featuredDecks.length > 0 && (
-          <FeaturedDeckWalkthrough
-            featuredDecks={featuredDecks}
-            autoRotateInterval={15000}
-            slideInterval={4000}
-            onWatchFullDeck={handleWalkthrough}
+          <ScrollUnlock
+            lockedContent={
+              <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center"
+                >
+                  <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
+                    Featured Projects
+                  </h2>
+                  <p className="text-xl text-paper/80 max-w-2xl mx-auto mb-12">
+                    Explore our portfolio of compelling stories ready for production
+                  </p>
+                  <div className="text-paper/60 text-sm flex items-center gap-2 justify-center">
+                    <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7 7" />
+                    </svg>
+                    Scroll to explore
+                  </div>
+                </motion.div>
+              </div>
+            }
+            unlockedContent={
+              <FeaturedDeckWalkthrough
+                featuredDecks={featuredDecks}
+                autoRotateInterval={15000}
+                slideInterval={4000}
+                onWatchFullDeck={handleWalkthrough}
+              />
+            }
+            unlockDistance={500}
+            unlockMessage="Scroll to explore featured projects"
+            onUnlock={() => console.log('Featured decks unlocked')}
           />
         )}
 
@@ -218,6 +276,15 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             icon: <StoryIcon className="w-8 h-8 text-accent-teal mx-auto" />
           }
         ]}
+      />
+
+      {/* Video Showcase - Our Process in Action */}
+      <VideoShowcase
+        title="See Our Process in Action"
+        subtitle="Watch how we transform your story into a compelling pitch deck with cinematic quality"
+        videoSrc={process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4'}
+        autoPlay={false}
+        loop={true}
       />
 
       {/* Two Paths CTA */}
@@ -360,7 +427,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           </ScrollReveal>
           
           <EducationalVideoShowcase
-            videos={EDUCATIONAL_VIDEOS.slice(0, 3)}
+            videos={EDUCATIONAL_VIDEOS.slice(0, 6)}
             title=""
           />
           
@@ -376,14 +443,11 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Text Testimonials - Reinforcement */}
-      <TestimonialReviews
-        title="What Creators Say"
-        subtitle="Real reviews from real creators who transformed their projects"
-      />
-
       {/* Social Proof - Upwork Profile - Lower for Additional Trust */}
       <SocialProof />
+
+      {/* Testimonials - Social Proof with Reviews */}
+      <TestimonialReviews />
 
       {/* FAQ Section - Address Objections */}
       <FAQ />
@@ -480,8 +544,42 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           onClose={handleCloseWalkthrough}
           autoPlay={true}
           autoPlayInterval={4000}
+          onImmersiveView={handleImmersiveView}
         />
       )}
+
+      {/* Immersive Deck Gallery - Full-screen immersive viewing */}
+      {immersiveDeck && immersiveDeck.slides && isImmersiveOpen && (
+        <ImmersiveDeckGallery
+          slides={immersiveDeck.slides.map((url, index) => ({
+            id: `${immersiveDeck.id}-slide-${index + 1}`,
+            image_url: url,
+            title: immersiveDeck.title,
+            caption: `Slide ${index + 1} of ${immersiveDeck.title}`,
+          }))}
+          startIndex={0}
+          onClose={handleCloseImmersive}
+          title={immersiveDeck.title}
+        />
+      )}
+
+      {/* Sticky CTA - Appears after scrolling */}
+      <StickyCTA
+        title="Ready to Transform Your Story?"
+        description="See if your story qualifies for our professional pitch packaging"
+        ctaText="Get Your Story Scored"
+        ctaHref="/questionnaire"
+        showAfterScroll={500}
+        dismissible={true}
+        position="bottom"
+        variant="primary"
+      />
+
+      {/* Floating CTA - Always visible in corner */}
+      <FloatingStickyCTA
+        ctaText="Get Started"
+        ctaHref="/questionnaire"
+      />
 
     </main>
     <Footer />
