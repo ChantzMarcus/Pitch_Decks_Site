@@ -21,7 +21,7 @@ import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
 import { ScrollReveal, ParallaxSection, ScrollUnlock } from '@/components/animations';
 import { motion } from 'framer-motion';
 import TrustBadges from '@/components/ui/TrustBadges';
-import TrustedBrands from '@/components/TrustedBrands';
+import TrustedBrands, { TrustedBrandsMarquee } from '@/components/TrustedBrands';
 import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import PhysicsStats from '@/components/PhysicsStats';
