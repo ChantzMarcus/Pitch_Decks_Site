@@ -71,7 +71,12 @@ export default function Hero() {
           style={{ scale: videoScale }}
         >
           <source
-            src={process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4'}
+            src={process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || '/VF-LOOP-OK-OK.mp4'}
+            type="video/mp4"
+          />
+          {/* Fallback to Cloudinary if local file fails */}
+          <source
+            src="https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4"
             type="video/mp4"
           />
         </motion.video>
@@ -228,7 +233,7 @@ export default function Hero() {
           Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.
         </motion.p>
 
-        {/* Enhanced CTA Buttons with sophisticated hover effects */}
+        {/* Enhanced CTA Buttons with liquid glass effects */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -242,29 +247,42 @@ export default function Hero() {
           >
             <Link
               href="/questionnaire"
-              className="group relative inline-flex items-center gap-4 px-10 py-5 bg-charcoal text-white rounded-2xl overflow-hidden shadow-2xl"
+              className="group relative inline-flex items-center gap-4 px-10 py-5 rounded-2xl overflow-hidden shadow-2xl
+                bg-white/10 backdrop-blur-xl border border-white/20
+                hover:bg-white/15 hover:border-white/30
+                transition-all duration-300"
             >
-              <span className="relative z-10 font-medium text-lg">Get Your Free Score</span>
-              <ArrowRight className="relative z-10 w-6 h-6 group-hover:translate-x-1.5 transition-transform" />
+              {/* Glass reflection effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+              
+              {/* Gradient hover overlay */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-accent-indigo to-accent-gold"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
+                className="absolute inset-0 bg-gradient-to-r from-accent-indigo/30 to-accent-gold/30 opacity-0 group-hover:opacity-100"
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               />
+              
+              <span className="relative z-10 font-medium text-lg text-paper">Get Your Free Score</span>
+              <ArrowRight className="relative z-10 w-6 h-6 text-paper group-hover:translate-x-1.5 transition-transform" />
             </Link>
           </motion.div>
 
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="relative"
           >
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-4 px-10 py-5 border-2 border-white/30 text-paper rounded-2xl hover:border-white/50 hover:bg-white/10 transition-all group shadow-lg backdrop-blur-sm"
+              className="group relative inline-flex items-center gap-4 px-10 py-5 rounded-2xl overflow-hidden
+                bg-white/10 backdrop-blur-xl border-2 border-white/20
+                hover:bg-white/15 hover:border-white/30
+                transition-all duration-300 shadow-lg"
             >
-              <PlayButtonIcon className="w-6 h-6 group-hover:scale-125 transition-transform" />
-              <span className="text-lg">View Examples</span>
+              {/* Glass reflection effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+              
+              <PlayButtonIcon className="relative z-10 w-6 h-6 text-paper group-hover:scale-125 transition-transform" />
+              <span className="relative z-10 text-lg text-paper">View Examples</span>
             </Link>
           </motion.div>
         </motion.div>

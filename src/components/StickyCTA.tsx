@@ -51,7 +51,7 @@ export default function StickyCTA({
   if (!isVisible || isDismissed) return null;
 
   const variants = {
-    primary: 'bg-gradient-to-r from-accent-indigo to-accent-gold text-white',
+    primary: 'bg-charcoal/95 backdrop-blur-xl border-t border-paper/10 text-paper',
     secondary: 'bg-charcoal border border-paper/20 text-paper',
     minimal: 'bg-white/10 backdrop-blur-xl border border-white/20 text-paper',
   };
@@ -74,13 +74,19 @@ export default function StickyCTA({
             <p className="text-xs sm:text-sm opacity-90 hidden sm:block">{description}</p>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button with liquid glass effect */}
           <Link
             href={ctaHref}
-            className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-white text-charcoal rounded-xl font-medium text-sm hover:shadow-lg transition-all group"
+            className="relative flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-medium text-sm
+              bg-white/10 backdrop-blur-xl border border-white/20 text-paper
+              hover:bg-white/15 hover:border-white/30
+              transition-all duration-300 group overflow-hidden shadow-lg"
           >
-            <span>{ctaText}</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {/* Glass reflection effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            
+            <span className="relative z-10">{ctaText}</span>
+            <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
 
           {/* Dismiss Button */}

@@ -48,6 +48,7 @@ import { ArrowRightIcon, StoryIcon } from '@/components/icons/FilmIcons';
 import AppleStyleVideoGallery from '@/components/AppleStyleVideoGallery';
 import LayeredImagesShowcase from '@/components/LayeredImagesShowcase';
 import BeforeAfterShowcase from '@/components/BeforeAfterShowcase';
+import PitchDeckCardShowcase from '@/components/PitchDeckCardShowcase';
 
 // Custom chart icon
 function BarChart3Icon({ className = '', size = 18 }: { className?: string; size?: number }) {
@@ -362,13 +363,12 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Pitch Deck Slideshow - Cycles through all slides with parallax effect */}
+      {/* Pitch Deck Cards Showcase - Dribbble-style overlapping cards showing ALL decks */}
       <ParallaxSection speed={0.3}>
-        <BeforeAfterShowcase
-          slides={getDeckSlideUrls('hear-transplant')}
-          title="Hear Transplant"
-          subtitle="A complete pitch deck showcase - watch it unfold slide by slide"
-          autoAdvanceInterval={3000}
+        <PitchDeckCardShowcase
+          decks={initialDecks}
+          onCardClick={(deck) => handleWalkthrough(deck)}
+          onQuickView={(deck) => handleQuickView(deck)}
         />
       </ParallaxSection>
 
