@@ -269,8 +269,11 @@ export function Preloader({ onComplete, duration = 3500 }: PreloaderProps) {
                           transition={{ delay: 1.5, duration: 0.5 }}
                           className="font-display font-black text-white leading-none"
                         >
-                          <span className="text-6xl md:text-7xl lg:text-8xl bg-gradient-to-b from-amber-200 via-yellow-300 to-amber-500 bg-clip-text text-transparent drop-shadow-2xl"
-                            style={{ textShadow: '0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(212, 175, 55, 0.3)' }}
+                          <span className="text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-gray-100 via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-2xl"
+                            style={{
+                              textShadow: '0 0 30px rgba(192, 192, 192, 0.6), 0 0 60px rgba(255, 215, 0, 0.3), 0 2px 4px rgba(0,0,0,0.5)',
+                              filter: 'brightness(1.2) contrast(1.1)'
+                            }}
                           >
                             848
                           </span>

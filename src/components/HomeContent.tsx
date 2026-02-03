@@ -210,58 +210,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         {/* Hero Section with Video Background & Animations */}
         <Hero />
 
-        {/* Scroll to Unlock - Featured Decks Section with Engagement */}
-        <ScrollUnlock
-          lockedContent={
-            <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center"
-              >
-                <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-                  Featured Projects
-                </h2>
-                <p className="text-xl text-paper/80 max-w-2xl mx-auto mb-12">
-                  Explore our portfolio of compelling stories ready for production
-                </p>
-                <div className="text-paper/60 text-sm flex items-center gap-2 justify-center">
-                  <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7 7" />
-                  </svg>
-                  Scroll to explore
-                </div>
-              </motion.div>
-            </div>
-          }
-          unlockedContent={
-            featuredDecks.length > 0 ? (
-              <FeaturedDeckWalkthrough
-                featuredDecks={featuredDecks}
-                autoRotateInterval={15000}
-                slideInterval={4000}
-                onWatchFullDeck={handleWalkthrough}
-              />
-            ) : (
-              <div className="min-h-[600px] flex flex-col items-center justify-center bg-gradient-to-b from-charcoal to-charcoal-light">
-                <div className="text-center">
-                  <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-                    Featured Projects
-                  </h2>
-                  <p className="text-xl text-paper/80 max-w-2xl mx-auto">
-                    Coming soon - explore our portfolio of compelling stories ready for production
-                  </p>
-                </div>
-              </div>
-            )
-          }
-          unlockDistance={500}
-          unlockMessage="Scroll to explore featured projects"
-          onUnlock={() => console.log('Featured decks unlocked')}
-        />
-
-      {/* Stats Bar */}
-      <PhysicsStats
+        {/* Stats Bar - Our Impact */}
+        <PhysicsStats
         title="Our Impact"
         subtitle="Numbers that speak to our success"
         stats={[
@@ -281,6 +231,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             icon: <StoryIcon className="w-8 h-8 text-accent-teal mx-auto" />
           }
         ]}
+      />
+
+      {/* Trust Bar with Animated Marquee Logos - After Stats */}
+      <TrustedBrandsMarquee 
+        title="Trusted by Industry Leaders"
+        subtitle="Our work has been featured at major studios and streaming platforms"
+        variant="dark"
       />
 
       {/* Video Showcase - Our Process in Action */}

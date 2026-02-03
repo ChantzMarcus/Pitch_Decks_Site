@@ -354,33 +354,6 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Enhanced scroll indicator with 3D effect */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-      >
-        <motion.div
-          animate={{
-            y: [0, 15, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            scale: { duration: 1.5, repeat: Infinity }
-          }}
-          className="w-8 h-14 border-2 border-white/30 rounded-full flex justify-center pt-3 bg-white/20 backdrop-blur-sm shadow-lg"
-        >
-          <motion.div
-            className="w-1.5 h-3 bg-white/60 rounded-full"
-            animate={{ scaleY: [1, 1.5, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
