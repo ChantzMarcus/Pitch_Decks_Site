@@ -249,8 +249,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           />
         )}
 
-      {/* Trust Bar with Logos */}
-      <TrustedBrands 
+      {/* Trust Bar with Animated Marquee Logos */}
+      <TrustedBrandsMarquee 
         title="Trusted by Industry Leaders"
         subtitle="Our work has been featured at major studios and streaming platforms"
         variant="dark"

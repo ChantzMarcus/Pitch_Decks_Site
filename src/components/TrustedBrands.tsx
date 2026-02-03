@@ -142,48 +142,93 @@ export default function TrustedBrands({
   );
 }
 
-// Alternative: Marquee version for infinite scroll
+// Alternative: Marquee version for infinite scroll (ANIMATED BAR)
 export function TrustedBrandsMarquee({
   brands = DEFAULT_BRANDS,
   title = 'Trusted by Industry Leaders',
+  subtitle,
+  variant = 'dark',
 }: {
   brands?: Brand[];
   title?: string;
+  subtitle?: string;
+  variant?: 'light' | 'dark';
 }) {
+  const bgColor = variant === 'dark' ? 'bg-charcoal' : 'bg-charcoal-light';
+  const textColor = variant === 'dark' ? 'text-paper-muted' : 'text-paper/60';
+
+  // Calculate total width for seamless loop
+  const logoWidth = 120; // Approximate width per logo
+  const gap = 48;
+  const totalWidth = (logoWidth + gap) * brands.length;
+
   return (
-    <section className="relative py-16 bg-charcoal-light overflow-hidden">
+    <section className={`relative py-16 ${bgColor} overflow-hidden`}>
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-10">
-          <p className="text-accent-gold text-sm font-semibold tracking-widest uppercase mb-3">
-            Trusted By
-          </p>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-paper">
-            {title}
-          </h2>
-        </div>
-
-        {/* Marquee container */}
-        <div className="relative overflow-hidden">
-          <div className="flex gap-16 items-center animate-marquee">
-            {/* Duplicate brands for seamless loop */}
-            {[...brands, ...brands, ...brands].map((brand, index) => (
-              <div
-                key={`${brand.id}-${index}`}
-                className="flex-shrink-0 flex items-center justify-center"
-              >
-                <span className="font-display text-2xl font-bold tracking-wider text-paper/30 hover:text-paper/60 transition-colors">
-                  {brand.logo}
-                </span>
-              </div>
-            ))}
+        <ScrollReveal direction="up">
+          <div className="text-center mb-10">
+            <p className="text-accent-gold text-sm font-semibold tracking-widest uppercase mb-3">
+              Trusted By
+            </p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-paper mb-2">
+              {title}
+            </h2>
+            {subtitle && (
+              <p className={`${textColor} text-sm max-w-2xl mx-auto mt-2`}>
+                {subtitle}
+              </p>
+            )}
           </div>
+        </ScrollReveal>
+
+        {/* Animated Marquee Bar */}
+        <div className="relative overflow-hidden">
+          {/* Fade edges */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-charcoal to-transparent pointer-events-none z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-charcoal to-transparent pointer-events-none z-10" />
+
+          {/* Animated scrolling logos */}
+          <motion.div
+            animate={{ x: [0, -totalWidth] }}
+            transition={{ 
+              duration: 30, 
+              repeat: Infinity, 
+              ease: 'linear' 
+            }}
+            className="flex gap-12 items-center"
+          >
+            {/* Duplicate brands 3x for seamless loop */}
+            {[...brands, ...brands, ...brands].map((brand, index) => {
+              const [imageError, setImageError] = useState(false);
+              const isImagePath = brand.logo.startsWith('/');
+
+              return (
+                <motion.div
+                  key={`${brand.id}-${index}`}
+                  whileHover={{ scale: 1.1 }}
+                  className="flex-shrink-0 flex items-center justify-center w-32 h-16 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
+                >
+                  {isImagePath && !imageError ? (
+                    <Image
+                      src={brand.logo}
+                      alt={brand.alt}
+                      width={100}
+                      height={40}
+                      className="opacity-60 group-hover:opacity-100 transition-opacity object-contain"
+                      onError={() => setImageError(true)}
+                    />
+                  ) : (
+                    <span className="font-display text-lg font-bold tracking-wider text-paper/40 group-hover:text-paper/80 transition-colors">
+                      {brand.name}
+                    </span>
+                  )}
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </div>
-
-      {/* Fade edges */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-charcoal-light to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-charcoal-light to-transparent pointer-events-none" />
     </section>
   );
 }

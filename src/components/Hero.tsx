@@ -29,6 +29,16 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '2deg']);
 
+  // Sticky/pinned effects for subtitle and buttons - move slower (follow scroll)
+  // These elements will "stick" longer as you scroll, creating a pinned effect
+  const subtitleY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']); // Moves slower
+  const subtitleOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]); // Fades slower
+  const buttonsY = useTransform(scrollYProgress, [0, 1], ['0%', '25%']); // Moves even slower
+  const buttonsOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]); // Stays visible longer
+  
+  // Scroll-driven gradient overlay opacity for button
+  const buttonGradientOpacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0, 0.2, 0]);
+
   // Video scale effect - zooms in slightly on scroll
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
@@ -223,22 +233,30 @@ export default function Hero() {
           </div>
         </motion.h1>
 
-        {/* Enhanced subheading with depth */}
+        {/* Enhanced subheading with sticky/pinned scroll effect - follows you as you scroll */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="text-lg md:text-xl text-paper/80 max-w-2xl mx-auto mb-12"
+          style={{
+            y: subtitleY,
+            opacity: subtitleOpacity,
+          } as any}
+          className="text-lg md:text-xl text-paper/80 max-w-2xl mx-auto mb-12 relative z-20"
         >
           Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.
         </motion.p>
 
-        {/* Enhanced CTA Buttons with liquid glass effects */}
+        {/* Enhanced CTA Buttons with sticky/pinned scroll effect - follows you as you scroll */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+          style={{
+            y: buttonsY,
+            opacity: buttonsOpacity,
+          } as any}
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20"
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -255,9 +273,13 @@ export default function Hero() {
               {/* Glass reflection effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
               
-              {/* Gradient hover overlay */}
+              {/* Gradient overlay with scroll-driven animation - follows you as you scroll */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-accent-indigo/30 to-accent-gold/30 opacity-0 group-hover:opacity-100"
+                className="absolute inset-0 bg-gradient-to-r from-accent-indigo/30 to-accent-gold/30"
+                style={{
+                  opacity: buttonGradientOpacity,
+                } as any}
+                whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               />
               
