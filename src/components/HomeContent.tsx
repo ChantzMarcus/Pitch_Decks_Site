@@ -581,6 +581,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         ctaHref="/questionnaire"
       />
 
+      {/* Sticky Hero Button - Follows you as you scroll */}
+      <StickyHeroButton
+        ctaText="Get Your Free Score"
+        ctaHref="/questionnaire"
+        showAfterScroll={600}
+      />
+
     </main>
     <Footer />
   </>
