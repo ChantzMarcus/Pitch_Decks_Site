@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRightIcon, MailIcon } from '@/components/icons/FilmIcons';
 
-// Custom social icons for FilmDecks branding
+// Custom social icons for 848 Washington Media branding
 function InstagramIcon({ className = '', size = 20 }: { className?: string; size?: number }) {
   return (
     <svg
@@ -97,7 +97,7 @@ const socialLinks = [
   { icon: InstagramIcon, href: 'https://instagram.com', label: 'Instagram' },
   { icon: LinkedinIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
   { icon: YoutubeIcon, href: 'https://youtube.com', label: 'YouTube' },
-  { icon: MailIcon, href: 'mailto:hello@filmdecks.biz', label: 'Email' },
+  { icon: MailIcon, href: 'mailto:hello@848washingtonmedia.com', label: 'Email' },
 ];
 
 function FooterLink({ href, label }: { href: string; label: string }) {
@@ -158,7 +158,7 @@ export function Footer() {
               transition={{ duration: 0.6 }}
             >
               <h3 className="font-display text-2xl font-semibold text-paper mb-4">
-                FilmDecks
+                848 Washington Media
               </h3>
               <p className="text-paper/60 mb-6 max-w-sm">
                 Professional pitch packaging for film and TV. Get your story funded with expert packaging, financial analysis, and creative development. We help you get everything you need to go to market.
@@ -166,11 +166,11 @@ export function Footer() {
 
               {/* Email CTA */}
               <a
-                href="mailto:hello@filmdecks.biz"
+                href="mailto:hello@848washingtonmedia.com"
                 className="group inline-flex items-center gap-2 text-accent-indigo hover:gap-3 transition-all"
               >
                 <span className="border-b border-accent-indigo pb-0.5">
-                  hello@filmdecks.biz
+                  hello@848washingtonmedia.com
                 </span>
                 <ArrowUpRightIcon className="w-4 h-4" />
               </a>
@@ -233,7 +233,7 @@ export function Footer() {
             viewport={{ once: true }}
             className="text-sm text-paper/50"
           >
-            © {new Date().getFullYear()} FilmDecks. All rights reserved.
+            © {new Date().getFullYear()} 848 Washington Media. All rights reserved.
           </motion.p>
 
           <motion.div
@@ -293,7 +293,7 @@ export function MinimalFooter() {
     <footer className="bg-charcoal border-t border-paper/10 py-8">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-display text-lg text-paper">FilmDecks</p>
+          <p className="font-display text-lg text-paper">848 Washington Media</p>
           <p className="text-sm text-paper/50">
             © {new Date().getFullYear()} All rights reserved.
           </p>

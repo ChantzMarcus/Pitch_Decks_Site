@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Play, Pause, ChevronLeft, ChevronRight, Expand } from 'lucide-react';
+import { X, Play, Pause, ChevronLeft, ChevronRight, Expand, Maximize2 } from 'lucide-react';
 import Image from 'next/image';
 import { Deck } from '@/db';
 import { getDeckSlideUrls } from '@/lib/mock-decks';
@@ -13,6 +13,7 @@ interface DeckWalkthroughModalProps {
   onClose: () => void;
   autoPlay?: boolean; // Start auto-play on open
   autoPlayInterval?: number; // Milliseconds per slide (default 4000)
+  onImmersiveView?: (deck: Deck & { slides?: string[] }) => void; // Callback to switch to immersive view
 }
 
 interface Slide {
@@ -40,6 +41,7 @@ export default function DeckWalkthroughModal({
   onClose,
   autoPlay = false,
   autoPlayInterval = 4000,
+  onImmersiveView,
 }: DeckWalkthroughModalProps) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -247,6 +249,23 @@ export default function DeckWalkthroughModal({
             >
               <Expand size={20} />
             </button>
+
+            {/* Immersive View button */}
+            {onImmersiveView && (
+              <button
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    onImmersiveView(deck);
+                  }, 300);
+                }}
+                className="p-2 bg-accent-teal/20 hover:bg-accent-teal/30 rounded-full text-white transition-colors focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                aria-label="Switch to immersive view"
+                title="Switch to immersive full-screen view"
+              >
+                <Maximize2 size={20} />
+              </button>
+            )}
 
             {/* Close button */}
             <button

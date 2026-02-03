@@ -12,15 +12,15 @@ export const metadata = {
   description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'pitch packaging'],
   openGraph: {
-    title: 'FilmDecks | Professional Pitch Packaging',
+    title: '848 Washington Media | Professional Pitch Packaging',
     description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
-    url: 'https://filmdecks.biz',
+    url: 'https://848washingtonmedia.com',
     images: [
       {
         url: '/og-home.png',
         width: 1200,
         height: 630,
-        alt: 'FilmDecks - Professional Pitch Packaging',
+        alt: '848 Washington Media - Professional Pitch Packaging',
       },
     ],
   },

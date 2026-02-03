@@ -1,0 +1,30 @@
+# HomeContent.tsx Protection Guide
+
+**CRITICAL COMPONENTS THAT MUST STAY:**
+
+1. **StickyCTA** (lines 566-575)
+   - Must have: showAfterScroll={500}
+   - Must have: position="bottom"
+   - Must have: variant="primary"
+
+2. **EducationalVideoShowcase** (line 428)
+   - Must have: videos={EDUCATIONAL_VIDEOS.slice(0, 6)}
+   - Must be in section with bg-charcoal-light
+
+3. **VideoShowcase** (line 281)
+   - Must have: videoSrc with Cloudinary URL
+   - Must have: autoPlay={false}, loop={true}
+
+4. **DeckGrid** (line 389)
+   - Must have: horizontalScroll={true}
+   - Must have: onQuickView and onWalkthrough handlers
+
+5. **AppleStyleVideoGallery** (line 469)
+   - Must have: videos array with Cloudinary URLs
+
+**DO NOT REMOVE THESE IMPORTS:**
+- import StickyCTA, { FloatingStickyCTA } from '@/components/StickyCTA';
+- import EducationalVideoShowcase from '@/components/EducationalVideoShowcase';
+- import VideoShowcase from '@/components/VideoShowcase';
+- import DeckGrid from '@/components/DeckGrid';
+- import AppleStyleVideoGallery from '@/components/AppleStyleVideoGallery';

@@ -37,7 +37,7 @@ const ThreeDPitchDeckShowcase = dynamic(
     ssr: false, // Disable SSR for Three.js component
     loading: () => (
       <div className="h-[600px] flex items-center justify-center">
-        <div className="text-charcoal/50">Loading 3D showcase...</div>
+        <div className="text-paper/50">Loading 3D showcase...</div>
       </div>
     )
   }
@@ -396,7 +396,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
 
           {/* 3D Pitch Deck Showcase */}
           <div className="mt-16">
-            <h3 className="font-display text-3xl font-bold text-charcoal mb-8 text-center">
+            <h3 className="font-display text-3xl font-bold text-paper mb-8 text-center">
               Our Portfolio in 3D
             </h3>
             <ThreeDPitchDeckShowcase decks={initialDecks} />
@@ -405,7 +405,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           <ScrollReveal direction="up" delay={0.3} className="text-center mt-12">
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-paper/20 text-paper font-medium rounded-lg hover:bg-paper hover:text-charcoal transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-paper/20 text-paper font-medium rounded-lg hover:bg-paper/10 hover:text-paper transition-all"
             >
               View All Projects
               <ArrowRightIcon size={18} />
@@ -456,13 +456,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       <DualCTA />
 
       {/* Apple-Style Scroll-Triggered Video Gallery */}
-      <section className="py-20 bg-paper">
+      <section className="py-20 bg-charcoal">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal direction="fade" className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-charcoal mb-6">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
               See Our Process in Action
             </h2>
-            <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">
+            <p className="text-xl text-paper/80 max-w-2xl mx-auto">
               Watch how we transform stories into production-ready pitch decks
             </p>
           </ScrollReveal>

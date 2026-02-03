@@ -192,6 +192,90 @@ html {
   }
 }
 
+/* Cinematic Typography Enhancements */
+.font-display {
+  font-family: 'Fraunces Variable', serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.font-body {
+  font-family: 'Inter Variable', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Cinematic Text Effects */
+.text-cinematic-title {
+  font-family: 'Fraunces Variable', serif;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-cinematic-subtitle {
+  font-family: 'Inter Variable', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.text-cinematic-quote {
+  font-family: 'Fraunces Variable', serif;
+  font-style: italic;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.text-cinematic-quote:before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: -0.2em;
+  font-size: 3rem;
+  line-height: 1;
+  color: #6366F1;
+  opacity: 0.3;
+}
+
+/* 2025 Trend: Variable font optical sizing adjustments */
+@supports (font-variation-settings: normal) {
+  .font-display {
+    font-variation-settings: 'OPSZ' 48;
+  }
+
+  .font-body {
+    font-variation-settings: 'opsz' 16;
+  }
+}
+
+/* Enhanced font smoothing for better readability */
+.font-display,
+.font-body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Responsive font sizes for cinematic titles */
+.font-display-responsive {
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.font-body-responsive {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+}
+
 /* 2025 Trend: Glass morphism enhancement */
 .glass-enhanced {
   background: rgba(255, 255, 255, 0.1);
@@ -209,4 +293,85 @@ html {
 ::-moz-selection {
   background-color: rgba(79, 70, 229, 0.3);
   color: inherit;
+}
+
+/* ============================================
+   Bloom Effect for Deck Cards
+   Cinematic glow on hover - quick ROI
+   ============================================ */
+
+.deck-card-bloom {
+  transition: filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+.deck-card-bloom:hover {
+  filter: brightness(1.1) saturate(1.1);
+  box-shadow: 
+    0 0 20px rgba(99, 102, 241, 0.4),
+    0 0 40px rgba(99, 102, 241, 0.2),
+    0 0 60px rgba(99, 102, 241, 0.1);
+}
+
+/* Enhanced bloom for premium feel */
+.deck-card-bloom-premium:hover {
+  filter: brightness(1.15) saturate(1.15) contrast(1.05);
+  box-shadow: 
+    0 0 30px rgba(245, 158, 11, 0.3),  /* Gold glow */
+    0 0 50px rgba(20, 184, 166, 0.2),  /* Teal glow */
+    0 0 70px rgba(99, 102, 241, 0.15); /* Indigo glow */
+}
+
+/* ============================================
+   Native CSS Scroll-Driven Animations
+   Apple-style performance-optimized parallax
+   ============================================ */
+
+/* Check for native scroll-driven animations support */
+@supports (animation-timeline: scroll()) {
+  /* Native parallax using CSS Scroll-Driven Animations */
+  .parallax-section-native {
+    animation-name: parallax-transform;
+    animation-timeline: scroll();
+    animation-range: entry 0% exit 100%;
+    will-change: transform;
+  }
+
+  /* Parallax animation for Y direction */
+  @keyframes parallax-transform {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(var(--parallax-max, 50%) * -1));
+    }
+  }
+
+  /* Horizontal parallax variant */
+  .parallax-section-native[data-direction='x'] {
+    animation-name: parallax-transform-x;
+  }
+
+  @keyframes parallax-transform-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(var(--parallax-max, 25%) * -1));
+    }
+  }
+}
+
+/* Fallback: If native animations not supported, rely on JavaScript (Framer Motion) */
+@supports not (animation-timeline: scroll()) {
+  .parallax-section-native {
+    /* JavaScript will handle this via Framer Motion */
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-section-native {
+    animation: none !important;
+    transform: none !important;
+  }
 }

@@ -4,7 +4,10 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, Play, Star } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import HeroParticleBackground from '@/components/animations/HeroParticleBackground';
+import FilmGrain from '@/components/animations/FilmGrain';
+import { PlayButtonIcon, MovieStarIcon, FilmReelIcon } from './icons/FilmIcons';
 
 interface CompanyLogo {
   name: string;
@@ -109,17 +112,34 @@ export default function HeroVideo({
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal/90" />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal/70 via-transparent to-charcoal/70" />
 
-        {/* Animated grain/noise overlay for cinematic texture */}
+        {/* Animated particle system for cinematic texture */}
         {isMounted && (
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMwMDAiLz4KPC9zdmc+')] animate-pulse" />
-          </div>
+          <HeroParticleBackground
+            particleCount={300}
+            colors={['#F59E0B', '#14B8A6', '#6366F1']} // Wes Anderson/Willy Wonka: Gold, Teal, Indigo
+            opacity={0.15}
+            className="z-[1]"
+          />
+        )}
+        
+        {/* Film Grain Overlay - Authentic cinematic texture */}
+        {isMounted && (
+          <FilmGrain 
+            opacity={0.02} 
+            intensity="medium" 
+            className="z-[1]" 
+          />
         )}
       </div>
 
       {/* Main Content */}
       <motion.div
-        style={{ y, opacity, scale }}
+        style={{ 
+          y, 
+          scale,
+          // @ts-ignore - opacity is valid MotionValue from useTransform
+          opacity 
+        }}
         className="relative z-10 max-w-6xl mx-auto px-6 text-center"
       >
         {/* Badge with glassmorphism effect */}
@@ -189,7 +209,7 @@ export default function HeroVideo({
           transition={{ duration: 0.6, delay: 1.2 }}
           className="text-lg md:text-xl text-paper/80 max-w-2xl mx-auto mb-12"
         >
-          Watch your story transform from concept to production-ready pitch deck.
+          The industry's most trusted pitch packaging and story evaluation platform.
           Powered by veteran industry insights and proprietary ML analysis.
         </motion.p>
 
@@ -216,7 +236,7 @@ export default function HeroVideo({
               href="/gallery"
               className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 hover:border-white/50 transition-all group backdrop-blur-sm"
             >
-              <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <PlayButtonIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-lg">View Projects</span>
             </Link>
           </motion.div>
@@ -259,28 +279,6 @@ export default function HeroVideo({
         className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-charcoal via-charcoal/95 to-transparent pb-8 pt-20"
       >
         <div className="max-w-7xl mx-auto px-6">
-          {/* "Trusted By" label */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 2.2 }}
-            className="flex items-center justify-center gap-3 mb-8"
-          >
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-accent-gold text-accent-gold" />
-              ))}
-            </div>
-            <span className="text-sm font-medium text-paper/80 uppercase tracking-widest">
-              Trusted By Industry Leaders
-            </span>
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-accent-gold text-accent-gold" />
-              ))}
-            </div>
-          </motion.div>
-
           {/* Animated Logo Marquee */}
           <div className="relative overflow-hidden">
             <motion.div

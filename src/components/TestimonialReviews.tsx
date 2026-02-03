@@ -22,7 +22,7 @@ const DEFAULT_REVIEWS: Review[] = [
     role: 'Bestselling Author',
     project: 'Untitled Thriller',
     rating: 5,
-    content: 'FilmDecks transformed my book concept into a compelling visual pitch deck. The industry feedback was incredible - they "got it" immediately. Worth every penny.',
+    content: '848 Washington Media transformed my book concept into a compelling visual pitch deck. The industry feedback was incredible - they "got it" immediately. Worth every penny.',
     verified: true,
   },
   {
@@ -31,7 +31,7 @@ const DEFAULT_REVIEWS: Review[] = [
     role: 'Producer',
     project: 'Indie Feature',
     rating: 5,
-    content: 'As a producer, I see hundreds of pitch decks. FilmDecks created one that actually stood out and got our project funded. Their understanding of what investors need is unmatched.',
+    content: 'As a producer, I see hundreds of pitch decks. 848 Washington Media created one that actually stood out and got our project funded. Their understanding of what investors need is unmatched.',
     verified: true,
   },
   {
@@ -67,7 +67,7 @@ const DEFAULT_REVIEWS: Review[] = [
     role: 'First-Time Filmmaker',
     project: 'Short Film → Feature',
     rating: 5,
-    content: 'I had no idea how to pitch my film. FilmDecks not only created the deck but taught me what to focus on. Now I\'m developing my short into a feature.',
+    content: 'I had no idea how to pitch my film. 848 Washington Media not only created the deck but taught me what to focus on. Now I\'m developing my short into a feature.',
     verified: true,
   },
 ];

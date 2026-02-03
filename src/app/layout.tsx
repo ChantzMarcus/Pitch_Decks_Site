@@ -12,14 +12,14 @@ import '@fontsource/jetbrains-mono';
 
 export const metadata: Metadata = {
   title: {
-    default: 'FilmDecks | Professional Pitch Packaging',
-    template: '%s | FilmDecks'
+    default: '848 Washington Media | Professional Pitch Packaging',
+    template: '%s | 848 Washington Media'
   },
   description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
   keywords: ['pitch deck', 'film pitch deck', 'TV pitch deck', 'screenplay packaging', 'film financing', 'story analysis', 'pitch packaging'],
-  authors: [{ name: 'FilmDecks' }],
-  creator: 'FilmDecks',
-  publisher: 'FilmDecks',
+  authors: [{ name: '848 Washington Media' }],
+  creator: '848 Washington Media',
+  publisher: '848 Washington Media',
   robots: {
     index: true,
     follow: true,
@@ -34,22 +34,22 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://filmdecks.biz',
-    siteName: 'FilmDecks',
-    title: 'FilmDecks | Professional Pitch Packaging',
+    url: 'https://848washingtonmedia.com',
+    siteName: '848 Washington Media',
+    title: '848 Washington Media | Professional Pitch Packaging',
     description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FilmDecks - Professional Pitch Packaging',
+        alt: '848 Washington Media - Professional Pitch Packaging',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FilmDecks | Professional Pitch Packaging',
+    title: '848 Washington Media | Professional Pitch Packaging',
     description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis.',
     images: ['/twitter-image.png'],
   },
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://filmdecks.biz'),
+  metadataBase: new URL('https://848washingtonmedia.com'),
 };
 
 export default function RootLayout({

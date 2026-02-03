@@ -1,9 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart3, FileText, Sparkles, PenTool } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import GlassCard from './GlassCard';
+import {
+  FilmReelIcon,
+  SpotlightIcon,
+  ScriptIcon,
+  DirectorsChairIcon,
+  MovieStarIcon,
+  CameraLensIcon,
+  FilmSlateIcon,
+  BoxOfficeChartIcon
+} from '@/components/icons/FilmIcons';
 
 interface Service {
   title: string;
@@ -18,7 +28,7 @@ const services: Service[] = [
   {
     title: 'Pitch Decks',
     description: '500+ decks delivered. We create cinematic sales weapons that move investors emotionally and convince them logically. From visuals to financials, decks that get funded.',
-    icon: <FileText size={32} />,
+    icon: <FilmReelIcon size={32} />,
     cta: 'View Examples',
     href: '/gallery',
     badge: 'Most Popular',
@@ -26,21 +36,21 @@ const services: Service[] = [
   {
     title: 'Financial Analysis',
     description: 'Investor-grade models from a former studio CFO. We break down every revenue stream, maximize ROI, and give backers the confidence that your project has been vetted at the highest level.',
-    icon: <BarChart3 size={32} />,
+    icon: <BoxOfficeChartIcon size={32} />,
     cta: 'Learn More',
     href: '/questionnaire',
   },
   {
     title: 'Creative Development',
     description: 'Shape your story with executives who greenlit films at major studios. We analyze structure, character, and market positioning to make your project irresistible.',
-    icon: <Sparkles size={32} />,
+    icon: <SpotlightIcon size={32} />,
     cta: 'Get Feedback',
     href: '/questionnaire',
   },
   {
     title: 'Screenwriting',
     description: 'Award-winning British and American writers with 70+ years combined experience. From drafts to polishes, we craft screenplays that bridge art and commerce.',
-    icon: <PenTool size={32} />,
+    icon: <ScriptIcon size={32} />,
     cta: 'See Work',
     href: '/questionnaire',
   },

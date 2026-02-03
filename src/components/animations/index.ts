@@ -1,4 +1,10 @@
 export { default as ScrollReveal } from './ScrollReveal';
 export { default as ParallaxSection } from './ParallaxSection';
+export { default as PinnedSection } from './PinnedSection';
+export { default as DragNavigator } from './DragNavigator';
+export { default as ScrollUnlock } from './ScrollUnlock';
+export { default as ParticleSystem } from './ParticleSystem';
+export { default as HeroParticleBackground } from './HeroParticleBackground';
+export { default as FilmGrain } from './FilmGrain';
 export { default as PageTransition } from './PageTransition';
 export { default as StaggeredGrid } from './StaggeredGrid';

@@ -3,9 +3,10 @@
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Eye, TrendingUp, Clock, Play } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import { Deck } from '@/db';
 import { useState, useRef } from 'react';
+import { CameraLensIcon, MovieStarIcon, ClockIcon, PlayButtonIcon, EyeIcon } from './icons/FilmIcons';
 
 interface DeckCardProps {
   deck: Deck;
@@ -147,9 +148,9 @@ export default function DeckCard({
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
-        {/* Card with enhanced 3D effect */}
+        {/* Card with enhanced 3D effect and bloom */}
         <motion.div
-          className={`relative ${cardStyle} overflow-hidden rounded-2xl bg-charcoal`}
+          className={`relative ${cardStyle} overflow-hidden rounded-2xl bg-charcoal deck-card-bloom-premium`}
         >
           {/* Card image / Video preview */}
           <div className="relative w-full h-full">
@@ -217,7 +218,7 @@ export default function DeckCard({
               transition={{ duration: 0.2 }}
             >
               <div className="px-3 py-1.5 bg-black/60 backdrop-blur-md rounded-full text-white text-xs font-medium flex items-center gap-1.5 border border-white/10">
-                <Eye className="w-3.5 h-3.5" />
+                <EyeIcon className="w-3.5 h-3.5" />
                 <span>{deck.slide_count} slides</span>
               </div>
             </motion.div>
@@ -233,7 +234,7 @@ export default function DeckCard({
                 whileTap={{ scale: 0.95 }}
                 aria-label={`Quick view ${deck.title}`}
               >
-                <Play className="w-3.5 h-3.5" />
+                <PlayButtonIcon className="w-3.5 h-3.5" />
                 Quick View
               </motion.button>
 
@@ -245,7 +246,7 @@ export default function DeckCard({
                 whileTap={{ scale: 0.95 }}
                 aria-label={`Watch walkthrough of ${deck.title}`}
               >
-                <Play className="w-3.5 h-3.5" />
+                <PlayButtonIcon className="w-3.5 h-3.5" />
                 Watch Deck
               </motion.button>
             </div>
@@ -271,14 +272,14 @@ export default function DeckCard({
                       )}
                       {successMetrics.timeline && (
                         <div className="text-center">
-                          <Clock className="w-5 h-5 text-accent-gold mx-auto mb-1" />
+                          <ClockIcon className="w-5 h-5 text-accent-gold mx-auto mb-1" />
                           <div className="text-white font-bold text-sm">{successMetrics.timeline}</div>
                           <div className="text-white/60 text-xs">Timeline</div>
                         </div>
                       )}
                       {successMetrics.status && (
                         <div className="text-center">
-                          <Eye className="w-5 h-5 text-accent-indigo mx-auto mb-1" />
+                          <EyeIcon className="w-5 h-5 text-accent-indigo mx-auto mb-1" />
                           <div className="text-white font-bold text-sm">{successMetrics.status}</div>
                           <div className="text-white/60 text-xs">Status</div>
                         </div>

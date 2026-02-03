@@ -27,7 +27,7 @@ interface EducationalVideoCardProps {
   onCardClick?: () => void; // Click handler for entire card
 }
 
-const DEFAULT_THUMBNAIL = '/images/video-placeholder.jpg';
+const DEFAULT_THUMBNAIL = '/images/posters/hero-poster.jpg'; // Placeholder thumbnail
 
 // Category icons mapping
 const categoryIcons = {
@@ -182,12 +182,12 @@ export default function EducationalVideoCard({
           </div>
         )}
 
-        {/* Top-right badge (duration, step number, or extra tag) */}
+        {/* Top-right badge (duration, step number, or extra tag like "+ 360") */}
         {(duration || extraTag || stepNumber) && (
           <div className={`absolute top-4 z-50 pointer-events-none ${isCompleted ? 'right-12' : 'right-4'}`}>
             <div className={`px-2.5 py-1.5 ${
-              stepNumber ? 'bg-accent-indigo/90' : 'bg-gray-500/80'
-            } backdrop-blur-sm rounded-full text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg`}>
+              stepNumber ? 'bg-accent-indigo/90' : extraTag ? 'bg-white/90' : 'bg-gray-500/80'
+            } backdrop-blur-sm rounded-full ${extraTag ? 'text-charcoal' : 'text-white'} text-xs font-semibold flex items-center gap-1.5 shadow-lg`}>
               {stepNumber ? (
                 <>
                   <span className="text-[10px] opacity-80">STEP</span>
@@ -198,7 +198,7 @@ export default function EducationalVideoCard({
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  <span>{extraTag}</span>
+                  <span className="font-medium">{extraTag}</span>
                 </>
               ) : (
                 <span>{duration}</span>
@@ -247,17 +247,17 @@ export default function EducationalVideoCard({
             </div>
           )}
 
-          {/* Bottom-left tag (company/studio name) - only if no professional info */}
-          {tag && !professionalName && (
-            <div className="absolute bottom-20 left-4 z-50 pointer-events-none">
-              <div className="px-3 py-1.5 bg-green-500/90 backdrop-blur-sm rounded-full border border-white/20">
+          {/* Bottom-center company tag (like "netflix", "kfc", "smoothiebox") */}
+          {tag && (
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+              <div className="px-3 py-1.5 bg-green-500/90 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
                 <span className="text-white text-xs font-medium lowercase">{tag}</span>
               </div>
             </div>
           )}
 
           {/* Video Title - bottom center - Enhanced contrast */}
-          <div className={`relative px-4 ${professionalName ? 'pb-4' : 'pb-6'} z-50 pointer-events-none`}>
+          <div className={`relative px-4 ${professionalName ? 'pb-4' : tag ? 'pb-20' : 'pb-6'} z-50 pointer-events-none`}>
             <h3 className="text-white font-bold text-base text-center line-clamp-2 leading-tight" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>
               {title}
             </h3>
@@ -305,7 +305,7 @@ export default function EducationalVideoCard({
 }
 
 // Video data - use this to populate your video section
-// Example for packaging steps with industry professionals
+// Placeholder data - replace with actual video URLs and thumbnails when available
 export const EDUCATIONAL_VIDEOS = [
   {
     id: 'packaging-step-1',
@@ -313,8 +313,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: 'Why 90% of pitch decks never get read. Here\'s how to structure yours for success.',
     duration: '3:45',
     category: 'Education' as const,
-    thumbnail: '/images/packaging-step-1.jpg',
-    videoUrl: '/videos/educational/packaging-step-1.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
     professionalName: 'Sarah Johnson',
     professionalTitle: 'Former Studio Executive',
     company: 'Warner Bros',
@@ -326,8 +326,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: 'A former studio CFO reveals the visual elements that matter most.',
     duration: '4:20',
     category: 'Insight' as const,
-    thumbnail: '/images/packaging-step-2.jpg',
-    videoUrl: '/videos/educational/packaging-step-2.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
     professionalName: 'Michael Chen',
     professionalTitle: 'Former Development Executive',
     company: 'Netflix',
@@ -339,8 +339,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: 'How we adapt your story for maximum investor impact.',
     duration: '5:15',
     category: 'Education' as const,
-    thumbnail: '/images/packaging-step-3.jpg',
-    videoUrl: '/videos/educational/packaging-step-3.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
     professionalName: 'Emma Rodriguez',
     professionalTitle: 'Former VP of Development',
     company: 'Paramount',
@@ -352,8 +352,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: '90% of pitch decks never get read. Here\'s why yours will.',
     duration: '60s',
     category: 'Education' as const,
-    thumbnail: '/images/why-pitch-fails.jpg',
-    videoUrl: '/videos/educational/why-pitch-fails.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
   },
   {
     id: 'investors-look-for',
@@ -361,8 +361,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: 'A former studio CFO reveals the numbers that matter.',
     duration: '90s',
     category: 'Insight' as const,
-    thumbnail: '/images/investors-look-for.jpg',
-    videoUrl: '/videos/educational/investors-look-for.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
   },
   {
     id: 'book-to-script',
@@ -370,17 +370,8 @@ export const EDUCATIONAL_VIDEOS = [
     description: 'How we adapt your story for the screen.',
     duration: '75s',
     category: 'Education' as const,
-    thumbnail: '/images/book-to-script.jpg',
-    videoUrl: '/videos/educational/book-to-script.mp4',
-  },
-  {
-    id: '5-elements',
-    title: 'The 5 Elements Every Story Needs',
-    description: 'Does your project have what it takes?',
-    duration: '90s',
-    category: 'Education' as const,
-    thumbnail: '/images/5-elements.jpg',
-    videoUrl: '/videos/educational/5-elements.mp4',
+    thumbnail: '/images/posters/hero-poster.jpg', // Placeholder - replace with actual thumbnail
+    videoUrl: undefined, // Placeholder - add video URL when available
   },
 ];
 

@@ -3,6 +3,7 @@
 import { Deck } from '@/db';
 import DeckCard from './DeckCard';
 import EnhancedDeckCard from './EnhancedDeckCard';
+import { DragNavigator } from '@/components/animations';
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 
@@ -107,27 +108,42 @@ export default function DeckGrid({
           </motion.button>
         </div>
 
-        {/* Horizontal scrollable container */}
-        <div
-          ref={containerRef}
-          onScroll={checkScrollButtons}
-          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            paddingLeft: '60px',
+        {/* Horizontal scrollable container with drag navigation */}
+        <DragNavigator
+          horizontal
+          threshold={50}
+          showFeedback={true}
+          onDragEnd={(direction) => {
+            if (direction === 'left') {
+              scroll('left');
+            } else if (direction === 'right') {
+              scroll('right');
+            }
+            // Ignore vertical drags for horizontal scroll
           }}
         >
-          {decks.map((deck, index) => (
-            <div key={deck.id} className="flex-shrink-0 w-[320px]">
-              <EnhancedDeckCard
-                deck={deck}
-                index={index}
-                onQuickView={onQuickView}
-              />
-            </div>
-          ))}
-        </div>
+          <div
+            ref={containerRef}
+            onScroll={checkScrollButtons}
+            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              paddingLeft: '60px',
+            }}
+          >
+            {decks.map((deck, index) => (
+              <div key={deck.id} className="flex-shrink-0 w-[320px]">
+                <EnhancedDeckCard
+                  deck={deck}
+                  index={index}
+                  onQuickView={onQuickView}
+                  videoPreviewUrl={videoPreviewUrls[deck.id]}
+                />
+              </div>
+            ))}
+          </div>
+        </DragNavigator>
 
         {/* Hide scrollbar styles */}
         <style jsx>{`
@@ -152,6 +168,7 @@ export default function DeckGrid({
           deck={deck}
           index={index}
           onQuickView={onQuickView}
+          videoPreviewUrl={videoPreviewUrls[deck.id]}
         />
       ))}
     </div>

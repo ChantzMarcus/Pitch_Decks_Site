@@ -1,0 +1,20 @@
+# HERO COMPONENT LOCKED
+
+**DO NOT OVERWRITE THIS FILE**
+
+This Hero component has been carefully merged with HeroVideo features:
+- ✅ Video background (Cloudinary)
+- ✅ Dark background (bg-charcoal)
+- ✅ Film-themed icons
+- ✅ Animations preserved
+- ✅ Text: "Pitch Decks That Get Noticed"
+
+**If you need to modify Hero.tsx:**
+1. Read this file first
+2. Preserve video background
+3. Preserve dark theme
+4. Preserve animations
+5. Update this LOCKED file
+
+**Last Updated**: February 2, 2026
+**Status**: Production-ready with video background

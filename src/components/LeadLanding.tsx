@@ -31,7 +31,7 @@ export default function LeadLanding({
             className="inline-flex items-center gap-2 text-charcoal hover:text-accent-indigo transition-colors"
           >
             <ArrowLeft size={20} />
-            <span className="font-medium">Back to FilmDecks</span>
+            <span className="font-medium">Back to 848 Washington Media</span>
           </Link>
         </div>
       </header>

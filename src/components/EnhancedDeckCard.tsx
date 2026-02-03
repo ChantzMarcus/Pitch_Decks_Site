@@ -2,22 +2,26 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import { Eye } from 'lucide-react';
 import { Deck } from '@/db';
+import { EyeIcon } from './icons/FilmIcons';
 
 interface DeckCardProps {
   deck: Deck;
   index: number;
   onQuickView?: (deck: Deck) => void;
+  videoPreviewUrl?: string; // Optional video preview URL
 }
 
-export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardProps) {
+export default function EnhancedDeckCard({ deck, index, onQuickView, videoPreviewUrl }: DeckCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [showVideoPreview, setShowVideoPreview] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   useEffect(() => {
     if (!cardRef.current) return;
@@ -132,13 +136,72 @@ export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardP
       <div 
         ref={cardRef}
         className="group relative h-full cursor-pointer transform-style-3d"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => {
+          setIsHovered(true);
+          // Lazy load video preview on first hover
+          if (videoPreviewUrl && !videoLoaded) {
+            // Prefetch and load the video
+            const video = document.createElement('video');
+            video.src = videoPreviewUrl;
+            video.preload = 'metadata';
+            video.load();
+
+            video.onloadeddata = () => {
+              setVideoLoaded(true);
+              setShowVideoPreview(true);
+              if (videoRef.current) {
+                videoRef.current.currentTime = 0;
+                videoRef.current.play().catch(() => {
+                  // Autoplay blocked, ignore
+                });
+              }
+            };
+
+            video.onerror = () => {
+              // Video failed to load, don't show preview
+              console.warn(`Failed to load video preview: ${videoPreviewUrl}`);
+            };
+          } else if (videoPreviewUrl && videoLoaded && videoRef.current) {
+            // Video already loaded, just play it
+            setShowVideoPreview(true);
+            videoRef.current.currentTime = 0;
+            videoRef.current.play().catch(() => {
+              // Autoplay blocked, ignore
+            });
+          }
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setShowVideoPreview(false);
+          videoRef.current?.pause();
+        }}
       >
-        {/* Card Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-charcoal/10 shadow-lg transition-all duration-300">
+        {/* Card Container with Bloom Effect */}
+        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-charcoal/10 shadow-lg transition-all duration-300 deck-card-bloom-premium">
+          {/* Video Preview (plays on hover - lazy loaded) */}
+          {videoPreviewUrl && (
+            <AnimatePresence>
+              {showVideoPreview && (
+                <motion.video
+                  ref={videoRef}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  muted
+                  playsInline
+                  loop
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover z-10"
+                  src={videoPreviewUrl}
+                  aria-label={`Video preview for ${deck.title}`}
+                />
+              )}
+            </AnimatePresence>
+          )}
+
           {/* Image Container with GSAP-controlled effects */}
-          <div ref={imageRef} className="w-full h-full">
+          <div ref={imageRef} className={`w-full h-full ${showVideoPreview ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
             <Image
               src={deck.cover_image_url}
               alt={`${deck.title} cover image`}
@@ -167,7 +230,7 @@ export default function EnhancedDeckCard({ deck, index, onQuickView }: DeckCardP
             className="absolute bottom-4 left-4 right-4 flex items-center justify-center gap-2 py-3 bg-white/95 backdrop-blur-sm rounded-lg text-charcoal font-medium shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-accent-indigo focus:ring-offset-2"
             aria-label={`Quick view ${deck.title}`}
           >
-            <Eye size={18} aria-hidden="true" />
+            <EyeIcon size={18} aria-hidden="true" />
             Quick View
           </motion.button>
 

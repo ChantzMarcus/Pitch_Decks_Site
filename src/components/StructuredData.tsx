@@ -13,9 +13,9 @@ const schemas = {
   organization: {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'FilmDecks',
+    name: '848 Washington Media',
     description: 'Professional pitch packaging for film and TV. Get your story funded with our expert packaging, financial analysis, and creative development.',
-    url: 'https://filmdecks.biz',
+    url: 'https://848washingtonmedia.com',
     sameAs: [
       // Add social media links here when available
       // 'https://twitter.com/848washington',
@@ -34,7 +34,7 @@ const schemas = {
     description: 'Professional pitch packaging for film and TV. Expert packaging, financial analysis, and creative development.',
     provider: {
       '@type': 'Organization',
-      name: 'FilmDecks',
+      name: '848 Washington Media',
     },
     areaServed: 'Worldwide',
     category: 'Entertainment Industry',
@@ -42,12 +42,12 @@ const schemas = {
   webpage: (url: string, name: string, description: string) => ({
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    url: `https://filmdecks.biz${url}`,
+    url: `https://848washingtonmedia.com${url}`,
     name,
     description,
     publisher: {
       '@type': 'Organization',
-      name: 'FilmDecks',
+      name: '848 Washington Media',
     },
   }),
   collection: (items: Array<{ name: string; description: string; url: string }>) => ({
@@ -55,10 +55,10 @@ const schemas = {
     '@type': 'CollectionPage',
     name: 'Pitch Deck Gallery',
     description: 'Browse our collection of award-winning film and TV pitch decks',
-    url: 'https://filmdecks.biz/gallery',
+    url: 'https://848washingtonmedia.com/gallery',
     publisher: {
       '@type': 'Organization',
-      name: 'FilmDecks',
+      name: '848 Washington Media',
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -69,7 +69,7 @@ const schemas = {
           '@type': 'CreativeWork',
           name: item.name,
           description: item.description,
-          url: `https://filmdecks.biz${item.url}`,
+          url: `https://848washingtonmedia.com${item.url}`,
         },
       })),
     },

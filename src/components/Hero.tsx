@@ -4,7 +4,10 @@
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useEffect, useState } from 'react';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { FilmReelIcon, PlayButtonIcon } from './icons/FilmIcons';
+import HeroParticleBackground from '@/components/animations/HeroParticleBackground';
+import FilmGrain from '@/components/animations/FilmGrain';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,6 +28,9 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '2deg']);
+
+  // Video scale effect - zooms in slightly on scroll
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   const blobX = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const blobY = useTransform(scrollYProgress, [0, 1], [0, -100]);
@@ -52,7 +58,48 @@ export default function Hero() {
   const words2 = subHeading.split(' ');
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-charcoal">
+      {/* Video Background with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <motion.video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+          poster="/images/posters/hero-poster.jpg"
+          style={{ scale: videoScale }}
+        >
+          <source
+            src={process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4'}
+            type="video/mp4"
+          />
+        </motion.video>
+
+        {/* Gradient Overlays for readability (glassmorphism-friendly) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/70 via-transparent to-charcoal/70" />
+      </div>
+
+      {/* Animated particle system for cinematic texture - OPTIONAL */}
+      {isMounted && (
+        <HeroParticleBackground
+          particleCount={300}
+          colors={['#F59E0B', '#14B8A6', '#6366F1']}
+          opacity={0.15}
+          className="z-[1]"
+        />
+      )}
+
+      {/* Film Grain Overlay - Authentic cinematic texture - OPTIONAL */}
+      {isMounted && (
+        <FilmGrain
+          opacity={0.02}
+          intensity="medium"
+          className="z-[1]"
+        />
+      )}
+
       {/* Enhanced animated gradient blobs with more sophisticated movement */}
       {isMounted && (
         <motion.div
@@ -60,7 +107,7 @@ export default function Hero() {
             x: blobX,
             y: blobY,
           }}
-          className="absolute inset-0 opacity-40 pointer-events-none"
+          className="absolute inset-0 opacity-30 pointer-events-none z-[2]"
         >
           <motion.div
             animate={{
@@ -74,7 +121,7 @@ export default function Hero() {
               damping: 15,
               scale: { duration: 4, repeat: Infinity, repeatType: "reverse" }
             }}
-            className="absolute top-1/4 -left-40 w-[32rem] h-[32rem] bg-accent-indigo/20 rounded-full filter blur-[100px]"
+            className="absolute top-1/4 -left-40 w-[32rem] h-[32rem] bg-accent-indigo/30 rounded-full filter blur-[100px]"
           />
           <motion.div
             animate={{
@@ -88,7 +135,7 @@ export default function Hero() {
               damping: 12,
               scale: { duration: 5, repeat: Infinity, repeatType: "reverse" }
             }}
-            className="absolute bottom-1/4 -right-40 w-[32rem] h-[32rem] bg-accent-gold/20 rounded-full filter blur-[100px]"
+            className="absolute bottom-1/4 -right-40 w-[32rem] h-[32rem] bg-accent-gold/30 rounded-full filter blur-[100px]"
           />
         </motion.div>
       )}
@@ -100,8 +147,7 @@ export default function Hero() {
           opacity,
           scale,
           rotate,
-          transformStyle: 'preserve-3d',
-        }}
+        } as any}
         className="relative z-10 max-w-6xl mx-auto px-6 text-center"
       >
         {/* Enhanced badge with 3D effect */}
@@ -110,7 +156,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/80 backdrop-blur-xl border border-charcoal/20 shadow-lg mb-10"
-          style={{ transform: 'translateZ(20px)' }}
+          style={{ transform: 'translateZ(20px)' } as any}
         >
           <motion.span
             animate={{
@@ -124,7 +170,7 @@ export default function Hero() {
             }}
             className="w-3 h-3 rounded-full bg-accent-indigo shadow-lg"
           />
-          <span className="text-sm font-medium text-charcoal">
+          <span className="text-sm font-medium text-paper">
             Industry's Most Trusted Analysis
           </span>
         </motion.div>
@@ -134,8 +180,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold text-charcoal leading-tight mb-6"
-          style={{ transformStyle: 'preserve-3d' }}
+          className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold text-paper leading-tight mb-6"
         >
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             {words1.map((word, i) => (
@@ -149,7 +194,6 @@ export default function Hero() {
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
                 className="inline-block origin-bottom"
-                style={{ transformStyle: 'preserve-3d' }}
               >
                 {word}
               </motion.span>
@@ -167,7 +211,6 @@ export default function Hero() {
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
                 className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-accent-indigo to-accent-gold origin-bottom"
-                style={{ transformStyle: 'preserve-3d' }}
               >
                 {word}
               </motion.span>
@@ -180,8 +223,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="text-lg md:text-xl text-charcoal/70 max-w-2xl mx-auto mb-12"
-          style={{ transform: 'translateZ(10px)' }}
+          className="text-lg md:text-xl text-paper/80 max-w-2xl mx-auto mb-12"
         >
           Transform your film concept into a compelling visual story. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.
         </motion.p>
@@ -192,7 +234,6 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-          style={{ transform: 'translateZ(15px)' }}
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -220,9 +261,9 @@ export default function Hero() {
           >
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-4 px-10 py-5 border-2 border-charcoal/30 text-charcoal rounded-2xl hover:border-charcoal/50 hover:bg-charcoal/5 transition-all group shadow-lg"
+              className="inline-flex items-center gap-4 px-10 py-5 border-2 border-white/30 text-paper rounded-2xl hover:border-white/50 hover:bg-white/10 transition-all group shadow-lg backdrop-blur-sm"
             >
-              <Play className="w-6 h-6 group-hover:scale-125 transition-transform" />
+              <PlayButtonIcon className="w-6 h-6 group-hover:scale-125 transition-transform" />
               <span className="text-lg">View Examples</span>
             </Link>
           </motion.div>
@@ -234,7 +275,6 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.3 }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto mt-8"
-          style={{ transform: 'translateZ(5px)' }}
         >
           {[
             { value: '500+', label: 'Decks Created' },
@@ -251,11 +291,10 @@ export default function Hero() {
                 ease: "easeOut"
               }}
               whileHover={{ y: -10, rotateX: 5 }}
-              className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-charcoal/10 shadow-lg"
-              style={{ transformStyle: 'preserve-3d' }}
+              className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-lg"
             >
               <motion.div
-                className="font-display text-4xl md:text-5xl font-bold text-charcoal mb-2"
+                className="font-display text-4xl md:text-5xl font-bold text-paper mb-2"
                 animate={{
                   textShadow: [
                     "0 0 0px rgba(0,0,0,0)",
@@ -271,7 +310,7 @@ export default function Hero() {
               >
                 {stat.value}
               </motion.div>
-              <div className="text-base text-charcoal/60">{stat.label}</div>
+              <div className="text-base text-paper/70">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -283,7 +322,6 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-        style={{ transform: 'translateZ(30px)' }}
       >
         <motion.div
           animate={{
@@ -296,10 +334,10 @@ export default function Hero() {
             ease: 'easeInOut',
             scale: { duration: 1.5, repeat: Infinity }
           }}
-          className="w-8 h-14 border-2 border-charcoal/30 rounded-full flex justify-center pt-3 bg-white/20 backdrop-blur-sm shadow-lg"
+          className="w-8 h-14 border-2 border-white/30 rounded-full flex justify-center pt-3 bg-white/20 backdrop-blur-sm shadow-lg"
         >
           <motion.div
-            className="w-1.5 h-3 bg-charcoal/60 rounded-full"
+            className="w-1.5 h-3 bg-white/60 rounded-full"
             animate={{ scaleY: [1, 1.5, 1] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
