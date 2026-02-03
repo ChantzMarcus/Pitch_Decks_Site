@@ -1,0 +1,40 @@
+🚀 DEPLOYMENT REQUEST - Agent Instructions
+
+Hi! I need you to deploy the latest changes to Vercel. Everything is already committed and ready to go.
+
+WHAT TO DO:
+-----------
+Just run this command:
+  git push origin main
+
+That's it! Vercel will automatically deploy to filmdecks.biz.
+
+WHY THIS IS NEEDED:
+-------------------
+The deployed site is missing:
+1. Landing page animation (preloader)
+2. Sonar hero feature (marquee background)
+3. Has color inconsistencies (white sections mixed with dark)
+
+All fixes are already committed in commit 5e5a84b. They just need to be pushed.
+
+WHAT WILL BE FIXED:
+-------------------
+✅ Preloader animation will show (3.5s spinning logo)
+✅ Sonar hero with marquee background will appear
+✅ Unified dark theme (no more white sections)
+✅ All animations will work
+
+VERIFICATION:
+------------
+After pushing, check:
+- https://filmdecks.biz shows preloader
+- Hero has Sonar-style marquee background
+- All sections are dark (no white)
+- Animations work
+
+STATUS: Ready to deploy - just needs git push
+COMMIT: 5e5a84b (already committed)
+ACTION: git push origin main
+
+Thanks!

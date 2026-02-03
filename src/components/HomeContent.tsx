@@ -206,8 +206,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             description: 'Transform your film concept into a compelling pitch deck. Get veteran industry feedback powered by proprietary data and ML analysis—the industry\'s most trusted evaluation.',
           }}
         />
-        {/* Hero Section - Sonar Music Style with Marquee Background & Parallax */}
-        <HeroSonarStyle />
+        {/* Hero Section with Video Background & Animations */}
+        <Hero />
 
         {/* Scroll to Unlock - Featured Decks Section with Engagement */}
         {featuredDecks.length > 0 && (

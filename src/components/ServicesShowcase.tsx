@@ -66,7 +66,7 @@ export default function ServicesShowcase({
   subtitle = 'Studio-caliber packaging that turns pages into premieres',
 }: ServicesShowcaseProps) {
   return (
-    <section className="py-20 bg-paper">
+    <section className="py-20 bg-charcoal">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
@@ -115,12 +115,12 @@ export default function ServicesShowcase({
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-display text-2xl font-bold text-charcoal mb-3 group-hover:text-accent-indigo transition-colors">
+                    <h3 className="font-display text-2xl font-bold text-paper mb-3 group-hover:text-accent-indigo transition-colors">
                       {service.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-charcoal/70 leading-relaxed mb-6">
+                    <p className="text-paper/80 leading-relaxed mb-6">
                       {service.description}
                     </p>
 
