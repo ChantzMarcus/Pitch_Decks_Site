@@ -381,28 +381,6 @@ export default function Hero() {
           />
         </motion.div>
       </motion.div>
-
-      {/* Trusted By Section - Replaced old "TRUSTED BY INDUSTRY LEADERS" */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-charcoal via-charcoal/95 to-transparent pb-8 pt-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 2 }}
-            className="text-center mb-12"
-          >
-            <p className="text-accent-gold text-sm font-semibold tracking-widest uppercase mb-3">
-              Trusted By
-            </p>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-paper mb-2">
-              Trusted by Industry Leaders
-            </h2>
-            <p className="text-paper-muted text-sm max-w-2xl mx-auto mt-2">
-              Our work has been featured at major studios and streaming platforms
-            </p>
-          </motion.div>
-        </div>
-      </div>
     </section>
   );
 }

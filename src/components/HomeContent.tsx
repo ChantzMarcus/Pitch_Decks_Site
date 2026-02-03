@@ -26,6 +26,7 @@ import FAQ from '@/components/ui/FAQ';
 import UrgencyCounter from '@/components/ui/UrgencyCounter';
 import PhysicsStats from '@/components/PhysicsStats';
 import StickyCTA, { FloatingStickyCTA } from '@/components/StickyCTA';
+import StickyHeroButton from '@/components/StickyHeroButton';
 import { Preloader } from '@/components/Preloader';
 import TestimonialReviews from '@/components/TestimonialReviews';
 import dynamic from 'next/dynamic';
