@@ -39,7 +39,7 @@ async function uploadPDF() {
 
     return result;
   } catch (error) {
-    console.error('❌ Upload failed:', error.message);
+    console.error('❌ Upload failed:', error instanceof Error ? error.message : String(error));
     throw error;
   }
 }
