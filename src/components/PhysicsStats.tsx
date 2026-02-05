@@ -10,8 +10,21 @@ import FilmGrain from '@/components/animations/FilmGrain';
 // Register the ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
+// Texture type definition
+interface MetallicTexture {
+  base: string;
+  highlight: string;
+  shadow: string;
+  edgeGlow: string;
+  innerGlow: string;
+  sparkle: string;
+  textGradient: string;
+  isVelvet?: boolean;
+  velvetColor?: string;
+}
+
 // Rich metallic configurations with multiple gradient layers
-const METALLIC_TEXTURES = {
+const METALLIC_TEXTURES: Record<string, MetallicTexture> = {
   gold: {
     // Bright golden-yellow - classic gold
     base: 'linear-gradient(145deg, #FFF700 0%, #FFD700 20%, #FFC700 40%, #DAA520 60%, #FFC700 80%, #FFD700 100%)',
@@ -42,15 +55,15 @@ const METALLIC_TEXTURES = {
     sparkle: '#CD7F32',
     textGradient: 'linear-gradient(180deg, #CD7F32 0%, #654321 50%, #CD7F32 100%)',
   },
-  brass: {
-    // Yellow-tan brass (much lighter than bronze)
-    base: 'linear-gradient(145deg, #FFF8DC 0%, #F5DEB3 20%, #DEB887 40%, #DAA520 60%, #F5DEB3 80%, #FFF8DC 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,250,220,0.9) 0%, rgba(255,250,220,0.4) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(180,160,100,0.4) 100%)',
-    edgeGlow: 'rgba(245, 222, 179, 0.7)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(245,222,179,0.3) 0%, transparent 70%)',
-    sparkle: '#F5DEB3',
-    textGradient: 'linear-gradient(180deg, #F5DEB3 0%, #DAA520 50%, #F5DEB3 100%)',
+  platinum: {
+    // Icy white-platinum with blue undertones
+    base: 'linear-gradient(145deg, #E8E8E8 0%, #D4D4D4 15%, #C0C0C0 30%, #A8A8B0 50%, #B0B0B8 70%, #C8C8D0 85%, #E0E0E8 100%)',
+    highlight: 'linear-gradient(135deg, rgba(200,210,255,0.8) 0%, rgba(200,210,255,0.3) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(100,100,120,0.4) 100%)',
+    edgeGlow: 'rgba(180, 190, 255, 0.7)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(180,190,255,0.3) 0%, transparent 70%)',
+    sparkle: '#D0D0D8',
+    textGradient: 'linear-gradient(180deg, #E0E0E8 0%, #A0A0A8 50%, #C8C8D0 100%)',
   },
   copper: {
     // Reddish-copper (distinct from both bronze and brass)
@@ -102,7 +115,7 @@ function HoverGlowOrb({
   texture,
   isHovered
 }: {
-  texture: keyof typeof METALLIC_TEXTURES;
+  texture: string;
   isHovered: boolean;
 }) {
   if (!isHovered) return null;
@@ -163,10 +176,10 @@ function HoverGlowOrb({
   );
 }
 
-// Premium Metallic Card with 3D effects and rich layering
+// Premium Metallic/Velvet Card with 3D effects and rich layering
 const PremiumMetallicCard = forwardRef<HTMLDivElement, {
   children: React.ReactNode;
-  texture: keyof typeof METALLIC_TEXTURES;
+  texture: string;
   className?: string;
 }>(({ children, texture = 'gold', className = '' }, ref) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -213,14 +226,14 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
     >
       {/* Outer glow that intensifies on hover */}
       <div
-        className="absolute -inset-3 rounded-3xl blur-md transition-all duration-500 pointer-events-none"
+        className="absolute -inset-2 rounded-2xl blur-md transition-all duration-500 pointer-events-none"
         style={{
           background: `radial-gradient(
-            ellipse 100px at ${mousePos.x}% ${mousePos.y}%,
+            ellipse 80px at ${mousePos.x}% ${mousePos.y}%,
             ${config.edgeGlow} 0%,
             transparent 70%
           )`,
-          opacity: isHovered ? 1 : 0.3,
+          opacity: isHovered ? 0.8 : 0.2,
           transform: `scale(${isHovered ? 1.1 : 1})`,
         }}
       />
@@ -232,8 +245,8 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
           background: config.base,
           transformStyle: 'preserve-3d',
           boxShadow: isHovered
-            ? `0 25px 50px rgba(0,0,0,0.3), 0 0 30px ${config.edgeGlow}40`
-            : '0 10px 30px rgba(0,0,0,0.2)',
+            ? `0 20px 40px rgba(0,0,0,0.4), 0 0 25px ${config.edgeGlow}30`
+            : '0 8px 25px rgba(0,0,0,0.3)',
         }}
         animate={{
           rotateX: tilt.x,
@@ -241,9 +254,9 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
         }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
-        {/* Multiple metallic layers for depth */}
+        {/* Multiple texture layers for depth */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Base metallic gradient */}
+          {/* Base gradient */}
           <div className="absolute inset-0" style={{ background: config.base }} />
 
           {/* Top highlight layer - creates shine */}
@@ -251,7 +264,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
             className="absolute inset-0 transition-opacity duration-500"
             style={{
               background: config.highlight,
-              opacity: isHovered ? 1 : 0.7,
+              opacity: isHovered ? 1 : 0.6,
             }}
           />
 
@@ -263,8 +276,8 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
             className="absolute inset-0 transition-opacity duration-300"
             style={{
               background: `radial-gradient(
-                ellipse 150px at ${mousePos.x}% ${mousePos.y}%,
-                ${config.edgeGlow}30 0%,
+                ellipse 120px at ${mousePos.x}% ${mousePos.y}%,
+                ${config.edgeGlow}25 0%,
                 transparent 70%
               )`,
               opacity: isHovered ? 1 : 0,
@@ -276,13 +289,13 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
             className="absolute inset-0 transition-opacity duration-500"
             style={{
               background: config.innerGlow,
-              opacity: isHovered ? 1 : 0.3,
+              opacity: isHovered ? 0.8 : 0.2,
             }}
           />
 
           {/* Brushed metal texture lines */}
           <div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-15"
             style={{
               background: `repeating-linear-gradient(
                 90deg,
@@ -296,7 +309,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
 
           {/* Subtle grain for realism */}
           <div
-            className="absolute inset-0 opacity-10"
+            className="absolute inset-0 opacity-8"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
               mixBlendMode: 'overlay',
@@ -310,7 +323,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
           style={{
             padding: '2px',
             background: `radial-gradient(
-              ellipse 80px at ${mousePos.x}% ${mousePos.y}%,
+              ellipse 60px at ${mousePos.x}% ${mousePos.y}%,
               ${config.edgeGlow} 0%,
               transparent 80%
             )`,
@@ -318,7 +331,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
-            opacity: isHovered ? 1 : 0.5,
+            opacity: isHovered ? 0.8 : 0.3,
           }}
         />
 
@@ -327,7 +340,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
             }}
             initial={{ x: '-100%' }}
             animate={{ x: '100%' }}
@@ -336,16 +349,18 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
         )}
 
         {/* Sparkle particles on hover */}
-        <SparkleParticles count={8} isHovered={isHovered} color={config.sparkle} />
+        <SparkleParticles count={6} isHovered={isHovered} color={config.sparkle} />
 
         {/* Hover glow orb */}
         <HoverGlowOrb texture={texture} isHovered={isHovered} />
 
-        {/* Content */}
+        {/* Content with dark backing for text visibility */}
         <div
-          className="relative z-10 p-8 transition-all duration-500"
+          className="relative z-10 px-5 py-6 transition-all duration-500"
           style={{
-            transform: isHovered ? 'translateZ(20px)' : 'translateZ(0)',
+            transform: isHovered ? 'translateZ(15px)' : 'translateZ(0)',
+            // Add subtle text shadow backing for better visibility
+            textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3)',
           }}
         >
           {children}
@@ -361,7 +376,7 @@ interface StatItem {
   value: string | number;
   label: string;
   icon?: React.ReactNode;
-  texture?: keyof typeof METALLIC_TEXTURES;
+  texture?: string;
 }
 
 interface PhysicsStatsProps {
@@ -370,8 +385,8 @@ interface PhysicsStatsProps {
   stats: StatItem[];
 }
 
-// Default texture rotation
-const TEXTURE_ORDER: (keyof typeof METALLIC_TEXTURES)[] = ['gold', 'brass', 'copper', 'silver', 'bronze'];
+// Default texture rotation - all metals
+const TEXTURE_ORDER = ['gold', 'platinum', 'silver', 'copper', 'bronze'] as const;
 
 export default function PhysicsStats({
   title = "Our Impact",
@@ -449,7 +464,7 @@ export default function PhysicsStats({
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10" ref={containerRef}>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" ref={containerRef}>
           {stats.map((stat, index) => {
             const texture = stat.texture || TEXTURE_ORDER[index % TEXTURE_ORDER.length];
             const config = METALLIC_TEXTURES[texture];
@@ -461,41 +476,45 @@ export default function PhysicsStats({
                 texture={texture}
                 className=""
               >
-                {/* Icon with float animation */}
+                {/* Icon with float animation (smaller) */}
                 <motion.div
-                  className="flex justify-center mb-6"
-                  animate={{ y: [0, -8, 0] }}
+                  className="flex justify-center mb-3"
+                  animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <div className="p-4 rounded-full" style={{
-                    background: 'rgba(255,255,255,0.15)',
+                  <div className="p-2 rounded-full" style={{
+                    background: 'rgba(0,0,0,0.3)',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.2)',
+                    border: '1px solid rgba(255,255,255,0.15)',
                   }}>
                     {stat.icon}
                   </div>
                 </motion.div>
 
-                {/* Number with metallic gradient */}
-                <div className="relative inline-block mb-3">
+                {/* Number with high contrast - now visible! */}
+                <div className="relative inline-block mb-2">
+                  {/* Dark backing for number visibility */}
+                  <div className="absolute inset-0 blur-sm rounded-lg" style={{
+                    background: 'rgba(0,0,0,0.4)',
+                  }} />
                   <div
-                    className="text-6xl md:text-7xl font-bold relative z-10"
+                    className="text-4xl md:text-5xl font-bold relative z-10"
                     style={{
                       background: config.textGradient,
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
-                      filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(0,0,0,0.6))',
                     }}
                   >
                     {stat.value}
                   </div>
                 </div>
 
-                {/* Label */}
-                <div className="text-base font-semibold tracking-wide relative z-10" style={{
-                  color: 'rgba(255,255,255,0.9)',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                {/* Label - with better contrast */}
+                <div className="text-sm font-semibold tracking-wide relative z-10" style={{
+                  color: 'rgba(255,255,255,0.95)',
+                  textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)',
                 }}>
                   {stat.label}
                 </div>

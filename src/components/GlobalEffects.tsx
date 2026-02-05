@@ -55,19 +55,19 @@ function AnimatedFilmGrain({
       noiseCtx.putImageData(imageData, 0, 0);
     };
 
-    // Draw vertical scratch lines across the entire screen
+    // Draw vertical scratch lines across the entire screen (more subtle)
     const drawVerticalLine = (xPosition: number, lineHeight: number) => {
-      scratchCtx.strokeStyle = Math.random() > 0.2 
-        ? "rgba(255,255,255,0.6)" 
-        : "rgba(0,0,0,0.8)";
-      scratchCtx.lineWidth = Math.floor(Math.random() * 3) + 1;
+      scratchCtx.strokeStyle = Math.random() > 0.3
+        ? "rgba(255,255,255,0.15)"  // Much more subtle white lines
+        : "rgba(0,0,0,0.25)";       // Much more subtle dark lines
+      scratchCtx.lineWidth = Math.floor(Math.random() * 1.5) + 0.5;  // Thinner lines
       scratchCtx.beginPath();
       scratchCtx.moveTo(xPosition, 0);
       scratchCtx.lineTo(xPosition, lineHeight);
       scratchCtx.stroke();
 
-      // Sometimes draw additional lines
-      if (Math.random() > 0.75) {
+      // Less frequently draw additional lines
+      if (Math.random() > 0.85) {
         drawVerticalLine(Math.random() * noiseCanvas.width, noiseCanvas.height);
       }
     };
@@ -98,13 +98,15 @@ function AnimatedFilmGrain({
 
     // Draw vertical lines less frequently - these span the entire screen height
     const lineInterval = setInterval(() => {
-      // Clear previous lines occasionally to prevent buildup
-      if (Math.random() > 0.7) {
+      // Clear previous lines more frequently to prevent buildup
+      if (Math.random() > 0.5) {
         scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
       }
-      // Draw vertical lines across the entire screen
-      drawVerticalLine(Math.random() * noiseCanvas.width, noiseCanvas.height);
-    }, n * 2);
+      // Only draw lines sometimes - more subtle effect
+      if (Math.random() > 0.4) {
+        drawVerticalLine(Math.random() * noiseCanvas.width, noiseCanvas.height);
+      }
+    }, n * 4);  // Slower frequency - was n * 2
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
@@ -126,13 +128,13 @@ function AnimatedFilmGrain({
           opacity,
         }}
       />
-      {/* Scratch layer with vertical lines */}
-      <canvas 
-        ref={scratchCanvasRef} 
+      {/* Scratch layer with vertical lines - more subtle */}
+      <canvas
+        ref={scratchCanvasRef}
         className="fixed inset-0 w-full h-full pointer-events-none z-40"
         style={{
           mixBlendMode: 'hard-light',
-          opacity: opacity * 0.6,
+          opacity: opacity * 0.25,  // Reduced from 0.6 for more subtle effect
         }}
       />
     </>

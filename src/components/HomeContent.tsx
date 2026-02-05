@@ -46,6 +46,7 @@ import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 import { ArrowRightIcon, StoryIcon, ClockIcon, FilmReelIcon, AwardIcon } from '@/components/icons/FilmIcons';
 import AppleStyleVideoGallery from '@/components/AppleStyleVideoGallery';
+import AutomaticFilmProcessTransformation from '@/components/AutomaticFilmProcessTransformation';
 import LayeredImagesShowcase from '@/components/LayeredImagesShowcase';
 import BeforeAfterShowcase from '@/components/BeforeAfterShowcase';
 import PitchDeckCardShowcase from '@/components/PitchDeckCardShowcase';
@@ -232,13 +233,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             value: "100+",
             label: "Success Stories",
             icon: <StoryIcon className="w-8 h-8 text-rose-400 mx-auto" />,
-            texture: 'copper'
-          },
-          {
-            value: "500+",
-            label: "Decks Created",
-            icon: <FilmReelIcon className="w-8 h-8 text-gray-300 mx-auto" />,
-            texture: 'silver'
+            texture: 'platinum'
           },
           {
             value: "85%",
@@ -247,9 +242,15 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             texture: 'bronze'
           },
           {
-            value: "24h",
-            label: "Avg Turnaround",
+            value: "5-7",
+            label: "Day Turnaround",
             icon: <ClockIcon className="w-8 h-8 text-amber-300 mx-auto" />,
+            texture: 'copper'
+          },
+          {
+            value: "15+",
+            label: "Years Experience",
+            icon: <FilmReelIcon className="w-8 h-8 text-gray-300 mx-auto" />,
             texture: 'gold'
           }
         ]}
@@ -603,7 +604,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         <DualCTA />
       </section>
 
-      {/* Apple-Style Scroll-Triggered Video Gallery */}
+      {/* Automatic Film Process Transformation */}
       <section className="py-20 bg-charcoal">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal direction="fade" className="text-center mb-16">
@@ -615,28 +616,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             </p>
           </ScrollReveal>
 
-          <AppleStyleVideoGallery
-            videos={[
-              {
-                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4',
-                thumbnail: '/images/posters/hero-poster.jpg',
-                title: 'Our Process',
-                description: 'From concept to production-ready deck',
-              },
-              {
-                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_MOBILE || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/new-mobile-okok.mp4',
-                thumbnail: '/images/posters/hero-poster-mobile.jpg',
-                title: 'Client Success Stories',
-                description: 'Real results from real creators',
-              },
-              {
-                videoSrc: process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4',
-                thumbnail: '/images/posters/hero-poster.jpg',
-                title: 'Industry Insights',
-                description: 'Veteran feedback and analysis',
-              },
-            ]}
-          />
+          <AutomaticFilmProcessTransformation />
         </div>
       </section>
 

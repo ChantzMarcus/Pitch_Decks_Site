@@ -17,9 +17,9 @@ import TrustBadges from '@/components/ui/TrustBadges';
 import TrustedBrands from '@/components/TrustedBrands';
 import FAQ from '@/components/ui/FAQ';
 import PhysicsStats from '@/components/PhysicsStats';
-import { FloatingStickyCTA } from '@/components/StickyCTA';
+import { FloatingStickyCTA } from '@/components/AlwaysStickyCTA';
 import TestimonialReviews from '@/components/TestimonialReviews';
-import DeckShowcase3D from '@/components/DeckShowcase3D';
+import LargeDeckShowcase from '@/components/LargeDeckShowcase';
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 import { ArrowRightIcon, StoryIcon, StarIcon, TrendingUpIcon } from '@/components/icons/FilmIcons';
@@ -131,8 +131,8 @@ export default function HomeContentClean({ initialDecks }: HomeContentProps) {
           variant="dark"
         />
 
-        {/* 4. 3D Deck Showcase - THE MAIN FEATURE */}
-        <DeckShowcase3D
+        {/* 4. Large Deck Showcase - Full-size deck images */}
+        <LargeDeckShowcase
           decks={decksWithSlides}
           onDeckClick={handleDeckClick}
         />
