@@ -3,9 +3,10 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { Play, ArrowRight } from 'lucide-react';
+import { Play } from 'lucide-react';
 import type { Deck } from '@/db';
 import { getDeckSlideUrls } from '@/lib/mock-decks';
+import { GoldenTicketSparkles } from './effects/GoldenTicketSparkles';
 
 interface PitchDeckCardShowcaseProps {
   decks: Deck[];
@@ -209,17 +210,64 @@ function DeckCard({
     setIsHovered(false);
   };
 
+  // Calculate flying entrance from different directions based on index
+  const getEntranceAnimation = (idx: number) => {
+    const positions = [
+      { x: -300, y: 100, z: -200, rotate: -15 },   // from left-bottom
+      { x: 300, y: -100, z: -200, rotate: 15 },    // from right-top
+      { x: -200, y: -150, z: -300, rotate: 10 },   // from left-top
+      { x: 200, y: 150, z: -250, rotate: -10 },    // from right-bottom
+      { x: 0, y: 200, z: -400, rotate: 5 },        // from bottom center
+      { x: -250, y: 50, z: -200, rotate: -20 },    // from left
+    ];
+    return positions[idx % positions.length];
+  };
+
+  const entranceStart = getEntranceAnimation(index);
+
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      initial={{
+        opacity: 0,
+        x: entranceStart.x,
+        y: entranceStart.y,
+        z: entranceStart.z,
+        scale: 0.3,
+        rotateY: entranceStart.rotate,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+        scale: 1,
+        rotateY: 0,
+      }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{
+        duration: 0.8,
+        delay: index * 0.15,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      // Continuous floating animation when not hovering
+      animate={
+        isHovered
+          ? {}
+          : {
+              y: [0, -8, 0],
+              transition: {
+                duration: 3 + (index % 3) * 0.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: index * 0.2,
+              }
+            }
+      }
       style={{
         rotateX,
         rotateY,
-        zIndex: 10 - index as any, // Overlapping effect - later cards appear on top
+        zIndex: 10 - (index as any), // Overlapping effect - later cards appear on top
         marginLeft: index > 0 ? '-60px' : '0', // Overlap cards
       } as any}
       onMouseMove={handleMouseMove}
@@ -228,7 +276,8 @@ function DeckCard({
       className="relative flex-shrink-0 cursor-pointer"
       onClick={onCardClick}
     >
-      <div className={`relative ${cardWidth} overflow-hidden rounded-2xl bg-charcoal shadow-2xl`}>
+      <GoldenTicketSparkles intensity="subtle">
+        <div className={`relative ${cardWidth} overflow-hidden rounded-2xl bg-charcoal shadow-2xl`}>
         {/* Thumbnail Image */}
         <div className={`relative ${aspectRatio} overflow-hidden`}>
           <Image
@@ -307,6 +356,7 @@ function DeckCard({
           )}
         </div>
       </div>
+      </GoldenTicketSparkles>
     </motion.div>
   );
 }

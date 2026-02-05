@@ -15,7 +15,7 @@ interface HeroParticleBackgroundProps {
    */
   color?: string;
   /**
-   * Multiple colors for multi-color particles (Wes Anderson/Willy Wonka style!)
+   * Multiple colors for multi-color particles (vintage tech style!)
    */
   colors?: string[];
   /**
@@ -30,15 +30,15 @@ interface HeroParticleBackgroundProps {
 
 /**
  * HeroParticleBackground Component
- * 
+ *
  * A ready-to-use particle background for hero sections
  * - Performance-optimized
  * - Subtle and cinematic
  * - Works as overlay on video backgrounds
- * 
+ *
  * Usage:
  * ```tsx
- * <HeroParticleBackground 
+ * <HeroParticleBackground
  *   particleCount={300}
  *   color="#ffffff"
  *   opacity={0.2}
@@ -48,7 +48,7 @@ interface HeroParticleBackgroundProps {
 export default function HeroParticleBackground({
   particleCount = 300,
   color,
-  colors = ['#F59E0B', '#14B8A6', '#6366F1'], // Wes Anderson/Willy Wonka palette: Gold, Teal, Indigo
+  colors = ['#DAA520', '#B87333', '#7A7A7A'], // Vintage tech palette: Gold, Copper, Steel
   opacity = 0.2,
   className = '',
 }: HeroParticleBackgroundProps) {
@@ -62,8 +62,8 @@ export default function HeroParticleBackground({
         <Suspense fallback={null}>
           {/* Ambient light for subtle illumination */}
           <ambientLight intensity={0.3} />
-          
-          {/* Main particle system - multi-color Wes Anderson style! */}
+
+          {/* Main particle system - vintage tech style! */}
           <ParticleSystem
             count={particleCount}
             size={0.03}
@@ -74,7 +74,7 @@ export default function HeroParticleBackground({
             area={{ width: 12, height: 8, depth: 6 }}
             movement="float"
           />
-          
+
           {/* Secondary subtle layer for depth */}
           <ParticleSystem
             count={Math.floor(particleCount * 0.5)}

@@ -52,7 +52,7 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-paper py-20">
+    <main className="min-h-screen bg-charcoal py-20">
       <StructuredData
         type="collection"
         data={{
@@ -66,10 +66,10 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <ScrollReveal direction="fade" className="text-center mb-16">
-          <h1 className="font-display text-5xl md:text-6xl font-bold text-charcoal mb-6">
+          <h1 className="font-display text-5xl md:text-6xl font-bold text-paper mb-6">
             Our Projects
           </h1>
-          <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">
+          <p className="text-xl text-paper/70 max-w-2xl mx-auto">
             Explore our portfolio of compelling stories ready for production
           </p>
         </ScrollReveal>
@@ -86,7 +86,7 @@ export default function GalleryContent({ initialDecks }: GalleryContentProps) {
           key={activeCategory}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center text-charcoal/50 mb-8"
+          className="text-center text-paper/50 mb-8"
         >
           {filteredDecks.length} project{filteredDecks.length !== 1 ? 's' : ''} found
         </motion.p>

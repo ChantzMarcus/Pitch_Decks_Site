@@ -858,6 +858,98 @@ html {
   color: inherit;
 }
 
+/* Holographic Card Effect - Brand Colors (Gold, Teal, Indigo) */
+.holo-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: none;
+  transform-style: preserve-3d;
+}
+
+.holo-card::before,
+.holo-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  mix-blend-mode: color-dodge;
+  transition: all 0.33s ease;
+  pointer-events: none;
+}
+
+.holo-card::before {
+  background-position: 50% 50%;
+  background-size: 300% 300%;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(245, 158, 11, 0.8) 25%,  /* accent-gold */
+    transparent 47%,
+    transparent 53%,
+    rgba(20, 184, 166, 0.8) 75%,  /* accent-teal */
+    transparent 100%
+  );
+  opacity: 0.6;
+  filter: brightness(0.7) contrast(1.2);
+  z-index: 1;
+}
+
+.holo-card::after {
+  opacity: 0.75;
+  background-image: 
+    linear-gradient(125deg, 
+      rgba(245, 158, 11, 0.3) 15%,   /* accent-gold */
+      rgba(20, 184, 166, 0.25) 30%, /* accent-teal */
+      rgba(99, 102, 241, 0.2) 40%,  /* accent-indigo */
+      rgba(245, 158, 11, 0.15) 60%, /* accent-gold */
+      rgba(20, 184, 166, 0.25) 70%, /* accent-teal */
+      rgba(99, 102, 241, 0.3) 85%   /* accent-indigo */
+    );
+  background-position: 50% 50%;
+  background-size: 160%;
+  z-index: 2;
+  filter: brightness(1) contrast(1);
+  mix-blend-mode: color-dodge;
+}
+
+.holo-card:hover::before {
+  background-image: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(245, 158, 11, 1) 48%,      /* accent-gold */
+    rgba(20, 184, 166, 1) 52%,      /* accent-teal */
+    transparent 75%
+  );
+  background-position: 50% 50%;
+  background-size: 250% 250%;
+  opacity: 0.95;
+  filter: brightness(0.8) contrast(1.5);
+  transition: none;
+}
+
+.holo-card:hover::after {
+  filter: brightness(1) contrast(1);
+  opacity: 1;
+  transition: none;
+}
+
+.holo-card.active::before,
+.holo-card.active::after {
+  transition: none;
+}
+
+/* 3D Perspective wrapper */
+.holo-wrapper {
+  perspective: 750px;
+  isolation: isolate;
+  transform: translate3d(0.1px, 0.1px, 0.1px);
+}
+
 /* ============================================
    Bloom Effect for Deck Cards
    Cinematic glow on hover - quick ROI
@@ -936,5 +1028,191 @@ html {
   .parallax-section-native {
     animation: none !important;
     transform: none !important;
+  }
+}
+
+/* ============================================
+   Rotating Glow Orb Animation - "Sharp & Glowing" effect
+   Inspired by https://codepen.io/LukyVj/pen/YzOXepM
+   ============================================ */
+
+@keyframes rotate-orbit {
+  from {
+    transform: rotate(-70deg) translateX(-80px);
+  }
+  25% {
+    transform: rotate(20deg) translateX(-80px);
+  }
+  50% {
+    transform: rotate(110deg) translateX(-80px);
+  }
+  75% {
+    transform: rotate(200deg) translateX(-80px);
+  }
+  to {
+    transform: rotate(290deg) translateX(-80px);
+  }
+}
+
+.rotating-glow-orb {
+  animation: rotate-orbit 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotating-glow-orb {
+    animation: none;
+  }
+}
+
+/* ============================================
+   Retro Future Film Overlay - Old Timey Film Effect
+   Inspired by https://codepen.io/ddietle/pen/qqOwJW
+   ============================================ */
+
+/* Film jitter - random shake and brightness changes */
+@keyframes retro-jitter {
+  0%, 100% {
+    transform: translate(0, 0);
+    filter: sepia(30%) contrast(1.1);
+  }
+  10% {
+    transform: translate(-1px, 0);
+  }
+  21% {
+    transform: translate(1px, 0);
+    filter: sepia(35%) contrast(1.2) brightness(1.1);
+  }
+  21.1% {
+    transform: translate(-3px, 0);
+  }
+  21.2% {
+    transform: translate(2px, 0);
+  }
+  21.3% {
+    transform: translate(-2px, 1px);
+  }
+  22% {
+    transform: translate(0, 0);
+    filter: sepia(30%) contrast(1.1);
+  }
+  91% {
+    transform: translate(1px, 0);
+  }
+  91.1% {
+    transform: translate(-2px, 0);
+  }
+  91.4% {
+    transform: translate(-1px, -1px);
+  }
+  92% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Film artifacts - moving scratch lines */
+@keyframes retro-artifacts {
+  0% {
+    left: 0%;
+    width: 100%;
+  }
+  20% {
+    left: 15%;
+    width: 90%;
+  }
+  40% {
+    left: 10%;
+    width: 85%;
+  }
+  60% {
+    left: 50%;
+    width: 10%;
+    filter: blur(3px);
+  }
+  80% {
+    left: 60%;
+    width: 25%;
+  }
+  90% {
+    left: 15%;
+    width: 85%;
+    filter: blur(2px);
+  }
+  100% {
+    left: 0%;
+    width: 100%;
+  }
+}
+
+/* Single scratch line animation */
+@keyframes retro-scratch {
+  0% {
+    top: -100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Brightness flash effect */
+@keyframes retro-flash {
+  0%, 89%, 91%, 93%, 95%, 97%, 100% {
+    opacity: 0;
+  }
+  90%, 92%, 94%, 96%, 98% {
+    opacity: 0.15;
+  }
+}
+
+/* Grain shift animation */
+@keyframes retro-grain-shift {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Respect reduced motion for film effects */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes retro-jitter {
+    0%, 100% {
+      transform: translate(0, 0);
+      filter: sepia(30%) contrast(1.1);
+    }
+  }
+
+  @keyframes retro-artifacts {
+    0%, 100% {
+      left: 0%;
+      width: 100%;
+    }
+  }
+
+  @keyframes retro-scratch {
+    0%, 100% {
+      top: -100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes retro-flash {
+    0%, 100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes retro-grain-shift {
+    0%, 100% {
+      opacity: 0.3;
+    }
   }
 }

@@ -36,7 +36,7 @@ export default function SocialProof() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-accent-teal/20 to-accent-gold/20 rounded-full text-accent-gold font-medium mb-6 border border-accent-gold/30">
             <AwardIcon size={18} />
-            <span>Top-Rated on Upwork</span>
+            <span>Top 1% on Upwork</span>
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
             Trusted by 50+ Happy Clients

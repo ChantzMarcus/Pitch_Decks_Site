@@ -7,6 +7,7 @@ import { gsap } from 'gsap';
 import Image from 'next/image';
 import { Deck } from '@/db';
 import { EyeIcon } from './icons/FilmIcons';
+import { GoldenTicketSparkles } from './effects/GoldenTicketSparkles';
 
 interface DeckCardProps {
   deck: Deck;
@@ -125,18 +126,68 @@ export default function EnhancedDeckCard({ deck, index, onQuickView, videoPrevie
   const genreTags = deck.genre.slice(0, 2).join(', ');
   const cardDescription = `${deck.title}. ${deck.slide_count} slides. ${deck.production_status}. Genres: ${genreTags}`;
 
+  // Calculate flying entrance from different directions based on index
+  const getEntranceAnimation = (idx: number) => {
+    const positions = [
+      { x: -200, y: 150, z: -300, scale: 0.4, rotate: -12 },   // from left-bottom
+      { x: 200, y: -100, z: -250, scale: 0.5, rotate: 12 },    // from right-top
+      { x: -150, y: -120, z: -350, scale: 0.3, rotate: 8 },    // from left-top
+      { x: 180, y: 130, z: -280, scale: 0.45, rotate: -8 },    // from right-bottom
+      { x: 0, y: 180, z: -400, scale: 0.35, rotate: 0 },       // from bottom center
+      { x: -220, y: 50, z: -300, scale: 0.4, rotate: -15 },    // from left
+      { x: 220, y: -50, z: -320, scale: 0.5, rotate: 15 },     // from right
+      { x: 0, y: -150, z: -380, scale: 0.3, rotate: 5 },       // from top
+    ];
+    return positions[idx % positions.length];
+  };
+
+  const entranceStart = getEntranceAnimation(index);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{
+        opacity: 0,
+        x: entranceStart.x,
+        y: entranceStart.y,
+        z: entranceStart.z,
+        scale: entranceStart.scale,
+        rotateY: entranceStart.rotate,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+        scale: 1,
+        rotateY: 0,
+      }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.12,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      // Continuous floating animation when not hovering
+      animate={
+        isHovered
+          ? {}
+          : {
+              y: [0, -10, 0],
+              transition: {
+                duration: 3.5 + (index % 4) * 0.3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: index * 0.15,
+              }
+            }
+      }
       className="perspective-1000"
     >
-      <div 
-        ref={cardRef}
-        className="group relative h-full cursor-pointer transform-style-3d"
-        onMouseEnter={() => {
+      <GoldenTicketSparkles intensity="subtle" className="inline-block">
+        <div
+          ref={cardRef}
+          className="group relative h-full cursor-pointer transform-style-3d"
+          onMouseEnter={() => {
           setIsHovered(true);
           // Lazy load video preview on first hover
           if (videoPreviewUrl && !videoLoaded) {
@@ -265,6 +316,7 @@ export default function EnhancedDeckCard({ deck, index, onQuickView, videoPrevie
         {/* Screen reader only description */}
         <span className="sr-only">{cardDescription}</span>
       </div>
+      </GoldenTicketSparkles>
     </motion.div>
   );
 }

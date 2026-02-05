@@ -61,7 +61,7 @@ export default function EducationalVideoShowcase({
   };
 
   return (
-    <section className="relative py-20 bg-charcoal-light overflow-hidden">
+    <div className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         {title && (
@@ -69,7 +69,7 @@ export default function EducationalVideoShowcase({
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
             <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-4">
               {title}
@@ -83,7 +83,7 @@ export default function EducationalVideoShowcase({
         {/* Scrollable container */}
         <div className="relative">
           {/* Navigation arrows */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -189,6 +189,6 @@ export default function EducationalVideoShowcase({
           scrollbar-width: none;
         }
       `}</style>
-    </section>
+    </div>
   );
 }

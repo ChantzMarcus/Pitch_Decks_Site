@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export interface Brand {
   id: string;
@@ -30,27 +30,90 @@ interface TrustedBrandsProps {
   variant?: 'light' | 'dark';
 }
 
-// Logo component for marquee (with useState)
+// Logo component for marquee with box and gold glow on hover
 function MarqueeLogo({ brand }: { brand: Brand }) {
   const [imageError, setImageError] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [isHovered, setIsHovered] = useState(false);
   const isImagePath = brand.logo.startsWith('/');
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePos({ x, y });
+  };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.1 }}
-      className="flex-shrink-0 flex items-center justify-center w-32 h-16 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
+      whileHover={{ scale: 1.05 }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setMousePos({ x: 50, y: 50 });
+      }}
+      className="relative flex-shrink-0 flex items-center justify-center w-32 h-16 rounded-lg transition-all group cursor-pointer overflow-visible"
+      style={{
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        '--mouse-x': `${mousePos.x}%`,
+        '--mouse-y': `${mousePos.y}%`,
+      } as React.CSSProperties}
     >
+      {/* Animated border glow - follows mouse */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        style={{
+          padding: '1px',
+          background: `radial-gradient(
+            circle at ${mousePos.x}% ${mousePos.y}%,
+            rgba(251, 191, 36, 0.8) 0%,
+            rgba(251, 191, 36, 0.3) 25%,
+            transparent 50%
+          )`,
+          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          opacity: isHovered ? 1 : 0.3,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+
+      {/* Outer glow on hover */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none -z-10"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(251, 191, 36, 0.3) 0%, transparent 70%)',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+
+      {/* Pulsing corner accents */}
+      {isHovered && (
+        <>
+          <div className="absolute top-0 left-0 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+          <div className="absolute top-0 right-0 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-75" />
+          <div className="absolute bottom-0 left-0 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-150" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
+        </>
+      )}
+
+      {/* Logo content */}
       {isImagePath && !imageError ? (
         <Image
           src={brand.logo}
           alt={brand.alt}
           width={100}
           height={40}
-          className="opacity-60 group-hover:opacity-100 transition-opacity object-contain"
+          className="opacity-60 group-hover:opacity-100 transition-opacity object-contain relative z-10"
           onError={() => setImageError(true)}
         />
       ) : (
-        <span className="font-display text-lg font-bold tracking-wider text-paper/40 group-hover:text-paper/80 transition-colors">
+        <span className="font-display text-lg font-bold tracking-wider text-paper/40 group-hover:text-paper/80 transition-colors relative z-10">
           {brand.name}
         </span>
       )}

@@ -66,15 +66,61 @@ export default function VideoCard({
     }
   };
 
+  // Calculate flying entrance from different directions based on index
+  const getEntranceAnimation = (idx: number) => {
+    const positions = [
+      { x: -150, y: 100, z: -200, scale: 0.4, rotate: -15 },   // from left-bottom
+      { x: 150, y: -80, z: -180, scale: 0.5, rotate: 15 },      // from right-top
+      { x: -120, y: -90, z: -250, scale: 0.35, rotate: 10 },    // from left-top
+      { x: 130, y: 110, z: -220, scale: 0.45, rotate: -10 },    // from right-bottom
+    ];
+    return positions[idx % positions.length];
+  };
+
+  const entranceStart = getEntranceAnimation(index);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      initial={{
+        opacity: 0,
+        x: entranceStart.x,
+        y: entranceStart.y,
+        z: entranceStart.z,
+        scale: entranceStart.scale,
+        rotateY: entranceStart.rotate,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+        scale: 1,
+        rotateY: 0,
+      }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{
+        duration: 0.65,
+        delay: index * 0.1,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      // Continuous floating animation when not hovering
+      animate={
+        isHovered
+          ? {}
+          : {
+              y: [0, -12, 0],
+              transition: {
+                duration: 4 + (index % 3) * 0.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: index * 0.15,
+              }
+            }
+      }
       style={{
         rotateX,
         rotateY,
-        transformStyle: 'preserve-3d',
+        transformStyle: 'preserve-3d' as any,
       }}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}

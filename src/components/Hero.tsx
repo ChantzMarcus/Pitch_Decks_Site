@@ -8,8 +8,16 @@ import { ArrowRight } from 'lucide-react';
 import { FilmReelIcon, PlayButtonIcon } from './icons/FilmIcons';
 import HeroParticleBackground from '@/components/animations/HeroParticleBackground';
 import FilmGrain from '@/components/animations/FilmGrain';
+import DeckBrowserOverlay from './DeckBrowserOverlay';
+import type { Deck } from '@/db';
 
-export default function Hero() {
+interface HeroProps {
+  decks?: Deck[];
+  onViewExamples?: () => void;
+}
+
+export default function Hero({ decks = [], onViewExamples }: HeroProps) {
+  const [isDeckBrowserOpen, setIsDeckBrowserOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -68,7 +76,7 @@ export default function Hero() {
   const words2 = subHeading.split(' ');
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-charcoal">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-ivory to-old-gold">
       {/* Video Background with Overlay */}
       <div className="absolute inset-0 z-0">
         <motion.video
@@ -266,23 +274,26 @@ export default function Hero() {
             <Link
               href="/questionnaire"
               className="group relative inline-flex items-center gap-4 px-10 py-5 rounded-2xl overflow-hidden shadow-2xl
-                bg-white/10 backdrop-blur-xl border border-white/20
-                hover:bg-white/15 hover:border-white/30
+                bg-gradient-to-br from-ivory/20 to-old-gold/10 backdrop-blur-xl border border-brass-dark/50
+                hover:bg-gradient-to-br hover:from-ivory/30 hover:to-old-gold/20 hover:border-brass-dark/70
                 transition-all duration-300"
             >
-              {/* Glass reflection effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-              
+              {/* Vintage tech texture */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-carnival-gold/5 to-transparent pointer-events-none" />
+
+              {/* Subtle gear pattern */}
+              <div className="absolute inset-0 steampunk-gear-pattern opacity-5 pointer-events-none" />
+
               {/* Gradient overlay with scroll-driven animation - follows you as you scroll */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-accent-indigo/30 to-accent-gold/30 pointer-events-none group-hover:opacity-100 transition-opacity duration-400"
+                className="absolute inset-0 bg-gradient-to-r from-vintage-velvet/30 to-carnival-gold/30 pointer-events-none group-hover:opacity-100 transition-opacity duration-400"
                 style={{
                   opacity: buttonGradientOpacity,
                 } as any}
               />
-              
-              <span className="relative z-10 font-medium text-lg text-paper">Get Your Free Score</span>
-              <ArrowRight className="relative z-10 w-6 h-6 text-paper group-hover:translate-x-1.5 transition-transform" />
+
+              <span className="relative z-10 font-medium text-lg text-charcoal">Get Your Free Score</span>
+              <ArrowRight className="relative z-10 w-6 h-6 text-charcoal group-hover:translate-x-1.5 transition-transform" />
             </Link>
           </motion.div>
 
@@ -291,69 +302,40 @@ export default function Hero() {
             whileTap={{ scale: 0.95 }}
             className="relative"
           >
-            <Link
-              href="/gallery"
+            <button
+              onClick={() => {
+                if (onViewExamples) {
+                  onViewExamples();
+                } else {
+                  setIsDeckBrowserOpen(true);
+                }
+              }}
               className="group relative inline-flex items-center gap-4 px-10 py-5 rounded-2xl overflow-hidden
-                bg-white/10 backdrop-blur-xl border-2 border-white/20
-                hover:bg-white/15 hover:border-white/30
+                bg-gradient-to-br from-ivory/20 to-old-gold/10 backdrop-blur-xl border-2 border-brass-dark/50
+                hover:bg-gradient-to-br hover:from-ivory/30 hover:to-old-gold/20 hover:border-brass-dark/70
                 transition-all duration-300 shadow-lg"
             >
-              {/* Glass reflection effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-              
-              <PlayButtonIcon className="relative z-10 w-6 h-6 text-paper group-hover:scale-125 transition-transform" />
-              <span className="relative z-10 text-lg text-paper">View Examples</span>
-            </Link>
-          </motion.div>
-        </motion.div>
+              {/* Vintage tech texture */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-carnival-gold/5 to-transparent pointer-events-none" />
 
-        {/* Enhanced stats section with 3D cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.3 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto mt-8"
-        >
-          {[
-            { value: '500+', label: 'Decks Created' },
-            { value: '85%', label: 'Success Rate' },
-            { value: '24h', label: 'Avg Turnaround' },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20, rotateX: -15 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{
-                duration: 0.5,
-                delay: 1.4 + i * 0.15,
-                ease: "easeOut"
-              }}
-              whileHover={{ y: -10, rotateX: 5 }}
-              className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-lg"
-            >
-              <motion.div
-                className="font-display text-4xl md:text-5xl font-bold text-paper mb-2"
-                animate={{
-                  textShadow: [
-                    "0 0 0px rgba(0,0,0,0)",
-                    "0 5px 10px rgba(0,0,0,0.1)",
-                    "0 0 0px rgba(0,0,0,0)"
-                  ]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: "loop"
-                }}
-              >
-                {stat.value}
-              </motion.div>
-              <div className="text-base text-paper/70">{stat.label}</div>
-            </motion.div>
-          ))}
+              {/* Subtle gear pattern */}
+              <div className="absolute inset-0 steampunk-gear-pattern opacity-5 pointer-events-none" />
+
+              <PlayButtonIcon className="relative z-10 w-6 h-6 text-charcoal group-hover:scale-125 transition-transform" />
+              <span className="relative z-10 text-lg text-charcoal">View Examples</span>
+            </button>
+          </motion.div>
         </motion.div>
       </motion.div>
 
+      {/* Deck Browser Overlay - Browse decks without leaving hero */}
+      {decks.length > 0 && (
+        <DeckBrowserOverlay
+          decks={decks}
+          isOpen={isDeckBrowserOpen}
+          onClose={() => setIsDeckBrowserOpen(false)}
+        />
+      )}
     </section>
   );
 }

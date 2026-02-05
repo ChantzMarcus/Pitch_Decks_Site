@@ -74,7 +74,7 @@ export default function FilmGrain({
         backgroundImage: `url(${canvasRef.current?.toDataURL() || ''})`,
         backgroundSize: '200px 200px',
         opacity,
-        mixBlendMode: 'overlay',
+        mixBlendMode: 'multiply', // Changed to multiply for vintage tech effect
       }}
     >
       <canvas ref={canvasRef} className="hidden" />

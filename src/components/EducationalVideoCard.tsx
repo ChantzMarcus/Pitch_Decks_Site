@@ -1,10 +1,11 @@
 'use client';
 
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { BookOpen, Lightbulb, Users, Video, Award, Building2, Play, CheckCircle2 } from 'lucide-react';
 import EmbeddedVideoPlayer from './EmbeddedVideoPlayer';
+import { GoldenTicketSparkles } from './effects/GoldenTicketSparkles';
 
 interface EducationalVideoCardProps {
   title: string;
@@ -71,13 +72,13 @@ export default function EducationalVideoCard({
   const aspectRatio = 'aspect-[9/16]';
   const cardWidth = 'w-[280px] md:w-[280px] min-w-[280px]'; // Ensure minimum width for touch
 
-  // 3D tilt effect
+  // Enhanced 3D tilt effect with more dramatic rotation
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['2deg', '-2deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-2deg', '2deg']);
+  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 25 });
+  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 25 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['8deg', '-8deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-8deg', '8deg']);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -95,17 +96,61 @@ export default function EducationalVideoCard({
   const CategoryIcon = categoryIcons[category as keyof typeof categoryIcons] || Video;
   const tagColor = categoryTagColors[category as keyof typeof categoryTagColors] || 'bg-gray-500/80';
 
+  // Calculate flying entrance from different directions based on index
+  const getEntranceAnimation = (idx: number) => {
+    const positions = [
+      { x: -250, y: 120, z: -350, scale: 0.35, rotate: -18 },   // from left-bottom
+      { x: 250, y: -80, z: -300, scale: 0.45, rotate: 18 },     // from right-top
+      { x: -180, y: -100, z: -380, scale: 0.3, rotate: 12 },    // from left-top
+      { x: 200, y: 140, z: -320, scale: 0.4, rotate: -12 },     // from right-bottom
+      { x: 0, y: 200, z: -450, scale: 0.35, rotate: 0 },        // from bottom center
+      { x: -280, y: 40, z: -350, scale: 0.4, rotate: -20 },     // from left
+      { x: 280, y: -40, z: -380, scale: 0.45, rotate: 20 },     // from right
+    ];
+    return positions[idx % positions.length];
+  };
+
+  const entranceStart = getEntranceAnimation(index);
+
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      initial={{
+        opacity: 0,
+        x: entranceStart.x,
+        y: entranceStart.y,
+        z: entranceStart.z,
+        scale: entranceStart.scale,
+        rotateY: entranceStart.rotate,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+        scale: 1,
+        rotateY: 0,
+      }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.1,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      // Continuous floating animation when not hovering
+      animate={
+        isHovered
+          ? {}
+          : {
+              y: [0, -10, 0],
+            }
+      }
       style={{
         rotateX,
         rotateY,
-        zIndex: 10 - index as any,
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
+        zIndex: isHovered ? 50 : 10 - (index as any),
         marginLeft: index > 0 ? '-60px' : '0',
       } as any}
       onMouseMove={handleMouseMove}
@@ -126,12 +171,16 @@ export default function EducationalVideoCard({
         }
       }}
     >
-      <div 
-        className={`relative ${cardWidth} ${aspectRatio} overflow-hidden rounded-2xl bg-charcoal shadow-2xl transition-all duration-300 ${
-          isHovered 
-            ? 'ring-2 ring-accent-indigo/60 ring-offset-2 ring-offset-charcoal shadow-[0_0_20px_rgba(99,102,241,0.3)]' 
-            : 'ring-0'
+      <GoldenTicketSparkles intensity="subtle">
+      <div
+        className={`relative ${cardWidth} ${aspectRatio} overflow-hidden rounded-2xl bg-charcoal transition-all duration-300 ${
+          isHovered
+            ? 'ring-2 ring-accent-indigo/60 ring-offset-2 ring-offset-charcoal shadow-[0_20px_60px_rgba(99,102,241,0.4),0_0_40px_rgba(245,158,11,0.2)]'
+            : 'shadow-2xl'
         }`}
+        style={{
+          transformStyle: 'preserve-3d',
+        } as any}
       >
         {/* Video Player or Thumbnail */}
         {videoUrl ? (
@@ -300,6 +349,7 @@ export default function EducationalVideoCard({
           </button>
         )}
       </div>
+      </GoldenTicketSparkles>
     </motion.div>
   );
 }

@@ -10,7 +10,6 @@ import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
 import ImmersiveDeckGallery from '@/components/ImmersiveDeckGallery';
 import FeaturedDeckWalkthrough from '@/components/FeaturedDeckWalkthrough';
 import ServicesShowcase from '@/components/ServicesShowcase';
-import VideoShowcase from '@/components/VideoShowcase';
 import StructuredData from '@/components/StructuredData';
 import { Footer } from '@/components/Footer';
 import SocialProof from '@/components/SocialProof';
@@ -28,6 +27,7 @@ import PhysicsStats from '@/components/PhysicsStats';
 import { FloatingStickyCTA } from '@/components/StickyCTA';
 import { Preloader } from '@/components/Preloader';
 import TestimonialReviews from '@/components/TestimonialReviews';
+import { FloatingParticlesBackground } from '@/components/effects/GoldenTicketSparkles';
 import dynamic from 'next/dynamic';
 
 // Dynamically import 3D component to reduce initial bundle size
@@ -44,11 +44,12 @@ const ThreeDPitchDeckShowcase = dynamic(
 );
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
-import { ArrowRightIcon, StoryIcon } from '@/components/icons/FilmIcons';
+import { ArrowRightIcon, StoryIcon, ClockIcon, FilmReelIcon, AwardIcon } from '@/components/icons/FilmIcons';
 import AppleStyleVideoGallery from '@/components/AppleStyleVideoGallery';
 import LayeredImagesShowcase from '@/components/LayeredImagesShowcase';
 import BeforeAfterShowcase from '@/components/BeforeAfterShowcase';
 import PitchDeckCardShowcase from '@/components/PitchDeckCardShowcase';
+import MetallicDeckCarousel from '@/components/MetallicDeckCarousel';
 
 // Custom chart icon
 function BarChart3Icon({ className = '', size = 18 }: { className?: string; size?: number }) {
@@ -208,7 +209,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           }}
         />
         {/* Hero Section with Video Background & Animations */}
-        <Hero />
+        <Hero decks={initialDecks} />
 
         {/* Stats Bar - Our Impact */}
         <PhysicsStats
@@ -218,17 +219,38 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
           {
             value: "500+",
             label: "Pitch Decks Delivered",
-            icon: <StarIcon className="w-8 h-8 text-accent-indigo mx-auto" />
+            icon: <StarIcon className="w-8 h-8 text-amber-400 mx-auto" />,
+            texture: 'gold'
           },
           {
             value: "$300M+",
             label: "Funding Secured",
-            icon: <TrendingUpIcon className="w-8 h-8 text-accent-gold mx-auto" />
+            icon: <TrendingUpIcon className="w-8 h-8 text-purple-400 mx-auto" />,
+            texture: 'purple-velvet'
           },
           {
             value: "100+",
             label: "Success Stories",
-            icon: <StoryIcon className="w-8 h-8 text-accent-teal mx-auto" />
+            icon: <StoryIcon className="w-8 h-8 text-rose-400 mx-auto" />,
+            texture: 'red-velvet'
+          },
+          {
+            value: "500+",
+            label: "Decks Created",
+            icon: <FilmReelIcon className="w-8 h-8 text-gray-300 mx-auto" />,
+            texture: 'silver'
+          },
+          {
+            value: "85%",
+            label: "Success Rate",
+            icon: <AwardIcon className="w-8 h-8 text-amber-500 mx-auto" />,
+            texture: 'bronze'
+          },
+          {
+            value: "24h",
+            label: "Avg Turnaround",
+            icon: <ClockIcon className="w-8 h-8 text-amber-300 mx-auto" />,
+            texture: 'gold'
           }
         ]}
       />
@@ -240,80 +262,266 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         variant="dark"
       />
 
-      {/* Video Showcase - Our Process in Action */}
-      <VideoShowcase
-        title="See Our Process in Action"
-        subtitle="Watch how we transform your story into a compelling pitch deck with cinematic quality"
-        videoSrc={process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_DESKTOP || 'https://res.cloudinary.com/dkhtswt1m/video/upload/v1/VF-LOOP-OK-OK.mp4'}
-        autoPlay={false}
-        loop={true}
-      />
+      {/* Section 3: Services Section */}
+      <ServicesShowcase />
 
-      {/* Two Paths CTA */}
-      <section className="py-20 bg-charcoal">
-        <div className="max-w-5xl mx-auto px-6">
-          <ScrollReveal direction="fade" className="text-center mb-12">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-              Which Path Are You?
+      {/* Section 4: Two Paths CTA */}
+      <section className="relative py-24 bg-charcoal overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/20 via-charcoal to-amber-950/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }} />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6">
+          {/* Golden Gallery style heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            {/* Decorative lines */}
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="h-px w-20 bg-gradient-to-r from-transparent via-amber-400 to-amber-500" />
+              <div className="w-3 h-3 rotate-45 border border-amber-400 bg-amber-400/20" />
+              <div className="h-px w-20 bg-gradient-to-l from-transparent via-amber-400 to-amber-500" />
+            </div>
+
+            <h2 className="font-display text-4xl md:text-6xl font-black mb-4">
+              <span className="bg-gradient-to-br from-amber-200 via-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent"
+                    style={{ textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                Which Path Are You?
+              </span>
             </h2>
-            <p className="text-xl text-paper-muted">
+
+            <p className="text-xl text-amber-200/70 max-w-2xl mx-auto">
               We help both creators and investors bring projects to life
             </p>
-          </ScrollReveal>
+
+            {/* Decorative bottom lines */}
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-indigo-400 to-indigo-500" />
+              <div className="w-2 h-2 rotate-45 border border-indigo-400 bg-indigo-400/20" />
+              <div className="h-px w-16 bg-gradient-to-l from-transparent via-amber-400 to-amber-500" />
+            </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Creator Path */}
-            <ScrollReveal direction="left" delay={0.1}>
-              <div className="bg-gradient-to-br from-accent-indigo/20 to-transparent p-8 rounded-2xl border border-accent-indigo/30 h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-accent-indigo rounded-xl flex items-center justify-center">
-                    <SparklesIcon className="text-white" size={24} />
-                  </div>
-                  <h3 className="font-display text-2xl font-bold text-paper">
-                    I Have a Story
-                  </h3>
-                </div>
-                <p className="text-paper-muted mb-6">
-                  See if your story is approved by our expert team. Get your story scored using the same proprietary system trusted by top-tier producers and executives.
-                </p>
-                <Link
-                  href="/questionnaire"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent-indigo text-white font-medium rounded-lg hover:bg-accent-indigo-glow transition-colors"
-                >
-                  Get Your Story Scored by Experts
-                  <ArrowRightIcon size={18} />
-                </Link>
-                
-                {/* Trust Badges */}
-                <TrustBadges variant="inline" className="mt-6" />
-              </div>
-            </ScrollReveal>
+            {/* Creator Path - Indigo/Story Path */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="group"
+            >
+              <div className="relative backdrop-blur-xl rounded-3xl p-10 border-2 border-indigo-500/30 h-full overflow-hidden
+                bg-gradient-to-br from-indigo-950/60 via-indigo-900/40 to-violet-950/30
+                hover:scale-[1.02] hover:border-indigo-400/50 transition-all duration-500 shadow-lg hover:shadow-indigo-500/20">
+                {/* Animated background glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            {/* Investor Path */}
-            <ScrollReveal direction="right" delay={0.2}>
-              <div className="bg-gradient-to-br from-accent-gold/20 to-transparent p-8 rounded-2xl border border-accent-gold/30 h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-accent-gold rounded-xl flex items-center justify-center">
-                    <BarChart3Icon className="text-white" size={24} />
+                {/* Floating particles decoration */}
+                <div className="absolute top-4 right-4 w-2 h-2 bg-indigo-400 rounded-full animate-pulse" />
+                <div className="absolute top-12 right-8 w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse delay-100" />
+                <div className="absolute bottom-8 right-4 w-1 h-1 bg-violet-400 rounded-full animate-pulse delay-200" />
+
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-indigo-400/30 to-transparent rounded-tl-3xl" />
+                <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-purple-400/20 to-transparent rounded-br-3xl" />
+
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Icon container with glow */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <motion.div
+                      animate={{ rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center
+                        shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow"
+                    >
+                      <SparklesIcon className="text-white" size={28} />
+                    </motion.div>
+                    <h3 className="font-display text-3xl font-bold text-transparent bg-clip-text
+                      bg-gradient-to-r from-indigo-300 via-purple-300 to-indigo-300">
+                      I Have a Story
+                    </h3>
                   </div>
-                  <h3 className="font-display text-2xl font-bold text-paper">
-                    I'm Looking for Projects
-                  </h3>
+
+                  <p className="text-indigo-100/80 text-lg leading-relaxed mb-8">
+                    See if your story is approved by our expert team. Get your story scored using the same
+                    proprietary system trusted by top-tier producers and executives.
+                  </p>
+
+                  {/* CTA Button with enhanced styling */}
+                  <Link
+                    href="/getting-started"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600
+                      text-white font-semibold rounded-xl hover:from-indigo-400 hover:to-purple-500
+                      transition-all hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/30 group/btn"
+                  >
+                    Get Your Story Scored
+                    <ArrowRightIcon size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+
+                  {/* Trust Badges */}
+                  <TrustBadges variant="inline" className="mt-8" />
                 </div>
-                <p className="text-paper-muted mb-6">
-                  You're an investor, producer, or industry professional looking for your next hit.
-                  Browse our curated portfolio of professionally packaged projects.
-                </p>
-                <Link
-                  href="/gallery"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent-gold text-white font-medium rounded-lg hover:bg-accent-gold/90 transition-colors"
-                >
-                  Browse Projects
-                  <ArrowRightIcon size={18} />
-                </Link>
+
+                {/* Shimmer effect on hover */}
+                <div className="absolute inset-0 -z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                </div>
               </div>
-            </ScrollReveal>
+            </motion.div>
+
+            {/* Investor Path - Gold/Projects Path */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="group"
+            >
+              <div className="relative backdrop-blur-xl rounded-3xl p-10 border-2 border-amber-500/30 h-full overflow-hidden
+                bg-gradient-to-br from-amber-950/40 via-yellow-900/30 to-amber-950/30
+                hover:scale-[1.02] hover:border-amber-400/50 transition-all duration-500 shadow-lg hover:shadow-amber-500/20">
+                {/* Animated background glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Floating particles decoration */}
+                <div className="absolute top-4 right-4 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                <div className="absolute top-12 right-8 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse delay-100" />
+                <div className="absolute bottom-8 right-4 w-1 h-1 bg-amber-300 rounded-full animate-pulse delay-200" />
+
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-amber-400/30 to-transparent rounded-tl-3xl" />
+                <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-yellow-400/20 to-transparent rounded-br-3xl" />
+
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Icon container with glow */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl flex items-center justify-center
+                        shadow-lg shadow-amber-500/30 group-hover:shadow-amber-500/50 transition-shadow"
+                    >
+                      <BarChart3Icon className="text-white" size={28} />
+                    </motion.div>
+                    <h3 className="font-display text-3xl font-bold text-transparent bg-clip-text
+                      bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200"
+                      style={{ textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                      I'm Looking for Projects
+                    </h3>
+                  </div>
+
+                  <p className="text-amber-100/80 text-lg leading-relaxed mb-8">
+                    You're an investor, producer, or industry professional looking for your next hit.
+                    Browse our curated portfolio of professionally packaged projects.
+                  </p>
+
+                  {/* CTA Button with enhanced styling */}
+                  <Link
+                    href="/gallery"
+                    className="inline-flex items-center gap-3 px-8 py-4 relative rounded-xl font-semibold
+                      transition-all hover:scale-105 hover:shadow-xl group/btn overflow-hidden"
+                    style={{
+                      background: 'linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%)',
+                      border: '2px solid rgba(212, 175, 55, 0.6)',
+                      color: '#1a1a1a',
+                      boxShadow: '0 4px 20px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4)',
+                    }}
+                  >
+                    {/* Metallic shine overlay */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent" />
+                    </div>
+                    <span className="relative z-10">Browse Projects</span>
+                    <ArrowRightIcon size={20} className="relative z-10 group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+
+                  {/* Stats preview */}
+                  <div className="flex items-center gap-6 mt-8 pt-6 border-t border-amber-500/20">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-amber-300">500+</div>
+                      <div className="text-xs text-amber-200/60">Projects</div>
+                    </div>
+                    <div className="w-px h-10 bg-amber-500/20" />
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-amber-300">$300M+</div>
+                      <div className="text-xs text-amber-200/60">Funding</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shimmer effect on hover */}
+                <div className="absolute inset-0 -z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer" />
+                </div>
+              </div>
+            </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Section 5: Educational Videos - Why Packaging Matters */}
+      <section className="pt-12 pb-16 bg-charcoal-light">
+        <div className="max-w-7xl mx-auto px-6">
+          <ScrollReveal direction="fade" className="text-center mb-8">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-3">
+              Why Packaging Matters
+            </h2>
+            <p className="text-paper-muted text-lg max-w-2xl mx-auto mb-6">
+              Learn from industry experts who greenlit films at major studios
+            </p>
+          </ScrollReveal>
+          
+          <EducationalVideoShowcase
+            videos={EDUCATIONAL_VIDEOS.slice(0, 6)}
+            title=""
+          />
+          
+          {/* Partnership Banner - Moved here to be with Educational Videos */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-12 bg-charcoal rounded-2xl p-8 md:p-12 text-center border border-white/10"
+          >
+            <p className="text-accent-indigo font-medium mb-4">In Partnership With</p>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
+              Tomayto Tomato
+            </h3>
+            <p className="text-paper/70 max-w-3xl mx-auto mb-6">
+              The same people who greenlit films at Paramount, Sony, Fox, and Lionsgate
+              — the team behind <em className="text-white">Arrival</em>,{' '}
+              <em className="text-white">Transformers</em>, <em className="text-white">True Grit</em>,
+              and <em className="text-white">The Curious Case of Benjamin Button</em> —
+              now working on YOUR project.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-paper/50">
+              <span>Production Package</span>
+              <span>•</span>
+              <span>Talent Attachment</span>
+              <span>•</span>
+              <span>Sales & Distribution</span>
+            </div>
+          </motion.div>
+          
+          <ScrollReveal direction="up" delay={0.3} className="text-center mt-6">
+            <Link
+              href="/learn"
+              className="inline-flex items-center gap-2 text-accent-indigo hover:text-accent-indigo-glow font-medium transition-colors"
+            >
+              Explore All Educational Resources
+              <ArrowRightIcon size={18} />
+            </Link>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -333,8 +541,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         />
       </ParallaxSection>
 
-      {/* Services Section - After Trust is Built */}
-      <ServicesShowcase />
+      {/* Metallic Golden Ticket Carousel - Circus/Vintage Theme */}
+      <section className="py-8 bg-gradient-to-b from-charcoal via-[#0f0a05] to-charcoal">
+        <MetallicDeckCarousel
+          decks={initialDecks}
+          onDeckClick={(deck) => handleWalkthrough(deck)}
+        />
+      </section>
 
       {/* Featured Projects - Portfolio Proof */}
       <section className="py-20 bg-charcoal">
@@ -375,35 +588,6 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         </div>
       </section>
 
-      {/* Educational Videos - Teaser with Link to Full Page */}
-      <section className="py-20 bg-charcoal-light">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal direction="fade" className="text-center mb-12">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-4">
-              Why Packaging Matters
-            </h2>
-            <p className="text-paper-muted text-lg max-w-2xl mx-auto mb-8">
-              Learn from industry experts who greenlit films at major studios
-            </p>
-          </ScrollReveal>
-          
-          <EducationalVideoShowcase
-            videos={EDUCATIONAL_VIDEOS.slice(0, 6)}
-            title=""
-          />
-          
-          <ScrollReveal direction="up" delay={0.3} className="text-center mt-8">
-            <Link
-              href="/learn"
-              className="inline-flex items-center gap-2 text-accent-indigo hover:text-accent-indigo-glow font-medium transition-colors"
-            >
-              Explore All Educational Resources
-              <ArrowRightIcon size={18} />
-            </Link>
-          </ScrollReveal>
-        </div>
-      </section>
-
       {/* Social Proof - Upwork Profile - Lower for Additional Trust */}
       <SocialProof />
 
@@ -413,8 +597,11 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       {/* FAQ Section - Address Objections */}
       <FAQ />
 
-      {/* Dual CTA - Primary Conversion Section */}
-      <DualCTA />
+      {/* Dual CTA - Primary Conversion Section with Sparkles */}
+      <section className="relative py-20 bg-charcoal overflow-hidden">
+        <FloatingParticlesBackground count={25} />
+        <DualCTA />
+      </section>
 
       {/* Apple-Style Scroll-Triggered Video Gallery */}
       <section className="py-20 bg-charcoal">
@@ -524,11 +711,67 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
         />
       )}
 
-      {/* Floating CTA - Colored gradient button (only CTA) */}
+      {/* Floating CTA - Subtle glassmorphism button appears on scroll */}
       <FloatingStickyCTA
         ctaText="Get Your Free Score"
-        ctaHref="/questionnaire"
+        ctaHref="/getting-started"
       />
+
+      {/* Creator Community - Final Section - Discord/Community Section */}
+      <section className="py-16 bg-gradient-to-br from-indigo-950/50 via-charcoal to-indigo-950/30 border-y border-indigo-500/20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {/* Discord/community icon */}
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/20 rounded-2xl mb-6">
+              <svg className="w-8 h-8 text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+              </svg>
+            </div>
+
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-paper mb-4">
+              Creator Community
+            </h2>
+            <p className="text-xl text-paper/70 mb-8 max-w-2xl mx-auto">
+              Join our community of filmmakers and creators for support, feedback, and resources
+            </p>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <span className="px-4 py-2 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-sm font-medium">
+                All Levels Welcome
+              </span>
+              <span className="px-4 py-2 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-sm font-medium">
+                Instant Access
+              </span>
+              <span className="px-4 py-2 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-sm font-medium">
+                Free to Join
+              </span>
+            </div>
+
+            {/* CTA Button - will need actual Discord link */}
+            <a
+              href="https://discord.gg/YOUR_INVITE_CODE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/30"
+            >
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+              </svg>
+              Join Discord Community
+              <ArrowRightIcon size={18} />
+            </a>
+
+            <p className="text-paper/50 text-sm mt-4">
+              Get feedback on your pitch, connect with other creators, and access exclusive resources
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
     </main>
     <Footer />
