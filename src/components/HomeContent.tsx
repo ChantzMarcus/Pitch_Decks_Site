@@ -226,13 +226,13 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             value: "$300M+",
             label: "Funding Secured",
             icon: <TrendingUpIcon className="w-8 h-8 text-purple-400 mx-auto" />,
-            texture: 'purple-velvet'
+            texture: 'silver'
           },
           {
             value: "100+",
             label: "Success Stories",
             icon: <StoryIcon className="w-8 h-8 text-rose-400 mx-auto" />,
-            texture: 'red-velvet'
+            texture: 'copper'
           },
           {
             value: "500+",

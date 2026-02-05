@@ -71,10 +71,10 @@ export default function ServicesShowcase({
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-display text-4xl md:text-5xl font-bold vintage-text-gold mb-4">
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-charcoal mb-4">
             {title}
           </h2>
-          <p className="text-xl text-charcoal/80 max-w-2xl mx-auto">
+          <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">
             {subtitle}
           </p>
         </motion.div>

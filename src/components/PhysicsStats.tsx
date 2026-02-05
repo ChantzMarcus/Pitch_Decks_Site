@@ -13,56 +13,54 @@ gsap.registerPlugin(ScrollTrigger);
 // Rich metallic configurations with multiple gradient layers
 const METALLIC_TEXTURES = {
   gold: {
-    // Base gradient - the main metallic body
-    base: 'linear-gradient(145deg, #FFF8DC 0%, #FFD700 15%, #DAA520 35%, #B8860B 55%, #DAA520 75%, #FFD700 90%, #FFF8DC 100%)',
-    // Highlight layer - creates the shiny reflection
-    highlight: 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 30%, transparent 60%)',
-    // Shadow layer - depth
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(139,90,43,0.3) 100%)',
-    // Edge glow - rim lighting
-    edgeGlow: 'rgba(255, 215, 0, 0.6)',
-    // Inner glow for 3D effect
-    innerGlow: 'radial-gradient(ellipse at center, rgba(255,223,0,0.3) 0%, transparent 70%)',
-    // Sparkle color
+    // Bright golden-yellow - classic gold
+    base: 'linear-gradient(145deg, #FFF700 0%, #FFD700 20%, #FFC700 40%, #DAA520 60%, #FFC700 80%, #FFD700 100%)',
+    highlight: 'linear-gradient(135deg, rgba(255,255,224,0.9) 0%, rgba(255,255,224,0.4) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(184,134,11,0.4) 100%)',
+    edgeGlow: 'rgba(255, 215, 0, 0.8)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(255,215,0,0.4) 0%, transparent 70%)',
     sparkle: '#FFD700',
-    // Text gradient
-    textGradient: 'linear-gradient(180deg, #FFD700 0%, #B8860B 50%, #FFD700 100%)',
+    textGradient: 'linear-gradient(180deg, #FFD700 0%, #DAA520 50%, #FFD700 100%)',
   },
   silver: {
-    base: 'linear-gradient(145deg, #F5F5F5 0%, #E8E8E8 15%, #C0C0C0 35%, #A8A8A8 55%, #C0C0C0 75%, #E8E8E8 90%, #F5F5F5 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(128,128,128,0.3) 100%)',
-    edgeGlow: 'rgba(226, 232, 240, 0.6)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, transparent 70%)',
-    sparkle: '#E8E8E8',
-    textGradient: 'linear-gradient(180deg, #E8E8E8 0%, #A8A8A8 50%, #E8E8E8 100%)',
+    // Cool gray metallic
+    base: 'linear-gradient(145deg, #F8F8F8 0%, #D3D3D3 20%, #A8A8A8 40%, #808080 60%, #A8A8A8 80%, #D3D3D3 100%)',
+    highlight: 'linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(100,100,100,0.4) 100%)',
+    edgeGlow: 'rgba(200, 200, 255, 0.6)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(220,220,255,0.4) 0%, transparent 70%)',
+    sparkle: '#E0E0E0',
+    textGradient: 'linear-gradient(180deg, #E0E0E0 0%, #909090 50%, #E0E0E0 100%)',
   },
   bronze: {
-    base: 'linear-gradient(145deg, #FFE4C4 0%, #CD7F32 15%, #B8860B 35%, #8B4513 55%, #CD7F32 75%, #B8860B 90%, #FFE4C4 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,228,196,0.7) 0%, rgba(255,228,196,0.3) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(101,67,33,0.4) 100%)',
-    edgeGlow: 'rgba(217, 119, 6, 0.6)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(217,119,6,0.3) 0%, transparent 70%)',
+    // Deep brown-bronze
+    base: 'linear-gradient(145deg, #CD7F32 0%, #8B4513 25%, #654321 50%, #8B4513 75%, #CD7F32 100%)',
+    highlight: 'linear-gradient(135deg, rgba(255,200,150,0.5) 0%, rgba(255,200,150,0.2) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(60,40,20,0.5) 100%)',
+    edgeGlow: 'rgba(205, 127, 50, 0.7)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(205,127,50,0.3) 0%, transparent 70%)',
     sparkle: '#CD7F32',
-    textGradient: 'linear-gradient(180deg, #CD7F32 0%, #8B4513 50%, #CD7F32 100%)',
+    textGradient: 'linear-gradient(180deg, #CD7F32 0%, #654321 50%, #CD7F32 100%)',
   },
   brass: {
-    base: 'linear-gradient(145deg, #FFF5E1 0%, #E6C87A 15%, #D4AA5D 35%, #B5A642 55%, #D4AA5D 75%, #E6C87A 90%, #FFF5E1 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,245,225,0.7) 0%, rgba(255,245,225,0.3) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(120,100,50,0.4) 100%)',
-    edgeGlow: 'rgba(230, 200, 122, 0.6)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(230,200,122,0.3) 0%, transparent 70%)',
-    sparkle: '#E6C87A',
-    textGradient: 'linear-gradient(180deg, #E6C87A 0%, #B5A642 50%, #E6C87A 100%)',
+    // Yellow-tan brass (much lighter than bronze)
+    base: 'linear-gradient(145deg, #FFF8DC 0%, #F5DEB3 20%, #DEB887 40%, #DAA520 60%, #F5DEB3 80%, #FFF8DC 100%)',
+    highlight: 'linear-gradient(135deg, rgba(255,250,220,0.9) 0%, rgba(255,250,220,0.4) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(180,160,100,0.4) 100%)',
+    edgeGlow: 'rgba(245, 222, 179, 0.7)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(245,222,179,0.3) 0%, transparent 70%)',
+    sparkle: '#F5DEB3',
+    textGradient: 'linear-gradient(180deg, #F5DEB3 0%, #DAA520 50%, #F5DEB3 100%)',
   },
   copper: {
-    base: 'linear-gradient(145deg, #FFE4CC 0%, #E6A57D 15%, #C87F5E 35%, #A0522D 55%, #C87F5E 75%, #E6A57D 90%, #FFE4CC 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,228,204,0.7) 0%, rgba(255,228,204,0.3) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(101,50,30,0.4) 100%)',
-    edgeGlow: 'rgba(230, 165, 125, 0.6)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(230,165,125,0.3) 0%, transparent 70%)',
+    // Reddish-copper (distinct from both bronze and brass)
+    base: 'linear-gradient(145deg, #FFB6A1 0%, #E6A57D 20%, #C87F5E 40%, #A0522D 60%, #C87F5E 80%, #FFB6A1 100%)',
+    highlight: 'linear-gradient(135deg, rgba(255,200,180,0.7) 0%, rgba(255,200,180,0.3) 30%, transparent 60%)',
+    shadow: 'linear-gradient(180deg, transparent 0%, rgba(139,69,19,0.5) 100%)',
+    edgeGlow: 'rgba(255, 140, 100, 0.7)',
+    innerGlow: 'radial-gradient(ellipse at center, rgba(255,140,100,0.3) 0%, transparent 70%)',
     sparkle: '#E6A57D',
-    textGradient: 'linear-gradient(180deg, #E6A57D 0%, #A0522D 50%, #E6A57D 100%)',
+    textGradient: 'linear-gradient(180deg, #FFB6A1 0%, #A0522D 50%, #E6A57D 100%)',
   },
 };
 
