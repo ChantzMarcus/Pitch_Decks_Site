@@ -4,12 +4,10 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import HeroSonarStyle from '@/components/HeroSonarStyle';
-import DeckGrid from '@/components/DeckGrid';
 import QuickViewModal from '@/components/QuickViewModal';
 import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
 import ImmersiveDeckGallery from '@/components/ImmersiveDeckGallery';
 import FeaturedDeckWalkthrough from '@/components/FeaturedDeckWalkthrough';
-import ServicesShowcase from '@/components/ServicesShowcase';
 import StructuredData from '@/components/StructuredData';
 import { Footer } from '@/components/Footer';
 import SocialProof from '@/components/SocialProof';
@@ -30,26 +28,14 @@ import TestimonialReviews from '@/components/TestimonialReviews';
 import { FloatingParticlesBackground } from '@/components/effects/GoldenTicketSparkles';
 import dynamic from 'next/dynamic';
 
-// Dynamically import 3D component to reduce initial bundle size
-const ThreeDPitchDeckShowcase = dynamic(
-  () => import('@/components/ThreeDPitchDeckShowcase'),
-  { 
-    ssr: false, // Disable SSR for Three.js component
-    loading: () => (
-      <div className="h-[600px] flex items-center justify-center">
-        <div className="text-paper/50">Loading 3D showcase...</div>
-      </div>
-    )
-  }
-);
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
-import { ArrowRightIcon, StoryIcon, ClockIcon, FilmReelIcon, AwardIcon } from '@/components/icons/FilmIcons';
+import { ArrowRightIcon, StoryIcon, ClockIcon, FilmReelIcon, AwardIcon, TVIcon, GlobeIcon, BoxOfficeChartIcon, FilmProjectorIcon } from '@/components/icons/FilmIcons';
+import ServicesShowcase from '@/components/ServicesShowcase';
 import AppleStyleVideoGallery from '@/components/AppleStyleVideoGallery';
-import AutomaticFilmProcessTransformation from '@/components/AutomaticFilmProcessTransformation';
+import TextAssemblyLine from '@/components/TextAssemblyLine';
 import LayeredImagesShowcase from '@/components/LayeredImagesShowcase';
 import BeforeAfterShowcase from '@/components/BeforeAfterShowcase';
-import PitchDeckCardShowcase from '@/components/PitchDeckCardShowcase';
 import MetallicDeckCarousel from '@/components/MetallicDeckCarousel';
 
 // Custom chart icon
@@ -200,7 +186,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       {/* Side Navigation */}
       <SideNavigation decks={initialDecks} />
 
-      <main className="min-h-screen bg-charcoal">
+      <main className="min-h-screen">
         <StructuredData
           type="webpage"
           data={{
@@ -242,8 +228,8 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             texture: 'bronze'
           },
           {
-            value: "5-7",
-            label: "Day Turnaround",
+            value: "24h",
+            label: "Avg Turnaround",
             icon: <ClockIcon className="w-8 h-8 text-amber-300 mx-auto" />,
             texture: 'copper'
           },
@@ -268,12 +254,6 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
 
       {/* Section 4: Two Paths CTA */}
       <section className="relative py-24 bg-charcoal overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/20 via-charcoal to-amber-950/10" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6">
           {/* Golden Gallery style heading */}
@@ -470,7 +450,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       </section>
 
       {/* Section 5: Educational Videos - Why Packaging Matters */}
-      <section className="pt-12 pb-16 bg-charcoal-light">
+      <section className="pt-12 pb-16 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal direction="fade" className="text-center mb-8">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-3">
@@ -492,20 +472,20 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-12 bg-charcoal rounded-2xl p-8 md:p-12 text-center border border-white/10"
+            className="mt-12 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 rounded-2xl p-8 md:p-12 text-center border border-amber-400/30 shadow-2xl"
           >
-            <p className="text-accent-indigo font-medium mb-4">In Partnership With</p>
+            <p className="text-amber-400 font-medium mb-4">In Partnership With</p>
             <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
               Tomayto Tomato
             </h3>
-            <p className="text-paper/70 max-w-3xl mx-auto mb-6">
+            <p className="text-gray-200 max-w-3xl mx-auto mb-6">
               The same people who greenlit films at Paramount, Sony, Fox, and Lionsgate
-              — the team behind <em className="text-white">Arrival</em>,{' '}
-              <em className="text-white">Transformers</em>, <em className="text-white">True Grit</em>,
-              and <em className="text-white">The Curious Case of Benjamin Button</em> —
+              — the team behind <em className="text-white font-semibold">Arrival</em>,{' '}
+              <em className="text-white font-semibold">Transformers</em>, <em className="text-white font-semibold">True Grit</em>,
+              and <em className="text-white font-semibold">The Curious Case of Benjamin Button</em> —
               now working on YOUR project.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-paper/50">
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-300">
               <span>Production Package</span>
               <span>•</span>
               <span>Talent Attachment</span>
@@ -527,66 +507,18 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       </section>
 
       {/* Urgency Counter - Social Proof Numbers */}
-      <section className="py-12 bg-charcoal-light">
+      <section className="py-12 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal">
         <div className="max-w-7xl mx-auto px-6">
           <UrgencyCounter variant="compact" className="justify-center" />
         </div>
       </section>
 
-      {/* Pitch Deck Cards Showcase - Dribbble-style overlapping cards showing ALL decks */}
-      <ParallaxSection speed={0.3}>
-        <PitchDeckCardShowcase
-          decks={initialDecks}
-          onCardClick={(deck) => handleWalkthrough(deck)}
-          onQuickView={(deck) => handleQuickView(deck)}
-        />
-      </ParallaxSection>
-
       {/* Metallic Golden Ticket Carousel - Circus/Vintage Theme */}
-      <section className="py-8 bg-gradient-to-b from-charcoal via-[#0f0a05] to-charcoal">
+      <section className="py-8">
         <MetallicDeckCarousel
           decks={initialDecks}
           onDeckClick={(deck) => handleWalkthrough(deck)}
         />
-      </section>
-
-      {/* Featured Projects - Portfolio Proof */}
-      <section className="py-20 bg-charcoal">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal direction="fade" className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-              Featured Projects
-            </h2>
-            <p className="text-xl text-paper-muted max-w-2xl mx-auto">
-              Explore our portfolio of compelling stories ready for production
-            </p>
-          </ScrollReveal>
-
-          <DeckGrid
-            decks={initialDecks}
-            onQuickView={handleQuickView}
-            onWalkthrough={handleWalkthrough}
-            horizontalScroll={true}
-          />
-
-          {/* 3D Pitch Deck Showcase */}
-          <div className="mt-16">
-            <h3 className="font-display text-3xl font-bold text-paper mb-8 text-center">
-              Our Portfolio in 3D
-            </h3>
-            <ThreeDPitchDeckShowcase decks={initialDecks} />
-          </div>
-
-          <ScrollReveal direction="up" delay={0.3} className="text-center mt-12">
-            <Link
-              href="/gallery"
-              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-paper/20 text-paper font-medium rounded-lg hover:bg-paper/10 hover:text-paper transition-all"
-            >
-              View All Projects
-              <ArrowRightIcon size={18} />
-            </Link>
-          </ScrollReveal>
-        </div>
       </section>
 
       {/* Social Proof - Upwork Profile - Lower for Additional Trust */}
@@ -599,26 +531,16 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       <FAQ />
 
       {/* Dual CTA - Primary Conversion Section with Sparkles */}
-      <section className="relative py-20 bg-charcoal overflow-hidden">
+      <section className="relative py-20 overflow-hidden">
         <FloatingParticlesBackground count={25} />
         <DualCTA />
       </section>
 
-      {/* Automatic Film Process Transformation */}
-      <section className="py-20 bg-charcoal">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal direction="fade" className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-paper mb-6">
-              See Our Process in Action
-            </h2>
-            <p className="text-xl text-paper/80 max-w-2xl mx-auto">
-              Watch how we transform stories into production-ready pitch decks
-            </p>
-          </ScrollReveal>
-
-          <AutomaticFilmProcessTransformation />
-        </div>
-      </section>
+      {/* Cinematic Assembly Line Process */}
+      <TextAssemblyLine
+        title="From Script to Screen"
+        subtitle="Watch your story transform through our cinematic assembly line"
+      />
 
       {/* Layered Images Showcase - Apple Style with Parallax */}
       <ParallaxSection speed={0.2}>
@@ -698,7 +620,7 @@ export default function HomeContent({ initialDecks }: HomeContentProps) {
       />
 
       {/* Creator Community - Final Section - Discord/Community Section */}
-      <section className="py-16 bg-gradient-to-br from-indigo-950/50 via-charcoal to-indigo-950/30 border-y border-indigo-500/20">
+      <section className="py-16 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal border-y border-indigo-500/20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

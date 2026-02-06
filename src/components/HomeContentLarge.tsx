@@ -3,15 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
-import DeckGrid from '@/components/DeckGrid';
-import QuickViewModal from '@/components/QuickViewModal';
+import LargeDeckShowcase from '@/components/LargeDeckShowcase';
 import DeckWalkthroughModal from '@/components/DeckWalkthroughModal';
 import ServicesShowcase from '@/components/ServicesShowcase';
 import StructuredData from '@/components/StructuredData';
 import { Footer } from '@/components/Footer';
 import SocialProof from '@/components/SocialProof';
 import DualCTA from '@/components/DualCTA';
-import { EDUCATIONAL_VIDEOS } from '@/components/EducationalVideoCard';
 import { ScrollReveal } from '@/components/animations';
 import TrustBadges from '@/components/ui/TrustBadges';
 import TrustedBrands from '@/components/TrustedBrands';
@@ -19,7 +17,6 @@ import FAQ from '@/components/ui/FAQ';
 import PhysicsStats from '@/components/PhysicsStats';
 import { FloatingStickyCTA } from '@/components/AlwaysStickyCTA';
 import TestimonialReviews from '@/components/TestimonialReviews';
-import DeckShowcase3D from '@/components/DeckShowcase3D';
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 import { ArrowRightIcon, StoryIcon, StarIcon, TrendingUpIcon } from '@/components/icons/FilmIcons';
@@ -38,13 +35,11 @@ interface HomeContentProps {
   initialDecks: Deck[];
 }
 
-export default function HomeContentClean({ initialDecks }: HomeContentProps) {
-  const [selectedDeck, setSelectedDeck] = useState<DeckWithSlides | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function HomeContentLarge({ initialDecks }: HomeContentProps) {
   const [walkthroughDeck, setWalkthroughDeck] = useState<DeckWithSlides | null>(null);
   const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
 
-  // Prepare decks with slides for the 3D showcase
+  // Prepare decks with slides for the showcase
   const decksWithSlides: DeckWithSlidesExtended[] = initialDecks.map(deck => ({
     ...deck,
     slides: getDeckSlideUrlsOriginal(deck.id).map((url, index) => ({
@@ -54,15 +49,6 @@ export default function HomeContentClean({ initialDecks }: HomeContentProps) {
     })),
   }));
 
-  const handleQuickView = (deck: Deck) => {
-    const deckWithSlides: DeckWithSlides = {
-      ...deck,
-      slides: getDeckSlideUrlsOriginal(deck.id),
-    };
-    setSelectedDeck(deckWithSlides);
-    setIsModalOpen(true);
-  };
-
   const handleWalkthrough = (deck: Deck) => {
     const deckWithSlides: DeckWithSlides = {
       ...deck,
@@ -70,11 +56,6 @@ export default function HomeContentClean({ initialDecks }: HomeContentProps) {
     };
     setWalkthroughDeck(deckWithSlides);
     setIsWalkthroughOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedDeck(null), 300);
   };
 
   const handleCloseWalkthrough = () => {
@@ -131,8 +112,8 @@ export default function HomeContentClean({ initialDecks }: HomeContentProps) {
           variant="dark"
         />
 
-        {/* 4. 3D Deck Showcase - Stacked floating cards */}
-        <DeckShowcase3D
+        {/* 4. Large Deck Showcase - Full-size flat grid */}
+        <LargeDeckShowcase
           decks={decksWithSlides}
           onDeckClick={handleDeckClick}
         />
@@ -212,15 +193,7 @@ export default function HomeContentClean({ initialDecks }: HomeContentProps) {
 
       <Footer />
 
-      {/* Modals */}
-      {selectedDeck && (
-        <QuickViewModal
-          deck={selectedDeck}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
-      )}
-
+      {/* Modal */}
       {walkthroughDeck && (
         <DeckWalkthroughModal
           deck={walkthroughDeck}

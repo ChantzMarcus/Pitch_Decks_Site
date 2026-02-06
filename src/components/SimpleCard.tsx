@@ -65,15 +65,16 @@ export default function SimpleCard({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.01 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      className={`holo-card relative rounded-2xl border border-accent-gold/20 bg-gradient-to-br from-charcoal-light/90 via-charcoal-medium/80 to-charcoal-light/90 backdrop-blur-sm shadow-xl overflow-hidden ${className}`}
+      className={`holo-card relative rounded-2xl border border-white/10 bg-charcoal/60 backdrop-blur-xl shadow-xl overflow-hidden ${className}`}
       style={{
         transformStyle: 'preserve-3d',
         rotateX,
         rotateY,
+        height: '100%',
       }}
     >
       {/* Holographic shine overlay - moves with mouse */}
@@ -136,7 +137,7 @@ export default function SimpleCard({
       )}
       
       {/* Content */}
-      <div className="relative z-10 p-8 h-full">
+      <div className="relative z-10 p-8 h-full flex flex-col">
         {children}
       </div>
     </motion.div>

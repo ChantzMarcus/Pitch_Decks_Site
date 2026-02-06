@@ -53,7 +53,7 @@ export default function AutomaticFilmProcessTransformation() {
     <div className="relative h-[600px] flex items-center justify-center bg-gradient-to-b from-ivory to-old-gold rounded-2xl overflow-hidden">
       {/* Subtle gear pattern overlay */}
       <div className="absolute inset-0 steampunk-gear-pattern opacity-5 pointer-events-none" />
-      
+
       <div className="max-w-4xl w-full px-4">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold vintage-text-gold mb-4">
@@ -79,8 +79,8 @@ export default function AutomaticFilmProcessTransformation() {
                   Your Life Story or Idea
                 </h3>
                 <p className="text-lg text-charcoal/80 mb-8 leading-relaxed">
-                  Transform your concept into a compelling screenplay format. 
-                  We take your raw idea and craft it into a cinematic narrative 
+                  Transform your concept into a compelling screenplay format.
+                  We take your raw idea and craft it into a cinematic narrative
                   that resonates with investors and audiences alike.
                 </p>
                 <div className="bg-ivory/50 p-6 rounded-xl border border-brass-dark/30">
@@ -133,7 +133,7 @@ export default function AutomaticFilmProcessTransformation() {
                 className="w-full max-w-md mx-auto"
               >
                 {/* Retro Projector Screen */}
-                <div className="relative bg-gray-800 p-6 rounded-lg border-8 border-gray-900 shadow-2xl mx-auto" 
+                <div className="relative bg-gray-800 p-6 rounded-lg border-8 border-gray-900 shadow-2xl mx-auto"
                      style={{ maxWidth: '400px' }}>
                   {/* Projector Screen Effect */}
                   <div className="relative bg-black h-64 rounded overflow-hidden">
@@ -141,11 +141,11 @@ export default function AutomaticFilmProcessTransformation() {
                     <div className="absolute top-4 left-4 w-10 h-10 rounded-full border-4 border-gray-600 flex items-center justify-center">
                       <div className="w-6 h-6 rounded-full border border-gray-500"></div>
                     </div>
-                    
+
                     <div className="absolute top-4 right-4 w-10 h-10 rounded-full border-4 border-gray-600 flex items-center justify-center">
                       <div className="w-6 h-6 rounded-full border border-gray-500"></div>
                     </div>
-                    
+
                     {/* Screen Content */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
@@ -157,7 +157,7 @@ export default function AutomaticFilmProcessTransformation() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Scan Lines Effect */}
                     <div className="absolute inset-0 pointer-events-none" style={{
                       background: `repeating-linear-gradient(
@@ -169,7 +169,7 @@ export default function AutomaticFilmProcessTransformation() {
                       )`
                     }}></div>
                   </div>
-                  
+
                   {/* Projector Body */}
                   <div className="mt-3 bg-gray-900 p-3 rounded">
                     <div className="flex justify-between items-center">
@@ -182,7 +182,7 @@ export default function AutomaticFilmProcessTransformation() {
                     </div>
                   </div>
                 </div>
-                
+
                 {countdown === 0 && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -209,11 +209,11 @@ export default function AutomaticFilmProcessTransformation() {
             transition={{ delay: 1 }}
             className="mt-8 text-center"
           >
-            <h3 className="font-display text-2xl font-bold text-charcoal mb-4">
+            <h3 className="font-display text-4xl font-bold text-charcoal mb-4">
               Your Story, Transformed
             </h3>
             <p className="text-lg text-charcoal/80 max-w-2xl mx-auto">
-              From screenplay to cinematic reality. We transform your life story or idea 
+              From screenplay to cinematic reality. We transform your life story or idea
               into a compelling visual narrative that captivates audiences.
             </p>
           </motion.div>

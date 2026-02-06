@@ -227,8 +227,8 @@ export default function EnhancedDeckCard({ deck, index, onQuickView, videoPrevie
           videoRef.current?.pause();
         }}
       >
-        {/* Card Container with Bloom Effect */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-charcoal/10 shadow-lg transition-all duration-300 deck-card-bloom-premium">
+        {/* Card Container with Bloom Effect - 16:9 for pitch decks */}
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-charcoal/10 shadow-lg transition-all duration-300 deck-card-bloom-premium">
           {/* Video Preview (plays on hover - lazy loaded) */}
           {videoPreviewUrl && (
             <AnimatePresence>

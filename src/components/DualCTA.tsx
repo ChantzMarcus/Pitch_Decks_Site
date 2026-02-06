@@ -27,7 +27,7 @@ function SparklesIcon({ className = '', size = 16 }: { className?: string; size?
  */
 export default function DualCTA() {
   return (
-    <section className="relative py-24 bg-gradient-to-br from-charcoal via-indigo-950/30 to-charcoal overflow-hidden">
+    <section className="relative py-24 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent-indigo rounded-full blur-3xl" />

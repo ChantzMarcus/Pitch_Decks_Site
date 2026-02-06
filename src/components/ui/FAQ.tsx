@@ -65,7 +65,7 @@ export default function FAQ({
   };
 
   return (
-    <section className={`py-20 bg-charcoal ${className}`}>
+    <section className={`py-20 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal ${className}`}>
       <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">

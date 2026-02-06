@@ -55,19 +55,19 @@ function AnimatedFilmGrain({
       noiseCtx.putImageData(imageData, 0, 0);
     };
 
-    // Draw vertical scratch lines across the entire screen (more subtle)
+    // Draw vertical scratch lines across the entire screen
     const drawVerticalLine = (xPosition: number, lineHeight: number) => {
-      scratchCtx.strokeStyle = Math.random() > 0.3
-        ? "rgba(255,255,255,0.15)"  // Much more subtle white lines
-        : "rgba(0,0,0,0.25)";       // Much more subtle dark lines
-      scratchCtx.lineWidth = Math.floor(Math.random() * 1.5) + 0.5;  // Thinner lines
+      scratchCtx.strokeStyle = Math.random() > 0.2
+        ? "rgba(255,255,255,0.6)"  // Visible white lines
+        : "rgba(0,0,0,0.8)";       // Visible dark lines
+      scratchCtx.lineWidth = Math.floor(Math.random() * 3) + 1;  // Thicker lines
       scratchCtx.beginPath();
       scratchCtx.moveTo(xPosition, 0);
       scratchCtx.lineTo(xPosition, lineHeight);
       scratchCtx.stroke();
 
-      // Less frequently draw additional lines
-      if (Math.random() > 0.85) {
+      // Sometimes draw additional lines
+      if (Math.random() > 0.75) {
         drawVerticalLine(Math.random() * noiseCanvas.width, noiseCanvas.height);
       }
     };
@@ -128,13 +128,13 @@ function AnimatedFilmGrain({
           opacity,
         }}
       />
-      {/* Scratch layer with vertical lines - more subtle */}
+      {/* Scratch layer with vertical lines */}
       <canvas
         ref={scratchCanvasRef}
         className="fixed inset-0 w-full h-full pointer-events-none z-40"
         style={{
           mixBlendMode: 'hard-light',
-          opacity: opacity * 0.25,  // Reduced from 0.6 for more subtle effect
+          opacity: opacity * 0.6,  // More visible lines
         }}
       />
     </>

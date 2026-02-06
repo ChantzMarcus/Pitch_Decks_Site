@@ -16,22 +16,12 @@ import TrustBadges from '@/components/ui/TrustBadges';
 import TrustedBrands from '@/components/TrustedBrands';
 import FAQ from '@/components/ui/FAQ';
 import PhysicsStats from '@/components/PhysicsStats';
-import { FloatingStickyCTA } from '@/components/StickyCTA';
+import { FloatingStickyCTA } from '@/components/AlwaysStickyCTA';
 import TestimonialReviews from '@/components/TestimonialReviews';
 import RotatingDeckCarousel from '@/components/RotatingDeckCarousel';
 import type { Deck } from '@/db';
 import { getDeckSlideUrls, type DeckWithSlides } from '@/lib/mock-decks';
 import { ArrowRightIcon, StoryIcon, StarIcon, TrendingUpIcon } from '@/components/icons/FilmIcons';
-import { getDeckSlideUrls as getDeckSlideUrlsOriginal } from '@/lib/mock-decks';
-
-// Re-export with slides for our new component
-interface DeckWithSlidesExtended extends Deck {
-  slides?: Array<{
-    id: string;
-    url: string;
-    caption: string;
-  }>;
-}
 
 interface HomeContentProps {
   initialDecks: Deck[];
@@ -43,20 +33,16 @@ export default function HomeContentRotating({ initialDecks }: HomeContentProps) 
   const [walkthroughDeck, setWalkthroughDeck] = useState<DeckWithSlides | null>(null);
   const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
 
-  // Prepare decks with slides for the 3D showcase
-  const decksWithSlides: DeckWithSlidesExtended[] = initialDecks.map(deck => ({
+  // Prepare decks with slides for the 3D showcase - slides are just URL strings
+  const decksWithSlides: DeckWithSlides[] = initialDecks.map(deck => ({
     ...deck,
-    slides: getDeckSlideUrlsOriginal(deck.id).map((url, index) => ({
-      id: `${deck.id}-slide-${index + 1}`,
-      url,
-      caption: `Slide ${index + 1} of ${deck.title}`,
-    })),
+    slides: getDeckSlideUrls(deck.id),
   }));
 
   const handleQuickView = (deck: Deck) => {
     const deckWithSlides: DeckWithSlides = {
       ...deck,
-      slides: getDeckSlideUrlsOriginal(deck.id),
+      slides: getDeckSlideUrls(deck.id),
     };
     setSelectedDeck(deckWithSlides);
     setIsModalOpen(true);
@@ -65,7 +51,7 @@ export default function HomeContentRotating({ initialDecks }: HomeContentProps) 
   const handleWalkthrough = (deck: Deck) => {
     const deckWithSlides: DeckWithSlides = {
       ...deck,
-      slides: getDeckSlideUrlsOriginal(deck.id),
+      slides: getDeckSlideUrls(deck.id),
     };
     setWalkthroughDeck(deckWithSlides);
     setIsWalkthroughOpen(true);
@@ -81,8 +67,17 @@ export default function HomeContentRotating({ initialDecks }: HomeContentProps) 
     setTimeout(() => setWalkthroughDeck(null), 300);
   };
 
-  const handleDeckClick = (deck: Deck) => {
-    handleWalkthrough(deck);
+  const handleDeckClick = (deck: DeckWithSlides) => {
+    // Ensure slides are attached
+    const deckWithSlides = deck.slides && deck.slides.length > 0
+      ? deck
+      : {
+          ...deck,
+          slides: getDeckSlideUrls(deck.id),
+        } as DeckWithSlides;
+
+    setWalkthroughDeck(deckWithSlides);
+    setIsWalkthroughOpen(true);
   };
 
   return (

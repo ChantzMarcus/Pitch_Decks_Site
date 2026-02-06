@@ -6,76 +6,51 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
 import FilmGrain from '@/components/animations/FilmGrain';
+import Image from 'next/image';
 
 // Register the ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-// Texture type definition
-interface MetallicTexture {
-  base: string;
-  highlight: string;
-  shadow: string;
+// Card configuration with image paths
+interface CardConfig {
+  imagePath: string;
   edgeGlow: string;
-  innerGlow: string;
   sparkle: string;
-  textGradient: string;
-  isVelvet?: boolean;
-  velvetColor?: string;
 }
 
-// Rich metallic configurations with multiple gradient layers
-const METALLIC_TEXTURES: Record<string, MetallicTexture> = {
-  gold: {
-    // Bright golden-yellow - classic gold
-    base: 'linear-gradient(145deg, #FFF700 0%, #FFD700 20%, #FFC700 40%, #DAA520 60%, #FFC700 80%, #FFD700 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,255,224,0.9) 0%, rgba(255,255,224,0.4) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(184,134,11,0.4) 100%)',
+// Map stats to the provided card images
+const CARD_CONFIGS: CardConfig[] = [
+  {
+    imagePath: '/images/ornate-cards/card-1.png', // First card image
     edgeGlow: 'rgba(255, 215, 0, 0.8)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(255,215,0,0.4) 0%, transparent 70%)',
     sparkle: '#FFD700',
-    textGradient: 'linear-gradient(180deg, #FFD700 0%, #DAA520 50%, #FFD700 100%)',
   },
-  silver: {
-    // Cool gray metallic
-    base: 'linear-gradient(145deg, #F8F8F8 0%, #D3D3D3 20%, #A8A8A8 40%, #808080 60%, #A8A8A8 80%, #D3D3D3 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(100,100,100,0.4) 100%)',
+  {
+    imagePath: '/images/ornate-cards/card-2.png', // Second card image
     edgeGlow: 'rgba(200, 200, 255, 0.6)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(220,220,255,0.4) 0%, transparent 70%)',
     sparkle: '#E0E0E0',
-    textGradient: 'linear-gradient(180deg, #E0E0E0 0%, #909090 50%, #E0E0E0 100%)',
   },
-  bronze: {
-    // Deep brown-bronze
-    base: 'linear-gradient(145deg, #CD7F32 0%, #8B4513 25%, #654321 50%, #8B4513 75%, #CD7F32 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,200,150,0.5) 0%, rgba(255,200,150,0.2) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(60,40,20,0.5) 100%)',
+  {
+    imagePath: '/images/ornate-cards/cards-grid.png', // Grid image (will use for multiple cards)
+    edgeGlow: 'rgba(255, 215, 0, 0.8)',
+    sparkle: '#FFD700',
+  },
+  {
+    imagePath: '/images/ornate-cards/card-1.png',
+    edgeGlow: 'rgba(255, 215, 0, 0.8)',
+    sparkle: '#FFD700',
+  },
+  {
+    imagePath: '/images/ornate-cards/card-2.png',
     edgeGlow: 'rgba(205, 127, 50, 0.7)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(205,127,50,0.3) 0%, transparent 70%)',
     sparkle: '#CD7F32',
-    textGradient: 'linear-gradient(180deg, #CD7F32 0%, #654321 50%, #CD7F32 100%)',
   },
-  platinum: {
-    // Icy white-platinum with blue undertones
-    base: 'linear-gradient(145deg, #E8E8E8 0%, #D4D4D4 15%, #C0C0C0 30%, #A8A8B0 50%, #B0B0B8 70%, #C8C8D0 85%, #E0E0E8 100%)',
-    highlight: 'linear-gradient(135deg, rgba(200,210,255,0.8) 0%, rgba(200,210,255,0.3) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(100,100,120,0.4) 100%)',
-    edgeGlow: 'rgba(180, 190, 255, 0.7)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(180,190,255,0.3) 0%, transparent 70%)',
-    sparkle: '#D0D0D8',
-    textGradient: 'linear-gradient(180deg, #E0E0E8 0%, #A0A0A8 50%, #C8C8D0 100%)',
+  {
+    imagePath: '/images/ornate-cards/cards-grid.png',
+    edgeGlow: 'rgba(255, 215, 0, 0.8)',
+    sparkle: '#FFD700',
   },
-  copper: {
-    // Reddish-copper (distinct from both bronze and brass)
-    base: 'linear-gradient(145deg, #FFB6A1 0%, #E6A57D 20%, #C87F5E 40%, #A0522D 60%, #C87F5E 80%, #FFB6A1 100%)',
-    highlight: 'linear-gradient(135deg, rgba(255,200,180,0.7) 0%, rgba(255,200,180,0.3) 30%, transparent 60%)',
-    shadow: 'linear-gradient(180deg, transparent 0%, rgba(139,69,19,0.5) 100%)',
-    edgeGlow: 'rgba(255, 140, 100, 0.7)',
-    innerGlow: 'radial-gradient(ellipse at center, rgba(255,140,100,0.3) 0%, transparent 70%)',
-    sparkle: '#E6A57D',
-    textGradient: 'linear-gradient(180deg, #FFB6A1 0%, #A0522D 50%, #E6A57D 100%)',
-  },
-};
+];
 
 // Sparkle particles that appear on hover
 function SparkleParticles({ count, isHovered, color }: { count: number; isHovered: boolean; color: string }) {
@@ -112,15 +87,13 @@ function SparkleParticles({ count, isHovered, color }: { count: number; isHovere
 
 // Glow orb that appears on hover
 function HoverGlowOrb({
-  texture,
+  edgeGlow,
   isHovered
 }: {
-  texture: string;
+  edgeGlow: string;
   isHovered: boolean;
 }) {
   if (!isHovered) return null;
-
-  const config = METALLIC_TEXTURES[texture];
 
   return (
     <>
@@ -134,7 +107,7 @@ function HoverGlowOrb({
           top: '50%',
           marginLeft: '-60px',
           marginTop: '-60px',
-          background: `radial-gradient(circle, ${config.edgeGlow} 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${edgeGlow} 0%, transparent 70%)`,
           borderRadius: '50%',
           filter: 'blur(30px)',
         }}
@@ -158,7 +131,7 @@ function HoverGlowOrb({
           top: '50%',
           marginLeft: '-30px',
           marginTop: '-30px',
-          background: `radial-gradient(circle, ${config.edgeGlow} 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${edgeGlow} 0%, transparent 70%)`,
           borderRadius: '50%',
           filter: 'blur(15px)',
         }}
@@ -176,12 +149,13 @@ function HoverGlowOrb({
   );
 }
 
-// Premium Metallic/Velvet Card with 3D effects and rich layering
-const PremiumMetallicCard = forwardRef<HTMLDivElement, {
+// Ornate Vintage Card with 3D effects using actual images
+const OrnateVintageCard = forwardRef<HTMLDivElement, {
   children: React.ReactNode;
-  texture: string;
+  config: CardConfig;
+  index: number;
   className?: string;
-}>(({ children, texture = 'gold', className = '' }, ref) => {
+}>(({ children, config, index, className = '' }, ref) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -197,7 +171,7 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
     // Calculate 3D tilt effect
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((e.clientY - rect.top - centerY) / centerY) * -8; // Max 8deg rotation
+    const rotateX = ((e.clientY - rect.top - centerY) / centerY) * -8;
     const rotateY = ((e.clientX - rect.left - centerX) / centerX) * 8;
 
     setMousePos({ x, y });
@@ -209,8 +183,6 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
     setMousePos({ x: 50, y: 50 });
     setTilt({ x: 0, y: 0 });
   };
-
-  const config = METALLIC_TEXTURES[texture];
 
   return (
     <div
@@ -242,11 +214,10 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
       <motion.div
         className="relative rounded-2xl overflow-hidden"
         style={{
-          background: config.base,
           transformStyle: 'preserve-3d',
           boxShadow: isHovered
-            ? `0 20px 40px rgba(0,0,0,0.4), 0 0 25px ${config.edgeGlow}30`
-            : '0 8px 25px rgba(0,0,0,0.3)',
+            ? `0 20px 40px rgba(0,0,0,0.6), 0 0 25px ${config.edgeGlow}40`
+            : '0 10px 30px rgba(0,0,0,0.5)',
         }}
         animate={{
           rotateX: tilt.x,
@@ -254,26 +225,26 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
         }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
-        {/* Multiple texture layers for depth */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Base gradient */}
-          <div className="absolute inset-0" style={{ background: config.base }} />
-
-          {/* Top highlight layer - creates shine */}
-          <div
-            className="absolute inset-0 transition-opacity duration-500"
+        {/* Card Image Background */}
+        <div className="relative w-full h-full" style={{ minHeight: '280px' }}>
+          <Image
+            src={config.imagePath}
+            alt={`Achievement card ${index + 1}`}
+            fill
+            className="object-cover"
             style={{
-              background: config.highlight,
-              opacity: isHovered ? 1 : 0.6,
+              objectFit: 'cover',
             }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={index < 3}
           />
 
-          {/* Shadow layer at bottom */}
-          <div className="absolute inset-0" style={{ background: config.shadow }} />
+          {/* Subtle overlay only for text readability - much lighter */}
+          <div className="absolute inset-0 bg-black/5" />
 
           {/* Mouse-following inner glow for 3D effect */}
           <div
-            className="absolute inset-0 transition-opacity duration-300"
+            className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
             style={{
               background: `radial-gradient(
                 ellipse 120px at ${mousePos.x}% ${mousePos.y}%,
@@ -284,93 +255,68 @@ const PremiumMetallicCard = forwardRef<HTMLDivElement, {
             }}
           />
 
-          {/* Inner glow that pulses on hover */}
+          {/* Inner glow that pulses on hover - reduced opacity */}
           <div
-            className="absolute inset-0 transition-opacity duration-500"
+            className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
             style={{
-              background: config.innerGlow,
-              opacity: isHovered ? 0.8 : 0.2,
+              background: `radial-gradient(ellipse at center, ${config.edgeGlow}40 0%, transparent 70%)`,
+              opacity: isHovered ? 0.4 : 0.1,
             }}
           />
 
-          {/* Brushed metal texture lines */}
+          {/* Edge lighting that follows mouse */}
           <div
-            className="absolute inset-0 opacity-15"
+            className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
             style={{
-              background: `repeating-linear-gradient(
-                90deg,
-                transparent 0px,
-                rgba(255,255,255,0.05) 1px,
-                transparent 2px,
-                transparent 100px
+              padding: '2px',
+              background: `radial-gradient(
+                ellipse 60px at ${mousePos.x}% ${mousePos.y}%,
+                ${config.edgeGlow} 0%,
+                transparent 80%
               )`,
+              mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              opacity: isHovered ? 0.8 : 0.3,
             }}
           />
 
-          {/* Subtle grain for realism */}
+          {/* Animated shimmer sweep on hover */}
+          {isHovered && (
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+              }}
+              initial={{ x: '-100%' }}
+              animate={{ x: '100%' }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          )}
+
+          {/* Sparkle particles on hover */}
+          <SparkleParticles count={6} isHovered={isHovered} color={config.sparkle} />
+
+          {/* Hover glow orb */}
+          <HoverGlowOrb edgeGlow={config.edgeGlow} isHovered={isHovered} />
+
+          {/* Content overlay */}
           <div
-            className="absolute inset-0 opacity-8"
+            className="relative z-10 p-8 flex flex-col items-center justify-center text-center min-h-[280px] transition-all duration-500"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-              mixBlendMode: 'overlay',
+              transform: isHovered ? 'translateZ(15px)' : 'translateZ(0)',
             }}
-          />
-        </div>
-
-        {/* Edge lighting that follows mouse */}
-        <div
-          className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
-          style={{
-            padding: '2px',
-            background: `radial-gradient(
-              ellipse 60px at ${mousePos.x}% ${mousePos.y}%,
-              ${config.edgeGlow} 0%,
-              transparent 80%
-            )`,
-            mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-            opacity: isHovered ? 0.8 : 0.3,
-          }}
-        />
-
-        {/* Animated shimmer sweep on hover */}
-        {isHovered && (
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-            }}
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          />
-        )}
-
-        {/* Sparkle particles on hover */}
-        <SparkleParticles count={6} isHovered={isHovered} color={config.sparkle} />
-
-        {/* Hover glow orb */}
-        <HoverGlowOrb texture={texture} isHovered={isHovered} />
-
-        {/* Content with dark backing for text visibility */}
-        <div
-          className="relative z-10 px-5 py-6 transition-all duration-500"
-          style={{
-            transform: isHovered ? 'translateZ(15px)' : 'translateZ(0)',
-            // Add subtle text shadow backing for better visibility
-            textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3)',
-          }}
-        >
-          {children}
+          >
+            {children}
+          </div>
         </div>
       </motion.div>
     </div>
   );
 });
 
-PremiumMetallicCard.displayName = 'PremiumMetallicCard';
+OrnateVintageCard.displayName = 'OrnateVintageCard';
 
 interface StatItem {
   value: string | number;
@@ -384,9 +330,6 @@ interface PhysicsStatsProps {
   subtitle?: string;
   stats: StatItem[];
 }
-
-// Default texture rotation - all metals
-const TEXTURE_ORDER = ['gold', 'platinum', 'silver', 'copper', 'bronze'] as const;
 
 export default function PhysicsStats({
   title = "Our Impact",
@@ -464,61 +407,55 @@ export default function PhysicsStats({
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" ref={containerRef}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" ref={containerRef}>
           {stats.map((stat, index) => {
-            const texture = stat.texture || TEXTURE_ORDER[index % TEXTURE_ORDER.length];
-            const config = METALLIC_TEXTURES[texture];
+            const config = CARD_CONFIGS[index % CARD_CONFIGS.length];
 
             return (
-              <PremiumMetallicCard
+              <OrnateVintageCard
                 key={index}
                 ref={el => { statRefs.current[index] = el; }}
-                texture={texture}
+                config={config}
+                index={index}
                 className=""
               >
-                {/* Icon with float animation (smaller) */}
-                <motion.div
-                  className="flex justify-center mb-3"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <div className="p-2 rounded-full" style={{
-                    background: 'rgba(0,0,0,0.3)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                  }}>
+                {/* Icon with float animation */}
+                {stat.icon && (
+                  <motion.div
+                    className="flex justify-center mb-3"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
                     {stat.icon}
-                  </div>
-                </motion.div>
+                  </motion.div>
+                )}
 
-                {/* Number with high contrast - now visible! */}
+                {/* Main Value - Large, Bold, Metallic - unified styling */}
                 <div className="relative inline-block mb-2">
-                  {/* Dark backing for number visibility */}
-                  <div className="absolute inset-0 blur-sm rounded-lg" style={{
-                    background: 'rgba(0,0,0,0.4)',
-                  }} />
                   <div
-                    className="text-4xl md:text-5xl font-bold relative z-10"
+                    className="text-5xl md:text-6xl font-bold relative z-10"
                     style={{
-                      background: config.textGradient,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(0,0,0,0.6))',
+                      color: '#FFD700',
+                      textShadow: `0 3px 6px rgba(0,0,0,0.95), 0 0 20px rgba(255, 215, 0, 0.4), 0 2px 4px rgba(0,0,0,0.9)`,
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(0,0,0,0.6))',
                     }}
                   >
                     {stat.value}
                   </div>
                 </div>
 
-                {/* Label - with better contrast */}
-                <div className="text-sm font-semibold tracking-wide relative z-10" style={{
-                  color: 'rgba(255,255,255,0.95)',
-                  textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)',
-                }}>
+                {/* Label - unified styling */}
+                <div
+                  className="text-xl md:text-2xl font-bold relative z-10"
+                  style={{
+                    color: '#FFD700',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.95), 0 0 15px rgba(0,0,0,0.8)',
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.9))',
+                  }}
+                >
                   {stat.label}
                 </div>
-              </PremiumMetallicCard>
+              </OrnateVintageCard>
             );
           })}
         </div>

@@ -148,11 +148,11 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 
 export default function TestimonialReviews({
   reviews = DEFAULT_REVIEWS,
-  title = 'What Creators Say',
-  subtitle = 'Real reviews from real creators who transformed their projects',
+  title = 'What Creators & Customers Say',
+  subtitle = 'Real reviews from creators and customers who transformed their projects',
 }: TestimonialReviewsProps) {
   return (
-    <section className="relative py-20 bg-charcoal overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{

@@ -5,6 +5,7 @@ import StructuredData from '@/components/StructuredData';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GlobalEffects } from '@/components/GlobalEffects';
+import { StickyScoreCTA } from '@/components/StickyScoreCTA';
 
 // Self-hosted fonts via Fontsource (no external network requests)
 import '@fontsource-variable/inter';
@@ -75,6 +76,7 @@ export default function RootLayout({
           <StructuredData type="organization" />
           <StructuredData type="service" />
           <GlobalEffects />
+          <StickyScoreCTA />
           {children}
         </body>
       </html>

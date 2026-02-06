@@ -25,7 +25,7 @@ export default function SocialProof() {
   ];
 
   return (
-    <section className="py-20 bg-charcoal">
+    <section className="py-20 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <motion.div

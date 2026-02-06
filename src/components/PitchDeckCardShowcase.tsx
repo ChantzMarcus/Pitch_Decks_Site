@@ -66,7 +66,7 @@ export default function PitchDeckCardShowcase({
   }
 
   return (
-    <section className="relative py-20 bg-charcoal overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div

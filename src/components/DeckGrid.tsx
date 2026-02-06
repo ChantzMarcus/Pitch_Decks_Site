@@ -133,7 +133,7 @@ export default function DeckGrid({
             }}
           >
             {decks.map((deck, index) => (
-              <div key={deck.id} className="flex-shrink-0 w-[320px]">
+              <div key={deck.id} className="flex-shrink-0 w-[1000px]">
                 <EnhancedDeckCard
                   deck={deck}
                   index={index}
@@ -159,17 +159,18 @@ export default function DeckGrid({
     );
   }
 
-  // Traditional grid layout
+  // Traditional grid layout - larger cards
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+    <div className="grid grid-cols-1 gap-12">
       {decks.map((deck, index) => (
-        <EnhancedDeckCard
-          key={deck.id}
-          deck={deck}
-          index={index}
-          onQuickView={onQuickView}
-          videoPreviewUrl={videoPreviewUrls[deck.id]}
-        />
+        <div key={deck.id} className="w-full max-w-4xl mx-auto">
+          <EnhancedDeckCard
+            deck={deck}
+            index={index}
+            onQuickView={onQuickView}
+            videoPreviewUrl={videoPreviewUrls[deck.id]}
+          />
+        </div>
       ))}
     </div>
   );

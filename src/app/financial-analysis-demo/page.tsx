@@ -107,10 +107,10 @@ const sampleRoiData = [
   { year: 2028, roi: 380 }
 ];
 
-export default function FinancialAnalysisLab() {
+export default function FinancialAnalysisPage() {
   return (
-    <div className="min-h-screen">
-      <InteractiveFinancialAnalysis
+    <div className="min-h-screen bg-gradient-to-b from-ivory to-old-gold">
+      <InteractiveFinancialAnalysis 
         projectName="Cinematic Ventures"
         metrics={sampleMetrics}
         projections={sampleProjections}

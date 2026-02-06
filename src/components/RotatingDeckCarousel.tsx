@@ -7,20 +7,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@/components/icons/FilmIcons';
 import type { Deck } from '@/db';
-
-interface Slide {
-  id: string;
-  url: string;
-  caption: string;
-}
-
-interface DeckWithSlides extends Deck {
-  slides?: Slide[];
-}
+import type { DeckWithSlides } from '@/lib/mock-decks';
 
 interface RotatingDeckCarouselProps {
   decks: DeckWithSlides[];
-  onDeckClick?: (deck: Deck) => void;
+  onDeckClick?: (deck: DeckWithSlides) => void;
 }
 
 /**
@@ -116,16 +107,16 @@ export default function RotatingDeckCarousel({ decks, onDeckClick }: RotatingDec
 
           {/* 3D Carousel Container */}
           <div
-            className="relative h-[600px] flex items-center justify-center"
+            className="relative h-[800px] flex items-center justify-center"
             style={{
-              perspective: '1500px',
+              perspective: '2000px',
             }}
           >
             <motion.div
               className="relative"
               style={{
-                width: '340px',
-                height: '500px',
+                width: '1000px',
+                height: '562px', // 16:9 aspect ratio
                 transformStyle: 'preserve-3d',
               }}
               animate={{
@@ -148,75 +139,65 @@ export default function RotatingDeckCarousel({ decks, onDeckClick }: RotatingDec
                 return (
                   <motion.div
                     key={deck.id}
-                    className="absolute cursor-pointer"
+                    className="absolute cursor-pointer group"
                     style={{
-                      width: '340px',
-                      height: '500px',
+                      width: '1000px',
+                      height: '562px', // 16:9 aspect ratio
                       transformStyle: 'preserve-3d',
-                      transform: `rotateY(${cardAngle}deg) translateZ(450px)`,
+                      transform: `rotateY(${cardAngle}deg) translateZ(750px)`,
                     }}
                     whileHover={{
-                      scale: isFrontCard ? 1.05 : 1.02,
+                      scale: isFrontCard ? 1.02 : 1.01,
                       transition: { duration: 0.3 }
                     }}
                     onClick={() => handleDeckClick(deck)}
                   >
                     {/* Card */}
                     <div
-                      className={`relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-charcoal border transition-all duration-300 ${
+                      className={`relative w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-charcoal border-4 transition-all duration-300 ${
                         isFrontCard
-                          ? 'border-accent-indigo shadow-accent-indigo/40'
-                          : 'border-white/10'
+                          ? 'border-accent-indigo shadow-accent-indigo/60 shadow-2xl'
+                          : 'border-white/20 shadow-black/50'
                       }`}
                     >
-                      {/* Cover Image */}
-                      <div className="relative w-full h-3/5">
+                      {/* Cover Image - FULL SIZE 16:9 */}
+                      <div className="relative w-full h-full">
                         <Image
                           src={deck.cover_image_url}
                           alt={deck.title}
                           fill
                           className="object-cover"
+                          sizes="100vw"
+                          priority
                         />
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent" />
+                        {/* Minimal dark overlay at bottom only */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-                        {/* Front card indicator */}
+                        {/* Front card indicator - larger */}
                         {isFrontCard && (
-                          <div className="absolute top-4 right-4 px-3 py-1 bg-accent-indigo text-white text-xs font-semibold rounded-full">
-                            Featured
+                          <div className="absolute top-6 right-6 px-6 py-3 bg-accent-indigo text-white text-sm font-bold rounded-full shadow-lg animate-pulse">
+                            Click to View Deck →
                           </div>
                         )}
-                      </div>
 
-                      {/* Card Content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {deck.genre.slice(0, 2).map(g => (
-                            <span
-                              key={g}
-                              className="px-2 py-1 bg-accent-indigo/20 text-accent-indigo text-xs rounded-full"
-                            >
-                              {g}
-                            </span>
-                          ))}
+                        {/* Title overlay - minimal */}
+                        <div className="absolute bottom-0 left-0 right-0 p-8">
+                          <h3 className="font-display text-3xl font-bold text-white mb-2 drop-shadow-lg">
+                            {deck.title}
+                          </h3>
+                          <p className="text-lg text-white/90 line-clamp-1 drop-shadow-md">
+                            {deck.logline}
+                          </p>
                         </div>
-                        <h3 className="font-display text-xl font-bold text-paper mb-2">
-                          {deck.title}
-                        </h3>
-                        <p className="text-sm text-paper-muted line-clamp-2">
-                          {deck.logline}
-                        </p>
                       </div>
 
                       {/* Hover glow effect */}
-                      <div className={`absolute inset-0 bg-gradient-to-br from-accent-indigo/0 to-accent-indigo/10 transition-opacity pointer-events-none ${
-                        isFrontCard ? 'opacity-100' : 'opacity-0 hover:opacity-100'
-                      }`} />
+                      <div className="absolute inset-0 bg-gradient-to-br from-accent-indigo/0 to-accent-indigo/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-3xl" />
                     </div>
 
                     {/* Card back (for 3D effect) */}
                     <div
-                      className="absolute inset-0 rounded-2xl bg-charcoal border border-white/10"
+                      className="absolute inset-0 rounded-3xl bg-charcoal border-4 border-white/10"
                       style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
                     />
                   </motion.div>
@@ -290,52 +271,55 @@ export default function RotatingDeckCarousel({ decks, onDeckClick }: RotatingDec
                 </button>
               </div>
 
-              {/* Slide Viewer */}
-              <div className="flex-1 flex items-center justify-center p-8">
+              {/* Slide Viewer - FULL SCREEN */}
+              <div className="flex-1 flex items-center justify-center p-6">
                 {expandedDeck.slides && expandedDeck.slides.length > 0 ? (
-                  <div className="relative w-full max-w-5xl aspect-video">
+                  <div className="relative w-full h-full max-h-[70vh] flex items-center justify-center">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={currentSlideIndex}
-                        className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl"
-                        initial={{ opacity: 0, x: 50, rotateY: -15 }}
-                        animate={{ opacity: 1, x: 0, rotateY: 0 }}
-                        exit={{ opacity: 0, x: -50, rotateY: 15 }}
-                        transition={{ duration: 0.4, ease: 'easeOut' }}
-                        style={{ transformStyle: 'preserve-3d' }}
+                        className="relative w-full h-full flex items-center justify-center"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        <Image
-                          src={expandedDeck.slides[currentSlideIndex].url}
-                          alt={expandedDeck.slides[currentSlideIndex].caption}
-                          fill
-                          className="object-contain"
-                        />
+                        <div className="relative w-full h-full max-h-[70vh]">
+                          <Image
+                            src={expandedDeck.slides[currentSlideIndex]}
+                            alt={`${expandedDeck.title} - Slide ${currentSlideIndex + 1}`}
+                            fill
+                            className="object-contain"
+                            sizes="100vw"
+                            priority
+                          />
+                        </div>
                       </motion.div>
                     </AnimatePresence>
 
-                    {/* Navigation arrows */}
+                    {/* Navigation arrows - larger */}
                     {currentSlideIndex > 0 && (
                       <button
                         onClick={prevSlide}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-black/70 hover:bg-black/90 text-white transition-all shadow-xl z-10"
                         aria-label="Previous slide"
                       >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-10 h-10" />
                       </button>
                     )}
                     {currentSlideIndex < expandedDeck.slides.length - 1 && (
                       <button
                         onClick={nextSlide}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-black/70 hover:bg-black/90 text-white transition-all shadow-xl z-10"
                         aria-label="Next slide"
                       >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-10 h-10" />
                       </button>
                     )}
                   </div>
                 ) : (
-                  <div className="text-center text-paper-muted">
-                    No slides available
+                  <div className="text-center text-white/60 text-xl">
+                    Loading slides...
                   </div>
                 )}
               </div>

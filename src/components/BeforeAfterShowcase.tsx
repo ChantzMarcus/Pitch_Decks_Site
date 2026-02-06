@@ -218,7 +218,7 @@ export default function BeforeAfterShowcase({
   return (
     <section
       ref={containerRef}
-      className={`py-20 md:py-32 bg-gradient-to-b from-paper to-charcoal/5 ${className}`}
+      className={`py-20 md:py-32 bg-gradient-to-b from-charcoal via-charcoal/95 to-charcoal ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleSwipeStart}
